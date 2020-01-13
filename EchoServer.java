@@ -3,8 +3,8 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
-import ocsf.server.*;
-import common.*;
+import src.ocsf.server.*;
+import src.lil.common.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

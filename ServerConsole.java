@@ -3,7 +3,7 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
-import common.*;
+import src.lil.common.*;
 
 /**
  * This class constructs the UI for a chat server.  It implements the
