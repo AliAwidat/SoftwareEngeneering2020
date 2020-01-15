@@ -1,9 +1,9 @@
-package lil.controllers;
+package src.lil.controllers;
 
-import lil.Enums.Role;
-import lil.models.Client;
-import lil.models.Employee;
-import lil.models.User;
+import src.lil.Enums.Role;
+import src.lil.models.Client;
+import src.lil.models.Employee;
+import src.lil.models.User;
 
 public interface UserManagement {
     Employee getEmployeeById(int userId);
