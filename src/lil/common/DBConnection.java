@@ -1,4 +1,4 @@
-package lil.common;
+package src.lil.common;
 import java.sql.*;
 public class DBConnection {
     static public final String DB = "Bc2JdnNE0Y";
