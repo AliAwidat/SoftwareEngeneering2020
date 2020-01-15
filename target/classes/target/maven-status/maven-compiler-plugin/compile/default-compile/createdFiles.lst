@@ -1,0 +1,17 @@
+src\lil\common\ChatIF.class
+src\ocsf\server\AbstractServer$1.class
+lil\common\DBConnection.class
+lil\models\Employee.class
+lil\models\ChainManger.class
+src\ocsf\server\AbstractServer.class
+lil\models\test.class
+lil\models\StoreManger.class
+lil\Enums\ReportType.class
+src\ocsf\client\AbstractClient.class
+lil\controllers\UserManagement.class
+lil\Enums\SubscriptionType.class
+src\lil\client\ChatClient.class
+lil\Enums\Role.class
+src\ocsf\server\ConnectionToClient.class
+lil\models\User.class
+lil\models\Client.class
