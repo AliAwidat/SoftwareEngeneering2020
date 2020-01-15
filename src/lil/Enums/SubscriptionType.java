@@ -1,5 +1,5 @@
-package lil.Enums;
+package src.lil.Enums;
 
-public enum SubscriptionType {
+public enum SubscriptionType{
     Monthly, Yearly
 }
