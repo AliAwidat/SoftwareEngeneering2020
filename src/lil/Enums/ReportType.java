@@ -1,4 +1,4 @@
-package src.lil.Enums; 
+package src.lil.Enums;
 
 public enum ReportType {
     QuarterlyEarningsReport,
