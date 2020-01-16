@@ -1,3 +1,4 @@
+
 package src.lil.controllers;
 
 //import lil.Enums.Role;
@@ -14,4 +15,3 @@ public interface UserManagement {
 //    boolean changeRule(int userId, Role role);
 //    boolean insertUser(User user);
 }
-
