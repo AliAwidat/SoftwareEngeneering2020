@@ -15,6 +15,15 @@ import src.lil.exceptions.NotSignedIn;
 import src.lil.exceptions.WrongCredentials;
 
 public class Login implements LoginCont {
+	/**
+	 * This method signs in a user
+	 * @param
+	 * id : user id to sign in
+	 * password : user's password 
+	 * connected_map : data structer to save which users are already connected
+	 * @return
+	 * Login status depending in the result.
+	 */
 	public LoginStatus user_login(Integer id, String password, Map<Integer, Object> connected_map) {
 		// checks if the id is in the connected users vectors.
 		try {
