@@ -26,9 +26,8 @@ public class Item {
     }
     public static Item findById(Integer id) throws SQLException {
         try (Connection db = DBConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = db.prepareStatement("select * from items where item_Id = ?")) {
+             PreparedStatement preparedStatement = db.prepareStatement("select * from items where item_Id=?")) {
             preparedStatement.setInt(1, id);
-
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (!rs.next()) {
                  //   throw new NotFound();
