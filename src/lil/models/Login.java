@@ -5,12 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import src.lil.Enums.Role;
 import src.lil.common.DBConnection;
 import src.lil.controllers.LoginCont;
 
 public class Login implements LoginCont {
 
-	public int check_user(Integer id, String password) throws SQLException {
+	public Role check_user(Integer id, String password) throws SQLException {
 		try (Connection db = DBConnection.getInstance().getConnection();
 				PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
 				PreparedStatement preparedStatement2 = db.prepareStatement("SELECT * FROM users WHERE user_id = ?")) {
@@ -20,7 +21,7 @@ public class Login implements LoginCont {
 				if (res.next()) {
 					String pw = res.getString("client_password");
 					if (pw.equals(password)) {
-						return 0;
+						return Role.Client;
 					}
 				}
 			}
@@ -28,13 +29,13 @@ public class Login implements LoginCont {
 				if (res.next()) {
 					String pw = res.getString("user_password");
 					if (pw.equals(password)) {
-						return 1;
+						return Role.valueOf(res.getString("user_role"));
 					}
 				}
 			}
 			db.close();
 		}
-		return -1;
+		return Role.Unregistered;
 	}
 
 }
