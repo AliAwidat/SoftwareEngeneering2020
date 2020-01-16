@@ -1,11 +1,13 @@
 package src.lil.models;
 import src.lil.Enums.*;
 import src.lil.common.*;
+import src.lil.models.Order.AlreadyExists;
+
 import java.sql.*;
 
 public class Item {
 	private int id,updated=0;
-	private String dominantColor;
+	private String dominantColor="";
 	private ItemType type;
 	private Double price;
 	
@@ -24,7 +26,7 @@ public class Item {
     }
     public static Item findById(Integer id) throws SQLException {
         try (Connection db = DBConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = db.prepareStatement("select * from items where id = ?")) {
+             PreparedStatement preparedStatement = db.prepareStatement("select * from items where item_Id = ?")) {
             preparedStatement.setInt(1, id);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -36,36 +38,61 @@ public class Item {
             }
         }
     }
-    public static void delete(Integer id) throws SQLException {
+    public static boolean delete(Integer id) throws SQLException, AlreadyExists {
         try (Connection db = DBConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = db.prepareStatement("drop * from items where id = ?")) {
+             PreparedStatement preparedStatement = db.prepareStatement("delete from items where item_Id = ?")) {
             preparedStatement.setInt(1, id);
+        	preparedStatement.executeUpdate();
+        	db.close();
+        	return true;
+        } catch (Exception e) {
+        	System.out.println(e.getMessage());
+            throw new AlreadyExists();
         }
     }
     
-    public void insert() throws SQLException{
+    public boolean insert() throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
-                PreparedStatement preparedStatement = db.prepareStatement("insert into items (id,type,dominant_color,price,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(2, this.type.toString());
-        	preparedStatement.setString(3, this.dominantColor);
-        	preparedStatement.setDouble(4, this.price);
-        	preparedStatement.setInt(5, this.updated);
-        	
+                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,updated) values (?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, this.type.toString());
+        	preparedStatement.setString(2, this.dominantColor);
+        	preparedStatement.setDouble(3, this.price);
+        	preparedStatement.setInt(4, this.updated);
+        	preparedStatement.executeUpdate();
+        	db.close();
+        	return true;
+        } catch (Exception e) {
+        	System.out.println(e.getMessage());
+            throw new AlreadyExists();
         }
     }
         
-    public void update(Item item) throws SQLException{
+    public static boolean update(Item item) throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = db.prepareStatement("insert into items (id,type,dominant_color,price,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
-        	preparedStatement.setInt(1, item.id);
-        	preparedStatement.setString(2, item.type.toString());
-        	preparedStatement.setString(3, item.dominantColor);
-        	preparedStatement.setDouble(4, item.price);
-        	preparedStatement.setInt(5, 1);
+            PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=? ,item_price=? ,updated=? WHERE item_Id=?")) {
+        	preparedStatement.setString(1, item.type.toString());
+        	preparedStatement.setString(2, item.dominantColor);
+        	preparedStatement.setDouble(3, item.price);
+        	preparedStatement.setInt(4, 1);
+        	preparedStatement.setInt(5, item.id);
+        	preparedStatement.executeUpdate();
+        	db.close();
+        	return true;
+        } catch (Exception e) {
+        	System.out.println(e.getMessage());
+            throw new AlreadyExists();
         }
     }
     
-        
+    public Item (ItemType itemType,String dominantColor, Double itemPrice) {
+    	//this.id = itemId;
+    	this.type = itemType;
+	    this.dominantColor = dominantColor;
+	    this.price = itemPrice;
+	    this.updated = 0;
+
+    }
+    
     public int getId() {
     	return id;
     }
