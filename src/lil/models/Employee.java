@@ -14,8 +14,8 @@ public class Employee extends User {
         super(userId);
     }
 
-    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role) {
-        super(userId, name, phone, bankAccount, email, password);
+    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId) {
+        super(userId, name, phone, bankAccount, email, password, storeId);
         this.role = role;
     }
 
@@ -23,6 +23,13 @@ public class Employee extends User {
     public boolean register() throws Exception {
         try{
             Connection connection = DBConnection.getInstance().getConnection();
+            //check if exist
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT *  FROM users WHERE user_id=" + userId);
+            if(rs.getRow() != 0 ) {
+                System.out.println("User already exist");
+                return false;
+            }
             String SQL_INSERT = "INSERT INTO users (user_id, user_email, user_password, user_name, user_role," +
                     " user_bankAccount, user_phone) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement updateUserQuery = connection.prepareStatement(SQL_INSERT);
@@ -44,7 +51,7 @@ public class Employee extends User {
     }
 
     public Employee(ResultSet rs) throws Exception{
-        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")));
+        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"));
     }
 
     public boolean updateItem(Item item){

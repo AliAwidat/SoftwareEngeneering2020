@@ -8,11 +8,12 @@ public abstract class User {
     protected boolean isBlocked;
     protected String email;
     protected String password;
+    protected String storeId;
 
     public User(int userId){
         this.userId = userId;
     }
-    public User(int userId, String name, String phone, String bankAccount,String email, String password){
+    public User(int userId, String name, String phone, String bankAccount,String email, String password, String storeId){
         this.userId = userId;
         this.name = name;
         this.phone = phone;
@@ -20,6 +21,7 @@ public abstract class User {
         this.email = email;
         this.password = password;
         this.isBlocked = false;
+        this.storeId = storeId;
     }
 
     public abstract boolean register() throws Exception;
@@ -54,6 +56,10 @@ public abstract class User {
 
     public boolean getIsConnected() {
         return isBlocked;
+    }
+
+    public String getStoreId() {
+        return storeId;
     }
 
     public void setName(String name) {

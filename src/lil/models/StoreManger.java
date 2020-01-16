@@ -8,8 +8,8 @@ public class StoreManger extends Employee {
         super(userId);
     }
 
-    public StoreManger(int userId, String name, String phone, String bankAccount, String email, String password, Role role) {
-        super(userId, name, phone, bankAccount, email, password, role);
+    public StoreManger(int userId, String name, String phone, String bankAccount, String email, String password, Role role, String store_id) {
+        super(userId, name, phone, bankAccount, email, password, role, store_id);
     }
 
     public void viewReport(ReportType reportType){
