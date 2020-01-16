@@ -119,7 +119,7 @@ public class Order implements OrderServices {
     public List<Order> findAllByUserId(Integer user_id) throws SQLException, NotFound {
         try (Connection db = DBConnection.getInstance().getConnection();
              PreparedStatement preparedStatement = db.prepareStatement(
-                "select orders.* From Orders WHERE user_id = ?")) {
+                "select * From Orders WHERE user_id = ?")) {
             preparedStatement.setInt(1, user_id);
 
             try (ResultSet rs = preparedStatement.executeQuery()) {
