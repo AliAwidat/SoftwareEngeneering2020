@@ -27,12 +27,16 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.twilio.sdk/twilio SMS -->
+        <!-- https://mvnrepository.com/artifact/com.twilio.sdk/twilio-java-sdk -->
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio-java-sdk</artifactId>
+            <version>7.0.0-rc-10</version>
+        </dependency>
         <dependency>
             <groupId>com.twilio.sdk</groupId>
             <artifactId>twilio</artifactId>
-            <version>7.47.2</version>
-            <scope>runtime</scope>
+            <version>7.42.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
@@ -42,6 +46,11 @@
             <version>1.6.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.0</version>
+        </dependency>
 
         <dependency>
             <groupId>mysql</groupId>
