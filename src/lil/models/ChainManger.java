@@ -14,7 +14,7 @@ public class ChainManger extends StoreManger implements UserManagement {
     }
 
     public ChainManger(int userId, String name, String phone, String email, String password,  String bankAccount) {
-        super(userId, name, phone, bankAccount,email, password, Role.ChainManger);
+        super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1");
     }
 
     @Override
