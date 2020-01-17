@@ -3,10 +3,7 @@ package src.lil.models;
 import src.lil.Enums.SubscriptionType;
 import src.lil.common.DBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Client extends User {
     protected String shippingAddress;
@@ -21,6 +18,13 @@ public class Client extends User {
     public boolean register() throws Exception {
         try{
             Connection connection = DBConnection.getInstance().getConnection();
+            //check if exist
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT *  FROM clients WHERE client_id=" + userId);
+            if(rs.getRow() != 0 ) {
+                System.out.println("Client already exist");
+                return false;
+            }
             String SQL_INSERT = "INSERT INTO clients (client_id, client_name, client_phone, client_bankAccount, client_email," +
                     " client_password, client_creditCard, client_shippingAddress, client_subscriptionType, client_block)" +
                     " VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -45,15 +49,15 @@ public class Client extends User {
         }
     }
 
-    public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber) {
-        super(userId, name, phone, bankAccount, email, password);
+    public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber, String store_id) {
+        super(userId, name, phone, bankAccount, email, password,store_id);
         this.creditCardNumber = creditCardNumber;
         this.subscriptionType = subscriptionType;
         this.shippingAddress = shippingAddress;
     }
 
     public Client(ResultSet rs) throws SQLException {
-        this(rs.getInt("client_id"), rs.getString("client_name"), rs.getString("client_phone"), rs.getString("client_bankAccount"), rs.getString("client_shippingAddress"), rs.getString("client_email"), rs.getString("client_password"), SubscriptionType.valueOf(rs.getString("client_subscriptionType")), rs.getString("client_creditCard"));
+        this(rs.getInt("client_id"), rs.getString("client_name"), rs.getString("client_phone"), rs.getString("client_bankAccount"), rs.getString("client_shippingAddress"), rs.getString("client_email"), rs.getString("client_password"), SubscriptionType.valueOf(rs.getString("client_subscriptionType")), rs.getString("client_creditCard"), rs.getString("store_id"));
     }
 
     public String getCreditCardNumber() {
