@@ -13,15 +13,14 @@
 //import src.lil.models.Order.NotFound;
 //
 //public class ReportTest{
-//	
+//	Report report;
 //	@BeforeEach
 //	void setUp() throws Exception {
-//		
+//		report = new Report();
 //	}
 //
 //	@Test
 //	void testComplainsReport() throws IOException, NotFound {
-//		Report report= new Report();
 //		try {
 //			report.prepareComplainsReport();
 //		}catch(SQLException se){
@@ -34,7 +33,6 @@
 //	
 //	@Test
 //	void testMonthlyReport() throws NotFound, IOException{
-//		Report report = new Report();
 //		try {
 //			report.prepareMonthlyReport();
 //		}catch(SQLException se) {
@@ -42,5 +40,11 @@
 //		}
 //		File file = report.getMonthlyReport();
 //		assertTrue(file.exists());
+//	}
+//	
+//	@Test
+//	void testSendEmailToStore() {
+//		report.sendStoreMonthlyReport();
+//		
 //	}
 //}

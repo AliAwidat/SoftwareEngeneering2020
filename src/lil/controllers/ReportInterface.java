@@ -8,4 +8,5 @@ public interface ReportInterface {
 	public void prepareComplainsReport() throws SQLException, NotFound, IOException;
 	public void prepareMonthlyReport() throws SQLException, NotFound, IOException;
 	public void prepareQuarterReport() throws SQLException, NotFound, IOException;
+	public void sendStoreMonthlyReport();
 }

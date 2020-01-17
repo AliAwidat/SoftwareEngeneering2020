@@ -4,7 +4,7 @@ package src.lil.common;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
+
 //lilach ltd 2-factor login
 //        5817 7897
 //        9681 5347

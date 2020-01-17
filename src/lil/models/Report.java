@@ -1,5 +1,7 @@
 package src.lil.models;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,6 +12,9 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import src.lil.common.DBConnection;
 import src.lil.controllers.ReportInterface;
 import src.lil.models.Order.NotFound;
@@ -43,7 +48,7 @@ public class Report implements ReportInterface {
 	    		  Statement stmt = conn.createStatement();
 	    		  sql = "SELECT * FROM orders";
 	    		  ResultSet rs = stmt.executeQuery(sql);
-	    		  fileWriter.write("Order date ----- " + "Order id ----- Item ----- Total Cost ----- Delivery Location\n");
+	    		  fileWriter.write("Order date ----- " + " ----- Order id ----- ----- Item ----- ----- Total Cost ----- ----- Delivery Location\n");
 	    		  while(rs.next()) {
 	    			  order_id = rs.getInt("order_id");
 	    			  item = rs.getString("item");
@@ -51,7 +56,7 @@ public class Report implements ReportInterface {
 	    			  dateAsString = df.format(date);
 	    			  price_Domain = rs.getString("price_Domain");
 	    			  delivery_location= rs.getString("delivery_location");
-	    			  String finalOrderInfo = " " + dateAsString + " " +order_id + " " + item + " " + price_Domain + " " + delivery_location + "\n";
+	    			  String finalOrderInfo = " | " + dateAsString + " | " +order_id + " | " + item + " | " + price_Domain + " | " + delivery_location + "\n";
 	    			  try {
 	    			  fileWriter.write(finalOrderInfo);
 	    			  } catch (IOException e) {
@@ -159,5 +164,78 @@ public class Report implements ReportInterface {
 		return this.complainsReport;
 	}
 	
+	private static String usingBufferedReader(String filePath) 
+	{
+	    StringBuilder contentBuilder = new StringBuilder();
+	    try (BufferedReader br = new BufferedReader(new FileReader(filePath))) 
+	    {
+	 
+	        String sCurrentLine;
+	        while ((sCurrentLine = br.readLine()) != null) 
+	        {
+	            contentBuilder.append(sCurrentLine).append("\n");
+	        }
+	    } 
+	    catch (IOException e) 
+	    {
+	        e.printStackTrace();
+	    }
+	    return contentBuilder.toString();
+	}
 	
+	public void sendStoreMonthlyReport() {
+		  Properties props = System.getProperties();
+	        String host = "smtp.gmail.com";
+	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.host", host);
+	        props.put("mail.smtp.user", "lilach.ltd");
+	        props.put("mail.smtp.password", "");
+	        props.put("mail.smtp.port", "587");
+	        props.put("mail.smtp.auth", "true");
+
+	        Session session = Session.getDefaultInstance(props);
+	        MimeMessage message = new MimeMessage(session);
+
+	        try {
+	            String from="lilach.ltd@gmail.com";
+	            String[] gmail2={"aliawidat1@gmail.com"};
+	            message.setFrom(new InternetAddress(from));
+	            InternetAddress[] toAddress = new InternetAddress[gmail2.length];
+
+	            // To get the array of addresses
+	            for( int i = 0; i < gmail2.length; i++ ) {
+	                toAddress[i] = new InternetAddress(gmail2[i]);
+	            }
+
+	            for (InternetAddress address : toAddress) {
+	                message.addRecipient(Message.RecipientType.TO, address);
+	            }
+
+	            message.setSubject("Store Monthly Report!");
+	            message.setText("You strore's monthly orders and income report, is here!\n"+ usingBufferedReader(monthlyReport.toString()));
+	            Transport transport = session.getTransport("smtp");
+	            transport.connect(host, "lilach.ltd@gmail.com", "umsrnjzmyvmkttyh");
+	            transport.sendMessage(message, message.getAllRecipients());
+	            transport.close();
+	        } catch (MessagingException ae) {
+	            ae.printStackTrace();
+	        }
+	   }
+	
+	public static void main(String [] args) {
+		Report report= new Report();
+		try {
+			report.prepareMonthlyReport();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		report.sendStoreMonthlyReport();
+    }
 }
