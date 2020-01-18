@@ -1,53 +1,79 @@
 package src.lil.models;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.sql.Date;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.time.format.DateTimeFormatter;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import junit.framework.TestCase;
 import src.lil.Enums.OrderType;
 
-class OrderTest {
+class orderTest extends TestCase {
+	
+	List<Integer> my_list = new ArrayList();
+	LocalTime ShippingHour = LocalTime.parse("16:17:00");
+	LocalDate ShippingDate = LocalDate.parse("2020-01-25");
+	LocalDateTime orderDate = LocalDateTime.now();
     //CHECKED
-//	@Test
-//    public void checkInsertIntoOrders() throws Exception{
-//    	
-//    	Order addToDb = new Order(313138943,7878,OrderType.Other,"", "red","0501132522",
-//    			new Date(0),"250-300", true,"pika", true) ; 
-//    	if(!(addToDb.insertIntoOrders())) {System.out.println("Failed");}
-//    }
+	@Test
+    public void checkInsertIntoOrders() throws Exception{
+		my_list.add(2);
+		my_list.add(3);
+    	Order TestOrder = new Order(4444,4541112,OrderType.FromTheCatlaog,my_list, "","0522245689",
+    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "1") ; 
+    	Assert.assertTrue(TestOrder.insertIntoOrders()== true);
+    }
+	
 //	    
-	//CHECKED
+//	//CHECKED
 //    @Test
 //    public void checkfindAllByUserId() throws Exception{
-//    	Order myLastOrder =new Order(5652,15,OrderType.Other,"", "blue","0548875671",
-//    			new Date(0),"100-150", true,"shaar ha-gai", true) ; 
+//    	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8") ; 
 //    	System.out.println(myLastOrder.findAllByUserId(5652));
 //        //if(!myLastOrder.equals(WantedOrder)){System.out.println("Failed to get sameUser");}
 //    }
-	//CHECKED
-    @Test
-    public void checkfindOrderById() throws Exception{
-    	Order myLastOrder =new Order(313138943,888,OrderType.Other,"", "red","0501132522",
-    			new Date(0),"250-300", true,"pika", true) ; 
-        Order e = myLastOrder.findOrderById(888);
-        System.out.println(e.getDeliveryLocation());
-    }
-    //CHECKED
+//	//CHECKED
+//    @Test
+//    public void checkfindOrderById() throws Exception{
+//    	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8"); 
+//        Order e = myLastOrder.findOrderById(888);
+//        System.out.println(e.getDeliveryLocation());
+//    }
+//   // CHECKED
 //    @Test
 //    public void checkcountForUser() throws Exception{
-//    	Order myLastOrder =new Order(5652,15,OrderType.Other,"", "blue","0548875671",
-//    			new Date(0),"100-150", true,"shaar ha-gai", true) ; 
+//    	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8") ; 
 //        int e = myLastOrder.countForUser(5652);
 //        System.out.println(e);
 //    }
-    //CHECKED
+//   // CHECKED
 //	  @Test
 //	  public void checkDeleteOrder() throws Exception{
-//	  	Order myLastOrder =new Order(5652,15,OrderType.Other,"", "blue","0548875671",
-//	  			new Date(0),"100-150", true,"shaar ha-gai", true) ; 
+//	  	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8") 
 //	      boolean e = myLastOrder.DeleteOrder(15);
+//	      System.out.println(e);
+//	  }
+//	// CHECKED
+//	  @Test
+//	  public void checkOrderCost() throws Exception{
+//	  	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8"); 
+//	      String  e = myLastOrder.OrderCost(myLastOrder);
+//	      System.out.println(e);
+//	  }
+//	// CHECKED
+//	  @Test
+//	  public void checkorderTimeDiff() throws Exception{
+//	  	Order myLastOrder =new Order(91,1,OrderType.FromTheCatlaog,my_list, "","0501778832",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "8") ; 
+//	      String  e = myLastOrder.orderTimeDiff(myLastOrder);
 //	      System.out.println(e);
 //	  }
 }
