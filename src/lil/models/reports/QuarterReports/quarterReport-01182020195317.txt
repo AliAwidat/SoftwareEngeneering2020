@@ -1,11 +1,9 @@
-||===============Quarter report for last 4 months. Date updated: 01182020140518====================||
+||===============Quarter report for last 4 months. Date updated: 01182020195317====================||
 ||======================================================================================================||
 ||==================================Stores total monthly income:========================================||
 Store_ID: 1 || This month's income: 200 || Last month's income: 100 || Ratio: 2.0
-Store_ID: 2 || This month's income: 350 || Last month's income: 250 || Ratio: 1.4
-Store_ID: 3 || This month's income: 250 || Last month's income: 150 || Ratio: 1.6666666666666667
 ||======================================================================================================||
-Total network income: 800 || Last month's total income: 400 Ratio: 2.0==================================||
+Total network income: 350 || Last month's total income: 400 Ratio: 0.875==================================||
 ||======================================================================================================||
 ||Complains count: 4 || Last month's complain count:5 || Complains Ratio: 0.8                           ||
 ||======================================================================================================||
