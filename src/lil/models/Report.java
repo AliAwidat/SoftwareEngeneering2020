@@ -34,15 +34,13 @@ public class Report implements ReportInterface {
 	public void prepareMonthlyReport() throws SQLException, NotFound, IOException{
 		
 		String sql= null;
-		Date date,report_date;
 		String pattern = "MMddyyyyHHmmss";
-
+		String user_id,item,order_date,contact_phone,delivery_location,contact_name,order_price,store_id;
+		int order_id;
 		// Create an instance of SimpleDateFormat used for formatting 
 		// the string representation of date according to the chosen pattern
 		DateFormat df = new SimpleDateFormat(pattern);
-		int order_id;
-		String item,price_Domain,delivery_location,dateAsString;
-		String complain_title,complain_text,store_adress,contact_phone,contact_email;
+
 		String monthly_path="C:\\Users\\ali\\git\\SoftwareEngeneering2020\\src\\lil\\models\\reports\\MonthlyReports\\MonthlyReport"+df.format(new Date())+".txt";
 //		Open a text file and create an output stream to Store the income data  
 		File targetFile = new File(monthly_path);
@@ -57,15 +55,18 @@ public class Report implements ReportInterface {
 	    		  ResultSet rs = stmt.executeQuery(sql);
 	    		  fileWriter.write("Order date ----- " + " ----- Order id ----- ----- Item ----- ----- Total Cost ----- ----- Delivery Location\n");
 	    		  while(rs.next()) {
-	    			  order_id = rs.getInt("order_id");
-	    			  item = rs.getString("item");
-	    			  date = rs.getDate("order_Date");
-	    			  dateAsString = df.format(date);
-	    			  price_Domain = rs.getString("price_Domain");
-	    			  delivery_location= rs.getString("delivery_location");
-	    			  String finalOrderInfo = " | " + dateAsString + " | " +order_id + " | " + item + " | " + price_Domain + " | " + delivery_location + "\n";
+	    				user_id = rs.getString("user_id");
+	    		        order_id = rs.getInt("order_Id");
+	    		        contact_phone = rs.getString("receiver_phone");
+	    		        delivery_location = rs.getString("delivery_location");
+	    		        store_id = rs.getString("store_id");
+	    		        contact_name = rs.getString("contact_name");
+	    		        order_date=rs.getString("order_Date");
+	    		        item=rs.getString("item");
+	    		        order_price=rs.getString("order_price");
+	    			  String finalOrderInfo = " | " + order_date + " | " +order_id + " | " + item + " | " + order_price + " | " + delivery_location + "\n";
 	    			  try {
-	    			  fileWriter.write(finalOrderInfo);
+	    				  fileWriter.write(finalOrderInfo);
 	    			  } catch (IOException e) {
 						// TODO Auto-generated catch block
 	    				  fileWriter.write(e.toString());
@@ -316,7 +317,7 @@ public class Report implements ReportInterface {
 	            }
 
 	            message.setSubject("Store Monthly Report!");
-	            message.setText("You strore's monthly orders and income report, is here!\n"+ usingBufferedReader(monthlyReport.toString()));
+	            message.setText("You strore's monthly orders and income report, is here!\n"+ usingBufferedReader(this.monthlyReport.toString()));
 	            Transport transport = session.getTransport("smtp");
 	            transport.connect(host, "lilach.ltd@gmail.com", "umsrnjzmyvmkttyh");
 	            transport.sendMessage(message, message.getAllRecipients());

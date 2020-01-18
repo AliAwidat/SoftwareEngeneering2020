@@ -65,17 +65,17 @@ public class Complain implements ComplainsInterface {
 		try{
 			Connection conn = DBConnection.getInstance().getConnection();
 	    	Statement stmt = conn.createStatement();
-	    	sql = "SELECT * FROM orders.*";
+	    	sql = "SELECT * FROM complains";
 	    	ResultSet rs = stmt.executeQuery(sql);
 	    	while(rs.next()) {
-	    	complain_id=rs.getInt("complain_id");
-	    	contact_email=rs.getString("contact_email");
-	    	contact_phone=rs.getString("contact_phone");
-	    	complain_title=rs.getString("complain_title");
-	    	complain_text=rs.getString("complain_text");
-	    	store_adress=rs.getString("store_adress");
-	    	date=rs.getDate("complain_date");
-	    	System.out.println("Complain date: "+date.toString()+" Complain ID: " + complain_id + " Contact email: " + contact_email + " Contact phone: " + contact_phone + " Store adress: "+store_adress+"\nTitle: " + complain_title+"\nComplain: "+complain_text); 
+		    	complain_id=rs.getInt("complain_id");
+		    	contact_email=rs.getString("contact_email");
+		    	contact_phone=rs.getString("contact_phone");
+		    	complain_title=rs.getString("complain_title");
+		    	complain_text=rs.getString("complain_text");
+		    	store_adress=rs.getString("store_adress");
+		    	date=rs.getDate("complain_date");
+		    	System.out.println("Complain date: "+date.toString()+" Complain ID: " + complain_id + " Contact email: " + contact_email + " Contact phone: " + contact_phone + " Store adress: "+store_adress+"\nTitle: " + complain_title+"\nComplain: "+complain_text); 
 	    	}
 	    	rs.close();
 	    	stmt.close();
