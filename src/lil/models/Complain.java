@@ -7,6 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+
 import src.lil.common.DBConnection;
 import src.lil.controllers.ComplainsInterface;
 import src.lil.models.Order.NotFound;
@@ -25,6 +27,7 @@ public class Complain implements ComplainsInterface {
 		// the string representation of date according to the chosen pattern
 		int complain_id;
 		String complain_title,complain_text,store_adress,contact_phone,contact_email;
+		Date date = new Date(Calendar.getInstance().getTime().getTime());
 		complain_id=idCount; idCount++;
 		complain_title=complainTitle;
 		complain_text= complainText;
@@ -39,7 +42,7 @@ public class Complain implements ComplainsInterface {
 	          preparedStatement.setString(4, complain_title);
 	          preparedStatement.setString(5, complain_text);
 	          preparedStatement.setString(6, store_adress);
-	          preparedStatement.setDate(7, null);
+	          preparedStatement.setDate(7,date);
 	          try { 
 	        	  	preparedStatement.executeUpdate();
 	                System.out.println("Added new complain");
