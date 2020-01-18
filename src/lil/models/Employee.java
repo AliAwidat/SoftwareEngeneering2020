@@ -10,9 +10,6 @@ import java.sql.Statement;
 
 public class Employee extends User {
     protected Role role;
-    public Employee(int userId) {
-        super(userId);
-    }
 
     public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId) {
         super(userId, name, phone, bankAccount, email, password, storeId);

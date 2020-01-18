@@ -9,9 +9,7 @@ import src.lil.controllers.UserManagement;
 import java.sql.*;
 
 public class ChainManger extends StoreManger implements UserManagement {
-    public ChainManger(int userId) {
-        super(userId);
-    }
+
 
     public ChainManger(int userId, String name, String phone, String email, String password,  String bankAccount) {
         super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1");

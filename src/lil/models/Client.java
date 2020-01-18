@@ -10,9 +10,6 @@ public class Client extends User {
     protected SubscriptionType subscriptionType;
     protected String creditCardNumber;
 
-    public Client(int userId) {
-        super(userId);
-    }
 
     @Override
     public boolean register() throws Exception {
@@ -50,7 +47,7 @@ public class Client extends User {
     }
 
     public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber, String store_id) {
-        super(userId, name, phone, bankAccount, email, password,store_id);
+        super(userId,name,phone,bankAccount,email,password,store_id);
         this.creditCardNumber = creditCardNumber;
         this.subscriptionType = subscriptionType;
         this.shippingAddress = shippingAddress;
