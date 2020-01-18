@@ -12,7 +12,7 @@ public class ChainManger extends StoreManger implements UserManagement {
 
 
     public ChainManger(int userId, String name, String phone, String email, String password,  String bankAccount) {
-        super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1");
+        super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1","-1");
     }
 
     @Override
@@ -27,20 +27,22 @@ public class ChainManger extends StoreManger implements UserManagement {
             Connection connection = DBConnection.getInstance().getConnection();
 
             if(updatedUser instanceof Employee){
-                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE users SET user_email=?, user_password=?,user_name=?,user_role=?,user_bankAccount=?,user_phone=? WHERE user_id=?");
+                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE users SET user_email=?, user_password=?,user_name=?,user_role=?,user_bankAccount=?,user_phone=?,store_id=?,user_balance=? WHERE user_id=?");
                 updateUserQuery.setString(1,((Employee) updatedUser).getEmail());
                 updateUserQuery.setString(2,((Employee) updatedUser).getPassword());
                 updateUserQuery.setString(3,((Employee) updatedUser).getName());
                 updateUserQuery.setString(4,((Employee) updatedUser).getRole().toString());
                 updateUserQuery.setString(5,((Employee) updatedUser).getBankAccount());
                 updateUserQuery.setString(6,((Employee) updatedUser).getPhone());
-                updateUserQuery.setInt(7,((Employee) updatedUser).getUserId());
+                updateUserQuery.setString(7,((Employee) updatedUser).getStoreId());
+                updateUserQuery.setString(8,((Employee) updatedUser).getBalance());
+                updateUserQuery.setInt(9,((Employee) updatedUser).getUserId());
                 updateUserQuery.executeUpdate();
                 connection.close();
                 return true;
             }
             else if (updatedUser instanceof Client){
-                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE clients SET client_name=?, client_phone=?, client_bankAccount=?, client_email=?,client_password=?,client_creditCard=?,client_shippingAddress=?,client_subscriptionType=?,client_block=? WHERE client_id=?");
+                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE clients SET client_name=?, client_phone=?, client_bankAccount=?, client_email=?,client_password=?,client_creditCard=?,client_shippingAddress=?,client_subscriptionType=?,client_block=?,store_id=?,client_balance=? WHERE client_id=?");
                 updateUserQuery.setString(1,((Client) updatedUser).getName());
                 updateUserQuery.setString(2,((Client) updatedUser).getPhone());
                 updateUserQuery.setString(3,((Client) updatedUser).getBankAccount());
@@ -50,6 +52,8 @@ public class ChainManger extends StoreManger implements UserManagement {
                 updateUserQuery.setString(7,((Client) updatedUser).getShippingAddress());
                 updateUserQuery.setString(8,((Client) updatedUser).getSubscriptionType().toString());
                 updateUserQuery.setBoolean(9,((Client) updatedUser).getIsConnected());
+                updateUserQuery.setString(9,((Client) updatedUser).getStoreId());
+                updateUserQuery.setString(9,((Client) updatedUser).getBalance());
                 updateUserQuery.setInt(10,((Client) updatedUser).getUserId());
                 updateUserQuery.executeUpdate();
                 connection.close();

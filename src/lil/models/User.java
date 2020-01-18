@@ -1,5 +1,12 @@
 package src.lil.models;
 
+import src.lil.common.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public abstract class User {
     protected int userId;
     protected String name;
@@ -9,9 +16,9 @@ public abstract class User {
     protected String email;
     protected String password;
     protected String storeId;
+    protected String balance;
 
-
-    public User(int userId, String name, String phone, String bankAccount,String email, String password, String storeId){
+    public User(int userId, String name, String phone, String bankAccount,String email, String password, String storeId, String balance){
         this.userId = userId;
         this.name = name;
         this.phone = phone;
@@ -20,6 +27,7 @@ public abstract class User {
         this.password = password;
         this.isBlocked = false;
         this.storeId = storeId;
+        this.balance = balance;
     }
 
     public abstract boolean register() throws Exception;
@@ -60,6 +68,10 @@ public abstract class User {
         return storeId;
     }
 
+    public String getBalance() {
+        return balance;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -86,5 +98,27 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public boolean pay(double amount){
+        try{
+            Connection connection = DBConnection.getInstance().getConnection();
+            //check if exist
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT client_balance  FROM clients WHERE client_id=" + userId);
+            rs.next();
+            String balance = rs.getString(1);
+            balance = String.valueOf(Double.parseDouble(balance) - amount);
+            String SQL_INSERT = "UPDATE clients" +
+                    "SET client_balance = " +balance +
+                    "WHERE client_id=" + userId;
+            PreparedStatement updateUserQuery = connection.prepareStatement(SQL_INSERT);
+            updateUserQuery.executeUpdate();
+            connection.close();
+            return true;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
     }
 }
