@@ -10,9 +10,7 @@ public abstract class User {
     protected String password;
     protected String storeId;
 
-    public User(int userId){
-        this.userId = userId;
-    }
+
     public User(int userId, String name, String phone, String bankAccount,String email, String password, String storeId){
         this.userId = userId;
         this.name = name;
