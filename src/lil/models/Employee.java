@@ -11,8 +11,8 @@ import java.sql.Statement;
 public class Employee extends User {
     protected Role role;
 
-    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId) {
-        super(userId, name, phone, bankAccount, email, password, storeId);
+    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId, String balannce) {
+        super(userId, name, phone, bankAccount, email, password, storeId,balannce);
         this.role = role;
     }
 
@@ -28,7 +28,7 @@ public class Employee extends User {
                 return false;
             }
             String SQL_INSERT = "INSERT INTO users (user_id, user_email, user_password, user_name, user_role," +
-                    " user_bankAccount, user_phone) VALUES (?,?,?,?,?,?,?)";
+                    " user_bankAccount, user_phone,store_id, user_balance) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement updateUserQuery = connection.prepareStatement(SQL_INSERT);
             updateUserQuery.setInt(1,userId);
             updateUserQuery.setString(2,email);
@@ -37,6 +37,8 @@ public class Employee extends User {
             updateUserQuery.setString(5,role.toString());
             updateUserQuery.setString(6,bankAccount);
             updateUserQuery.setString(7,phone);
+            updateUserQuery.setString(8,storeId);
+            updateUserQuery.setString(9,balance);
             updateUserQuery.executeUpdate();
             connection.close();
             return true;
@@ -48,7 +50,7 @@ public class Employee extends User {
     }
 
     public Employee(ResultSet rs) throws Exception{
-        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"));
+        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"),rs.getString("user_balance"));
     }
 
     public boolean updateItem(Item item){
