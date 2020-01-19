@@ -20,8 +20,15 @@ public class Employee extends User {
     public boolean register() throws Exception {
         try{
             Connection connection = DBConnection.getInstance().getConnection();
+            //check if exist
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT *  FROM users WHERE user_id=" + userId);
+            if(rs.getRow() != 0 ) {
+                System.out.println("User already exist");
+                return false;
+            }
             String SQL_INSERT = "INSERT INTO users (user_id, user_email, user_password, user_name, user_role," +
-                    " user_bankAccount, user_phone) VALUES (?,?,?,?,?,?,?)";
+                    " user_bankAccount, user_phone,store_id, user_balance) VALUES (?,?,?,?,?,?,?,?,?)";
             PreparedStatement updateUserQuery = connection.prepareStatement(SQL_INSERT);
             updateUserQuery.setInt(1,userId);
             updateUserQuery.setString(2,email);
@@ -30,6 +37,8 @@ public class Employee extends User {
             updateUserQuery.setString(5,role.toString());
             updateUserQuery.setString(6,bankAccount);
             updateUserQuery.setString(7,phone);
+            updateUserQuery.setString(8,storeId);
+            updateUserQuery.setString(9,balance);
             updateUserQuery.executeUpdate();
             connection.close();
             return true;
