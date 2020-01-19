@@ -104,11 +104,8 @@ public class Order implements OrderServices {
         
     }
 
-
     public Order() {
 	}
-
-
 
     /**
      * find Order of a given Order ID
@@ -193,10 +190,9 @@ public class Order implements OrderServices {
 	@Override
     public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
         // insert city to table
-        try(
+        try {
         	Connection db = DBConnection.getInstance().getConnection();
              PreparedStatement preparedStatement = db.prepareStatement("insert into orders (user_id, order_id, order_Type, item,Domiant_color, receiver_phone,order_Date,price_Domain,delivery,delivery_location,Shipping_Hour,Shipping_Date,greating,greating_text,contact_name,store_id,order_price ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"); {
-
             preparedStatement.setInt(1, getuserId());
             preparedStatement.setInt(2, getorderId());
             preparedStatement.setString(3,getOrderType().toString());
@@ -219,6 +215,7 @@ public class Order implements OrderServices {
             preparedStatement.executeUpdate();
             db.close();
             return true;
+             }
         } catch (Exception e) {
         	System.out.println(e.getMessage());
         	return false;
@@ -326,14 +323,15 @@ public class Order implements OrderServices {
      * @throws AlreadyExists 
      */
     public  boolean DeleteOrder(Integer order_id) throws SQLException, NotFound, AlreadyExists {
-        try (
+        try {
         		Connection db =DBConnection.getInstance().getConnection();
-        		PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM orders WHERE order_id = ?")){
+        		PreparedStatement preparedStatement = db.prepareStatement("DELETE FROM orders WHERE order_id = ?");
         		preparedStatement.setInt(1, getorderId());
                 preparedStatement.executeUpdate();
                 db.close();
                 return true;
-            } catch (Exception e) {
+        		}
+             catch (Exception e) {
             	System.out.println(e.getMessage());
             	return false;
             }
@@ -413,14 +411,22 @@ public class Order implements OrderServices {
         m = currentHour.getMinute() - order.ShippingHour.getMinute();
         h = currentHour.getHour() - order.ShippingHour.getHour();
     	time = "(" + String.valueOf(h) + ":" + String.valueOf(m) + ":" + String.valueOf(s) + ")";
-    	return (h > 3)||((h == 3) & (m >= 0 & s > 0))  ? " sorry, too late to cancel this order" : "this order was purchased before: "+ time; 
+    	if ((h > 3)||((h == 3) & (m >= 0 & s > 0))) {
+    		System.out.println("this order was purchased before: "+ time + ", you can cancel this order and get a full refund");
+    	
+    	}
+    	else 
+    	if(h == 0 ) System.out.println(" sorry, too late to cancel this order");
+    	else {
+    		System.out.println("this order was purchased before: "+ time + ", you can cancel this order and get a half price refund");
+    	}
+    	
     	}
     	catch(Exception e){
     		System.out.println(e.getMessage());
     	 	return "";
     	}
-    	
-      
+    	return "";
     }
 }
    
