@@ -53,6 +53,8 @@ public class Employee extends User {
         this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"),rs.getString("user_balance"));
     }
 
+    public Employee(){super();}
+
     public boolean updateItem(Item item){
         try{
                 Connection connection = DBConnection.getInstance().getConnection();

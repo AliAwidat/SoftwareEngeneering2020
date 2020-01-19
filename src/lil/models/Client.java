@@ -3,7 +3,9 @@ package src.lil.models;
 import src.lil.Enums.SubscriptionType;
 import src.lil.common.DBConnection;
 
+import java.io.IOException;
 import java.sql.*;
+import java.util.Calendar;
 
 public class Client extends User {
     protected String shippingAddress;
@@ -48,6 +50,8 @@ public class Client extends User {
             return false;
         }
     }
+
+    public Client(){super();}
 
     public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber, String store_id, String balance) {
         super(userId,name,phone,bankAccount,email,password,store_id,balance);
@@ -99,6 +103,36 @@ public class Client extends User {
                 && this.creditCardNumber.equals(emp.getCreditCardNumber()) && this.shippingAddress.equals(emp.getShippingAddress());
     }
 
+    public void addComplain(String complainTitle, String complainText, String email, String phone, String adress) throws SQLException, Order.NotFound, IOException {
+        int complain_id;
+        String complain_title,complain_text,store_adress,contact_phone,contact_email;
+        Date date = new Date(Calendar.getInstance().getTime().getTime());
+        complain_title=complainTitle;
+        complain_text= complainText;
+        store_adress=adress;
+        contact_phone=phone;
+        contact_email=email;
+        try (Connection conn = DBConnection.getInstance().getConnection()){
+            PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO complains VALUES (?, ?, ?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, contact_email);
+            preparedStatement.setString(2, contact_phone);
+            preparedStatement.setString(3, complain_title);
+            preparedStatement.setString(4, complain_text);
+            preparedStatement.setString(5, store_adress);
+            preparedStatement.setDate(6,date);
+            preparedStatement.setBoolean(7,false);
+            try {
+                preparedStatement.executeUpdate();
+                System.out.println("Added new complain");
+                preparedStatement.close();
+                conn.close();
+            }catch(SQLException se) {
+                se.printStackTrace();
+            }
+        }catch(SQLException se) {
+            se.printStackTrace();
+        }
+    }
 
 }
 

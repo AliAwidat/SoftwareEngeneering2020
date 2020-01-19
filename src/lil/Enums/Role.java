@@ -5,5 +5,6 @@ public enum Role {
 	Client,
     Employee,
     StoreManger,
-    ChainManger
+    ChainManger,
+    customerService
 }

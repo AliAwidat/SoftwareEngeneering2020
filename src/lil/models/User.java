@@ -18,6 +18,7 @@ public abstract class User {
     protected String storeId;
     protected String balance;
 
+    public User(){}
     public User(int userId, String name, String phone, String bankAccount,String email, String password, String storeId, String balance){
         this.userId = userId;
         this.name = name;
@@ -102,7 +103,6 @@ public abstract class User {
     public boolean pay(double amount){
         try{
             Connection connection = DBConnection.getInstance().getConnection();
-            //check if exist
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT client_balance  FROM clients WHERE client_id=" + userId);
             rs.next();
