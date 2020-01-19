@@ -110,6 +110,8 @@ public class Item {
     }
     
     public boolean insert() throws SQLException, AlreadyExists{
+    	int itemId;
+    	String list="";
         try (Connection db = DBConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, this.type.toString());
@@ -124,16 +126,24 @@ public class Item {
             throw new AlreadyExists();
         }
         try (Connection db1 = DBConnection.getInstance().getConnection();
-        ResultSet rs= db1.prepareStatement("select max store_id from prices").executeQuery()){
+        ResultSet rs1= db1.prepareStatement("select max(item_Id) from items").executeQuery()){
+        	itemId = rs1.getInt("item_Id");
+        } catch (Exception e) {
+        	System.out.println(e.getMessage());
+            throw new AlreadyExists();
+        }
         try (Connection db = DBConnection.getInstance().getConnection();
         ResultSet rs= db.prepareStatement("select distinct store_id from prices").executeQuery()){
-	        String list="";
 	        while(rs.next()) {
-	        	list += "("+rs.getInt(1)+","+rs.getInt(2)+","+rs.getInt(3)+"),";
+	        	list += "("+itemId+","+this.price+","+rs.getInt(3)+"),";
 	        }
+        } catch (Exception e) {
+        	System.out.println(e.getMessage());
+        	throw new AlreadyExists();
+        }
 	        list = list.substring(0, list.length()-1) + ";";
 	        try (Connection db2 = DBConnection.getInstance().getConnection();
-	        		PreparedStatement preparedStatement2 = db.prepareStatement("INSERT INTO prices(store_id, price, item_id) values"+list+"")) {
+	        		PreparedStatement preparedStatement2 = db2.prepareStatement("INSERT INTO prices(store_id, price, item_id) values"+list+"")) {
 	               preparedStatement2.setInt(1, id);
 	           	preparedStatement2.executeUpdate();
 	           	db2.close();
@@ -142,7 +152,6 @@ public class Item {
 	        	System.out.println(e.getMessage());
 	        	throw new AlreadyExists();
 	        }
-	    }
     } 
     public static boolean update(Item item) throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
