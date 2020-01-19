@@ -4,6 +4,7 @@ package src.lil.common;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.security.auth.Subject;
 
 //lilach ltd 2-factor login
 //        5817 7897
@@ -17,8 +18,7 @@ import javax.mail.internet.*;
 //        7009 2146
 //        7757 9307
 public class sendMail {
-
-    public static void main(String [] args) {
+    public sendMail(String[] to, String subject, String text){
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
@@ -33,21 +33,20 @@ public class sendMail {
 
         try {
             String from="lilach.ltd@gmail.com";
-            String[] gmail2={"z.basel324@gmail.com","miraqi147@gmail.com"};
             message.setFrom(new InternetAddress(from));
-            InternetAddress[] toAddress = new InternetAddress[gmail2.length];
+            InternetAddress[] toAddress = new InternetAddress[to.length];
 
             // To get the array of addresses
-            for( int i = 0; i < gmail2.length; i++ ) {
-                toAddress[i] = new InternetAddress(gmail2[i]);
+            for( int i = 0; i < to.length; i++ ) {
+                toAddress[i] = new InternetAddress(to[i]);
             }
 
             for (InternetAddress address : toAddress) {
                 message.addRecipient(Message.RecipientType.TO, address);
             }
 
-            message.setSubject("Delivery in Time");
-            message.setText("Dear Majd, Delivery has been in time");
+            message.setSubject(subject);
+            message.setText(text);
             Transport transport = session.getTransport("smtp");
             transport.connect(host, "lilach.ltd@gmail.com", "umsrnjzmyvmkttyh");
             transport.sendMessage(message, message.getAllRecipients());
@@ -56,4 +55,5 @@ public class sendMail {
             ae.printStackTrace();
         }
     }
+
 }

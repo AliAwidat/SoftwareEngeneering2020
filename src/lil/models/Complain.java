@@ -7,7 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import src.lil.common.DBConnection;
 import src.lil.controllers.ComplainsInterface;
@@ -15,75 +17,51 @@ import src.lil.models.Order.NotFound;
 
 public class Complain implements ComplainsInterface {
 	public static int idCount=4;
-	
-	public Complain(){
-		
-	}	
-	@Override
-	public void addComplain(String complainTitle, String complainText, String email, String phone, String adress) throws SQLException, NotFound, IOException {
-		// TODO Auto-generated method stub
+	private int complain_id;
+	private String contact_email;
+	private String contact_phone;
+	private String complain_title;
+	private String complain_text;
+	private String store_adress;
+	private Date date;
+	private String order_Id;
+	private String user_id;
+	public Complain(int complain_id, String contact_email, String contact_phone, String complain_title, String complain_text, String store_adress, Date date, String order_Id, String user_id){
+		this.complain_id = complain_id;
+		this.complain_text = complain_text;
+		this.contact_email = contact_email;
+		this.contact_phone = contact_phone;
+		this.complain_title = complain_title;
+		this.store_adress = store_adress;
+		this.date = date;
+		this.order_Id = order_Id;
+		this.user_id = user_id;
 
-		// Create an instance of SimpleDateFormat used for formatting 
-		// the string representation of date according to the chosen pattern
-		int complain_id;
-		String complain_title,complain_text,store_adress,contact_phone,contact_email;
-		Date date = new Date(Calendar.getInstance().getTime().getTime());
-		complain_id=idCount; idCount++;
-		complain_title=complainTitle;
-		complain_text= complainText;
-		store_adress=adress;
-		contact_phone=phone;
-		contact_email=email;
-	    try (Connection conn = DBConnection.getInstance().getConnection()){	    	
-	    	  PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO complains VALUES (?, ?, ?, ?, ?, ?, ?)");
-	          preparedStatement.setInt(1, complain_id);
-	          preparedStatement.setString(2, contact_email);
-	          preparedStatement.setString(3, contact_phone);
-	          preparedStatement.setString(4, complain_title);
-	          preparedStatement.setString(5, complain_text);
-	          preparedStatement.setString(6, store_adress);
-	          preparedStatement.setDate(7,date);
-	          try { 
-	        	  	preparedStatement.executeUpdate();
-	                System.out.println("Added new complain");
-	                preparedStatement.close();
-	                conn.close();
-	          }catch(SQLException se) {
-	  		  se.printStackTrace();
-	  	  		}
-	    	}catch(SQLException se) {
-		  		  se.printStackTrace();
-  	  		}	
+
 	}
 
-	@Override
-	public void viewComplains() throws NotFound, IOException {
-		String contact_email,contact_phone,complain_title,complain_text,store_adress,sql;
-		int complain_id;
-		Date date;
-		// TODO Auto-generated method stub
-		try{
-			Connection conn = DBConnection.getInstance().getConnection();
-	    	Statement stmt = conn.createStatement();
-	    	sql = "SELECT * FROM complains";
-	    	ResultSet rs = stmt.executeQuery(sql);
-	    	while(rs.next()) {
-		    	complain_id=rs.getInt("complain_id");
-		    	contact_email=rs.getString("contact_email");
-		    	contact_phone=rs.getString("contact_phone");
-		    	complain_title=rs.getString("complain_title");
-		    	complain_text=rs.getString("complain_text");
-		    	store_adress=rs.getString("store_adress");
-		    	date=rs.getDate("complain_date");
-		    	System.out.println("Complain date: "+date.toString()+" Complain ID: " + complain_id + " Contact email: " + contact_email + " Contact phone: " + contact_phone + " Store adress: "+store_adress+"\nTitle: " + complain_title+"\nComplain: "+complain_text); 
-	    	}
-	    	rs.close();
-	    	stmt.close();
-	    	conn.close();
-		}catch(SQLException se) {
-			se.printStackTrace();
-		}
-		// need to print file content to GUI when its ready
+	public String getOrder_Id() {
+		return order_Id;
+	}
+
+	public int getComplain_id() {
+		return complain_id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public String getContact_email() {
+		return contact_email;
+	}
+
+	public int getComplainId() {
+		return complain_id;
 	}
 
 }
