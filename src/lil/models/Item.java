@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class Item {
 	private int id,updated=0;
-	private String dominantColor="";
+	private String dominantColor="",image;
 	private ItemType type;
 	private Double price;
 	
@@ -23,6 +23,7 @@ public class Item {
         this.type = ItemType.valueOf(rs.getString("item_type"));
         this.price = rs.getDouble("item_price");
         this.updated = rs.getInt("updated");
+        this.image = rs.getString("image");
     }
     public static Item findById(Integer id) throws SQLException {
         try (Connection db = DBConnection.getInstance().getConnection();
@@ -52,11 +53,12 @@ public class Item {
     
     public boolean insert() throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
-                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,updated) values (?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, this.type.toString());
         	preparedStatement.setString(2, this.dominantColor);
         	preparedStatement.setDouble(3, this.price);
-        	preparedStatement.setInt(4, this.updated);
+        	preparedStatement.setString(4, this.image);
+        	preparedStatement.setInt(5, this.updated);
         	preparedStatement.executeUpdate();
         	db.close();
         	return true;
@@ -68,12 +70,13 @@ public class Item {
         
     public static boolean update(Item item) throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=? ,item_price=? ,updated=? WHERE item_Id=?")) {
+            PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=? ,item_price=?, image=? ,updated=? WHERE item_Id=?")) {
         	preparedStatement.setString(1, item.type.toString());
         	preparedStatement.setString(2, item.dominantColor);
         	preparedStatement.setDouble(3, item.price);
-        	preparedStatement.setInt(4, 1);
-        	preparedStatement.setInt(5, item.id);
+        	preparedStatement.setString(4, item.image);
+        	preparedStatement.setInt(5, 1);
+        	preparedStatement.setInt(6, item.id);
         	preparedStatement.executeUpdate();
         	db.close();
         	return true;
@@ -83,13 +86,13 @@ public class Item {
         }
     }
     
-    public Item (ItemType itemType,String dominantColor, Double itemPrice) {
+    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image) {
     	//this.id = itemId;
     	this.type = itemType;
 	    this.dominantColor = dominantColor;
 	    this.price = itemPrice;
 	    this.updated = 0;
-
+	    this.image = image;
     }
     
     public int getId() {
@@ -114,6 +117,14 @@ public class Item {
 
    	public void setDominantColor(String dominantColor) {
     	this.dominantColor = dominantColor;
+    }
+   	
+   	public String getImage() {
+   		return image;
+    }
+
+   	public void setImage(String image) {
+    	this.image = image;
     }
 
     public ItemType getType() {
