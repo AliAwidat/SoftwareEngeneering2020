@@ -63,6 +63,18 @@ public class Order implements OrderServices {
     	}
     	return ;
     }
+    /**
+     * adding  items to cart
+     *
+     * @param id
+     * @return  set of items
+     * @throws SQLException
+     * @throws NotFound
+     */
+    public List<Integer> addToCart(int item_id) {
+    	this.items.add(item_id);
+    	return items;
+    }
     
     
     public Order(ResultSet rs) throws SQLException {
@@ -180,7 +192,7 @@ public class Order implements OrderServices {
         // insert city to table
         try {
         	Connection db = DBConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = db.prepareStatement("insert into orders (user_id, order_id, order_Type, item,Domiant_color, receiver_phone,order_Date,price_Domain,delivery,delivery_location,Shipping_Hour,Shipping_Date,greating,greating_text,contact_name,store_id,order_price ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)") {
+             PreparedStatement preparedStatement = db.prepareStatement("insert into orders (user_id, order_id, order_Type, item,Domiant_color, receiver_phone,order_Date,price_Domain,delivery,delivery_location,Shipping_Hour,Shipping_Date,greating,greating_text,contact_name,store_id,order_price ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"); {
             preparedStatement.setInt(1, getuserId());
             preparedStatement.setInt(2, getorderId());
             preparedStatement.setString(3,getOrderType().toString());
