@@ -62,6 +62,12 @@
 			<artifactId>javafx-controls</artifactId>
 			<version>13.0.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-fxml -->
+		<dependency>
+		    <groupId>org.openjfx</groupId>
+		    <artifactId>javafx-fxml</artifactId>
+		    <version>14-ea+7</version>
+		</dependency>	
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
