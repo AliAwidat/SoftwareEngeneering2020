@@ -20,7 +20,7 @@ public class Login implements LoginCont {
 	 * @param
 	 * id : user id to sign in
 	 * password : user's password 
-	 * connected_map : data structer to save which users are already connected
+	 * connected_map : data structurer to save which users are already connected
 	 * @return
 	 * Login status depending in the result.
 	 */
