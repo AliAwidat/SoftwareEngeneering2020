@@ -1,5 +1,3 @@
-.project
-.settings/
-target/**
-target/classes
-*.class
+
+src/lil/models/Test.java
+src/lil/models/test.java
