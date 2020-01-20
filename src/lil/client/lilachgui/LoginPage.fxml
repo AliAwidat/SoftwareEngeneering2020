@@ -7,13 +7,15 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.LilachController">
+<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.LoginController">
    <children>
       <VBox layoutX="8.0" layoutY="172.0" prefHeight="437.0" prefWidth="127.0" style="-fx-border-color: #000000;">
          <children>
@@ -45,8 +47,8 @@
             </Button>
          </children>
       </VBox>
-      <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
-      <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
+      <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_sign_up_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
+      <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
       <ListView fx:id="menu_items_list" layoutX="146.0" layoutY="146.0" prefHeight="497.0" prefWidth="543.0" style="-fx-background-color: #D3D3D3; -fx-border-color: #000000;" />
       <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
         <menus>
@@ -77,5 +79,10 @@
             </ImageView>
          </children>
       </AnchorPane>
+      <Pane layoutX="146.0" layoutY="146.0" prefHeight="498.0" prefWidth="543.0">
+         <children>
+            <TextField fx:id="user_name" layoutX="197.0" layoutY="185.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -1,38 +1,65 @@
 package src.lil.client.lilachgui;
 
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class LilachController {
 
     @FXML
-    private AnchorPane main_anchor_pane;
+    protected AnchorPane main_anchor_pane;
 
     @FXML
-    private Button menu_btn;
+    protected Button menu_btn;
 
     @FXML
-    private Button myorders_btn;
+    protected Button myorders_btn;
 
     @FXML
-    private Button complain_btn;
+    protected Button complain_btn;
 
     @FXML
-    private Button manageusers_btn;
+    protected Button manageusers_btn;
 
     @FXML
-    private Button sigup_btn;
+    protected Button sigup_btn;
 
     @FXML
-    private Button login_btn;
+    protected Button login_btn;
 
     @FXML
-    private ListView<?> menu_items_list;
+    protected ListView<?> menu_items_list;
 
     @FXML
-    private ImageView logo;
-
+    protected ImageView logo;
+    
+    
+    @FXML
+    public void handle_login_butt(ActionEvent event) throws IOException {
+    	AnchorPane pane = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
+		Scene scene = new Scene(pane);
+		
+		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
+		stage.setScene(scene);
+		stage.setTitle("Login");
+		stage.show(); 
+    }
+    @FXML
+    public void handle_signup_butt(ActionEvent event) throws IOException {
+    	AnchorPane pane = FXMLLoader.load(getClass().getResource("SignupPage.fxml"));
+		Scene scene = new Scene(pane);
+		
+		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
+		stage.setScene(scene);
+		stage.setTitle("Sign up");
+		stage.show(); 
+    }
 }
