@@ -1,23 +1,29 @@
 package src.lil.client.lilachgui;
 
+import java.net.URL;
+
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class LilachMain extends Application{
 
-	public LilachMain() {
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		launch(args);
 
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		
+		URL url = getClass().getResource("MenuPage.fxml"); 
+		AnchorPane pane = FXMLLoader.load(url);
+		Scene scene = new Scene(pane);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Welcome to Lilach.");
+		primaryStage.show();
 	}
 
 }
