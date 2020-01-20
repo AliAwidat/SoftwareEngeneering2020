@@ -18,11 +18,11 @@ public class LilachMain extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		URL url = getClass().getResource("LilachScene.fxml"); 
+		URL url = getClass().getResource("MenuPage.fxml"); 
 		AnchorPane pane = FXMLLoader.load(url);
 		Scene scene = new Scene(pane);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Welcome to Lilach");
+		primaryStage.setTitle("Welcome to Lilach.");
 		primaryStage.show();
 	}
 
