@@ -8,7 +8,7 @@ import src.lil.models.User;
 
 public class Instance {
     public static ClientConsole clientConsole;
-    private static Object currentUser = null;
+    private static Role currentUser = null;
     private static String response = null;
     private static Object tempReturnValue = null;
     private static String jsonReturnValue = null;
@@ -49,11 +49,11 @@ public class Instance {
         Instance.clientConsole = clientConsole;
     }
 
-    public static Object getCurrentUser() {
+    public static Role getCurrentUser() {
         return currentUser;
     }
 
-    public static void setCurrentUser(Object currentUser) {
+    public static void setCurrentUser(Role currentUser) {
         Instance.currentUser = currentUser;
         if (Instance.isVarListener()){
             Instance.varListenerProperty().set(false);

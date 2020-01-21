@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import src.lil.client.Instance;
 
 public abstract class LilachController {
 
@@ -120,5 +121,14 @@ public abstract class LilachController {
 		stage.setScene(scene);
 		stage.setTitle("Cart");
 		stage.show();
+	}
+	@FXML
+	private void initialize() {
+		if(Instance.getCurrentUser()==null) {
+//			complain_btn.setVisible(false);
+//			myorders_btn.setVisible(false);
+//			manageusers_btn.setVisible(false);
+//			cart_id.setVisible(false);
+		}
 	}
 }
