@@ -1,5 +1,7 @@
 package src.lil.models;
 
+import java.sql.ResultSet;
+
 import src.lil.Enums.ReportType;
 import src.lil.Enums.Role;
 
@@ -10,7 +12,9 @@ public class StoreManger extends Employee {
         super(userId, name, phone, bankAccount, email, password, role, store_id, balance);
     }
     public StoreManger(){super();}
-
+    public StoreManger(ResultSet rs) throws Exception {
+    	super(rs);
+    }
     public void viewReport(ReportType reportType){
 
     }
