@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.LoginController">
+   <children>
+      <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
+      <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
+      <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <ScrollBar layoutX="696.0" layoutY="4.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
+      <AnchorPane layoutX="8.0" layoutY="32.0" prefHeight="98.0" prefWidth="128.0">
+         <children>
+            <ImageView fx:id="logo" fitHeight="105.0" fitWidth="127.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/LilachLogo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <Pane layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;" />
+      <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="manageusers_btn" layoutX="526.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_manage_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Manage Users">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
+      <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
+   </children>
+</AnchorPane>
