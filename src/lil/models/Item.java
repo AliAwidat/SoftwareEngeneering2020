@@ -23,7 +23,8 @@ public class Item {
         //this.price = rs.getDouble("item_price");
         this.updated = rs.getInt("updated");
         this.image = rs.getString("image");
-        
+
+
     }
     public static Item findById(Integer id) throws SQLException, AlreadyExists {
         try (Connection db = DBConnection.getInstance().getConnection();
@@ -85,6 +86,7 @@ public class Item {
             throw new AlreadyExists();
         }
     }
+
     
     public static boolean delete(Integer id) throws SQLException, AlreadyExists {
         try (Connection db = DBConnection.getInstance().getConnection();
@@ -111,6 +113,7 @@ public class Item {
     
     public boolean insert() throws SQLException, AlreadyExists{
     	int itemId;
+
     	String list="";
         try (Connection db = DBConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
@@ -123,7 +126,10 @@ public class Item {
         	db.close();
         } catch (Exception e) {
         	System.out.println(e.getMessage());
-            throw new AlreadyExists();
+        	System.out.println("insert ");
+        	return false;
+
+           // throw new AlreadyExists();
         }
         try (Connection db1 = DBConnection.getInstance().getConnection();
         ResultSet rs1= db1.prepareStatement("select max(item_Id) from items").executeQuery()){
@@ -155,10 +161,12 @@ public class Item {
     } 
     public static boolean update(Item item) throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
+
             PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=? , image=? ,updated=? WHERE item_Id=?")) {
         	preparedStatement.setString(1, item.type.toString());
         	preparedStatement.setString(2, item.dominantColor);
         	//preparedStatement.setDouble(3, item.price);
+
         	preparedStatement.setString(4, item.image);
         	preparedStatement.setInt(5, 1);
         	preparedStatement.setInt(6, item.id);

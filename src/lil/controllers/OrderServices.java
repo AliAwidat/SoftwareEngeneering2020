@@ -9,10 +9,11 @@ import src.lil.models.Order.AlreadyExists;
 import src.lil.models.Order.NotFound;
 
 public interface OrderServices {
-	Order findById(Integer id) throws SQLException, NotFound;
+	Order findOrderById(Integer id) throws SQLException, NotFound;
 	int countForUser(Integer id)throws SQLException, NotFound;
-	void insertIntoOrders() throws SQLException, NotFound, AlreadyExists;
+	boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists;
 	List<Order> findAllByUserId(Integer user_id) throws SQLException, NotFound;
 	void fillFieldsFromResultSet(ResultSet rs)throws SQLException;
+	boolean DeleteOrder(Integer order_id) throws SQLException, NotFound, AlreadyExists;
 }
 
