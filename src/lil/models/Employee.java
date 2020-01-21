@@ -15,7 +15,10 @@ public class Employee extends User {
         super(userId, name, phone, bankAccount, email, password, storeId,balannce);
         this.role = role;
     }
-
+    @Override
+    public String toString() {
+    	return "Employee [,"+to_String();
+    }
     @Override
     public boolean register() throws Exception {
         try{
@@ -72,6 +75,7 @@ public class Employee extends User {
             return false;
         }
     }
+    @Override
     public Role getRole(){
         return this.role;
     }

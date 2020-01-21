@@ -1,6 +1,9 @@
 package src.lil.client.lilachgui;
 
 import java.io.IOException;
+import java.util.StringTokenizer;
+
+import com.google.gson.Gson;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +13,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import src.lil.client.Instance;
+import src.lil.models.ChainManger;
+import src.lil.models.Client;
+import src.lil.models.Employee;
+import src.lil.models.StoreManger;
 
 public class LoginController extends LilachController {
 
@@ -36,7 +43,7 @@ public class LoginController extends LilachController {
 	}
 
 	@FXML
-	void handle_login(ActionEvent event) {
+	void handle_login(ActionEvent event) throws IOException {
 		if (user_id.matches("[0-9]+") == false) {
 			error_txt.setText("User ID should contain numbers only!");
 		} else {
@@ -47,10 +54,29 @@ public class LoginController extends LilachController {
 				e.printStackTrace();
 			}
 			while (Instance.getResponse() == null) {
-				System.out.println("");
+				System.out.println("Waiting...");
 			}
 			if (Instance.getResponse().startsWith("successful")) {
-				//Instance.setCurrentUser();
+				Gson gson = new Gson();
+				Instance.set_id(user_id);
+				login_btn.setVisible(false);
+				sigup_btn.setVisible(false);
+				signout_btn1.setVisible(true);
+				StringTokenizer roletok = new StringTokenizer(Instance.getResponse());
+				roletok.nextToken(" ");
+				String Role = roletok.nextToken();
+				Object current_user = null;
+				if (Role.contains("StoreManger")) {
+					current_user = gson.fromJson(Role, StoreManger.class);
+				} else if (Role.contains("ChainManger")) {
+					current_user = gson.fromJson(Role, ChainManger.class);
+				} else if (Role.contains("Employee")) {
+					current_user = gson.fromJson(Role, Employee.class);
+				} else {
+					current_user = gson.fromJson(Role, Client.class);
+				}
+				Instance.setCurrentUser(current_user);
+				this.handle_menu_butt(null);
 			} else {
 				error_txt.setText(Instance.getResponse());
 			}

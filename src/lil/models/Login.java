@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import src.lil.Enums.LoginStatus;
 import src.lil.Enums.Role;
 import src.lil.common.DBConnection;
@@ -94,9 +96,9 @@ public class Login implements LoginCont {
 	/**
 	 * gets the user's role
 	 */
-//	public Role get_role(Integer id) {
-//		//return connected_users;
-//	}
+	public Object get_object(Integer id) {
+		return connected_users.get(id);
+	}
 	/**
 	 * This method signs out a connected user. (can't use this method unless the
 	 * user is connected).
@@ -109,7 +111,13 @@ public class Login implements LoginCont {
 		}
 		return LoginStatus.Successful;
 	}
-
+	/**
+	 * get role
+	 */
+	public String get_role(Integer _id) {
+		String role = connected_users.get(_id).getClass().getName();
+		return role.substring(15, role.length());
+	}
 	/**
 	 * This method checks if a user is already connected
 	 */
