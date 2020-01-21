@@ -10,9 +10,11 @@ import src.lil.Enums.Role;
 public class Instance {
     public static ClientConsole clientConsole;
 
+
     private static User currentUser = null;
 
     private static Object currentUser = null;
+
 
     private static String response = null;
     private static Object tempReturnValue = null;
@@ -53,6 +55,7 @@ public class Instance {
     public static void setClientConsole(ClientConsole clientConsole) {
         Instance.clientConsole = clientConsole;
     }
+
 
 
 

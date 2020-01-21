@@ -37,18 +37,16 @@ public class Login implements LoginCont {
 	 * @return Login status depending in the result.
 	 */
 	public LoginStatus user_login(Integer id, String password) {
-		// checks if the id is in the connected users vectors.
+
 		try {
-			connect_user(id, check_connected_users(id));
-		} catch (Exception e) {
-			return LoginStatus.AlreadyIn;
-		}
-		try {
-			check_user(id, password);
+			check_connected_users(id);
+			connect_user(id, check_user(id, password));
 		} catch (WrongCredentials e) {
 			return LoginStatus.WrongCrad;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (AlreadyLoggedIn e) {
+			return LoginStatus.AlreadyIn;
 		}
 		return LoginStatus.Successful;
 	}
@@ -93,6 +91,12 @@ public class Login implements LoginCont {
 		throw new WrongCredentials();
 	}
 
+	/**
+	 * gets the user's role
+	 */
+//	public Role get_role(Integer id) {
+//		//return connected_users;
+//	}
 	/**
 	 * This method signs out a connected user. (can't use this method unless the
 	 * user is connected).
