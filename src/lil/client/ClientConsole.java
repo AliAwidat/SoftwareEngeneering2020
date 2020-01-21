@@ -136,7 +136,7 @@ public class ClientConsole implements ChatIF
       port = DEFAULT_PORT;
     }
     ClientConsole chat= new ClientConsole(loginID, host, port);
-    Instance.clientConsole = chat;
+    Instance.setClientConsole(chat); 
     LilachMain.main(args);
 
   }

@@ -3,6 +3,7 @@ package src.lil.client.lilachgui;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import src.lil.client.Instance;
 
 public abstract class LilachController {
@@ -127,7 +129,23 @@ public abstract class LilachController {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("MenuPage.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
+		if (Instance.getCurrentUser() != null) {
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
+				@Override
+				public void handle(WindowEvent event) {
+					try {
+						Instance.resetResponse();
+						Instance.getClientConsole().get_client().sendToServer("Logout " + Instance.get_id());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					while (Instance.getResponse() == null) {
+						}
+					Instance.getClientConsole().get_client().quit();
+				}
+			});
+		}
 		stage.setScene(scene);
 		stage.setTitle("Welcome to Lilach.");
 		stage.show();
@@ -168,7 +186,6 @@ public abstract class LilachController {
 			show_client_butt();
 			show_sign_out_butt();
 		} else {
-			System.out.println(Instance.getCurrentUser().getClass().getName());
 			show_manager_butt();
 			show_sign_out_butt();
 		}
