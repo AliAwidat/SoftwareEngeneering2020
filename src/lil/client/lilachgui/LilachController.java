@@ -42,9 +42,41 @@ public abstract class LilachController {
 
 	@FXML
 	protected ImageView logo;
-	
+
 	@FXML
 	protected ImageView cart_id;
+
+	@FXML
+	protected Button signout_btn1;
+
+	/***************************************************/
+	public void show_client_butt() {
+		complain_btn.setVisible(true);
+		myorders_btn.setVisible(true);
+		cart_id.setVisible(true);
+		manageusers_btn.setVisible(false);
+	}
+
+	public void show_manager_butt() {
+		complain_btn.setVisible(true);
+		manageusers_btn.setVisible(true);
+		cart_id.setVisible(false);
+		myorders_btn.setVisible(false);
+	}
+
+	public void show_sign_out_butt() {
+		signout_btn1.setVisible(true);
+		login_btn.setVisible(false);
+		sigup_btn.setVisible(false);
+	}
+
+	public void hide_sign_out_butt() {
+		signout_btn1.setVisible(false);
+		login_btn.setVisible(true);
+		sigup_btn.setVisible(true);
+	}
+
+	/***************************************************/
 
 	@FXML
 	public void handle_login_butt(ActionEvent event) throws IOException {
@@ -113,7 +145,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	void handle_cart_click(MouseEvent event) throws IOException {
+	public void handle_cart_click(MouseEvent event) throws IOException {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("cartView.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
@@ -122,13 +154,41 @@ public abstract class LilachController {
 		stage.setTitle("Cart");
 		stage.show();
 	}
+
 	@FXML
-	private void initialize() {
-		if(Instance.getCurrentUser()==null) {
-//			complain_btn.setVisible(false);
-//			myorders_btn.setVisible(false);
-//			manageusers_btn.setVisible(false);
-//			cart_id.setVisible(false);
+	public void initialize() {
+		if (Instance.getCurrentUser() == null) {
+			signout_btn1.setVisible(false);
+			complain_btn.setVisible(false);
+			myorders_btn.setVisible(false);
+			manageusers_btn.setVisible(false);
+			cart_id.setVisible(false);
+			hide_sign_out_butt();
+		} else if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
+			show_client_butt();
+			show_sign_out_butt();
+		} else {
+			System.out.println(Instance.getCurrentUser().getClass().getName());
+			show_manager_butt();
+			show_sign_out_butt();
+		}
+
+	}
+
+	@FXML
+	public void handle_signout_butt() throws IOException {
+		try {
+			Instance.resetResponse();
+			Instance.getClientConsole().get_client().sendToServer("Logout " + Instance.get_id());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		while (Instance.getResponse() == null) {
+			// System.out.println("Waiting for response...");
+		}
+		if (Instance.getResponse().equals("successful")) {
+			Instance.setCurrentUser(null);
+			this.handle_menu_butt(null);
 		}
 	}
 }

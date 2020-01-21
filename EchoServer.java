@@ -6,6 +6,7 @@ import java.io.*;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
+import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 
 import java.sql.Connection;
@@ -17,6 +18,8 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import com.google.gson.Gson;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -106,9 +109,27 @@ public class EchoServer extends AbstractServer {
 				}
 			} else {
 				try {
-					client.sendToClient("successful");
+					Gson gson = new Gson();
+					Object user = _login.get_object(user_id);
+					String json = gson.toJson(user);
+					client.sendToClient("successful " + json );
 				} catch (IOException e) {
 					e.printStackTrace();
+				}
+			}
+		}
+		else if(msg.toString().startsWith("Logout ")) {
+			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
+			login_tokens.nextToken();
+			Integer user_id = Integer.parseInt(login_tokens.nextToken());
+			try {
+				this._login.disconnect_user(user_id);
+				client.sendToClient("successful");
+			}catch (Exception e) {
+				try {
+					client.sendToClient("successful");
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 			}
 		}
