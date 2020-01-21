@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -40,6 +41,9 @@ public abstract class LilachController {
 
 	@FXML
 	protected ImageView logo;
+	
+	@FXML
+	protected ImageView cart_id;
 
 	@FXML
 	public void handle_login_butt(ActionEvent event) throws IOException {
@@ -104,6 +108,17 @@ public abstract class LilachController {
 
 		stage.setScene(scene);
 		stage.setTitle("My orders history");
+		stage.show();
+	}
+
+	@FXML
+	void handle_cart_click(MouseEvent event) throws IOException {
+		AnchorPane pane = FXMLLoader.load(getClass().getResource("cartView.fxml"));
+		Scene scene = new Scene(pane);
+		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
+
+		stage.setScene(scene);
+		stage.setTitle("Cart");
 		stage.show();
 	}
 }

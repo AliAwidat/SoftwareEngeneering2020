@@ -81,5 +81,11 @@
             </ImageView>
          </children>
       </AnchorPane>
+  <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="30.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/image-removebg-preview.png" />
+         </image>
+      </ImageView>
+  
    </children>
 </fx:root>

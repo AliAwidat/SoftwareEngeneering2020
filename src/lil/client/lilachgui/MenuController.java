@@ -1,5 +1,11 @@
 package src.lil.client.lilachgui;
 
-public class MenuController extends LilachController{
+import javafx.fxml.FXML;
 
+public class MenuController extends LilachController{
+	@FXML
+	private void initialize() {
+		
+
+	}
 }

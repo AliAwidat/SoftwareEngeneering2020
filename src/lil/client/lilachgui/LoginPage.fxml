@@ -70,5 +70,10 @@
       </Button>
       <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
       <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
+   <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="30.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/image-removebg-preview.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
