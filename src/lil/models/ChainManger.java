@@ -15,7 +15,9 @@ public class ChainManger extends StoreManger implements UserManagement {
         super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1","-1");
     }
     public ChainManger(){super();}
-
+    public ChainManger(ResultSet rs) throws Exception {
+    	super(rs);
+    }
 
     @Override
     public void viewReport(ReportType reportType){ //TODO: DEAL WITH REPORT
