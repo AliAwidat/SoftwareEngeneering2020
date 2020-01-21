@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.LoginController">
+<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.MenuController">
    <children>
       <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
       <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
@@ -57,5 +57,10 @@
       </Button>
       <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
       <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
+      <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="30.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/image-removebg-preview.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -4,6 +4,7 @@
 
 import java.io.*;
 import src.lil.client.*;
+import src.lil.client.lilachgui.LilachMain;
 import src.lil.common.*;
 
 /**
@@ -133,7 +134,9 @@ public class ClientConsole implements ChatIF
       port = DEFAULT_PORT;
     }
     ClientConsole chat= new ClientConsole(loginID, host, port);
+    LilachMain.main(args);
     chat.accept();  //Wait for console data
+
   }
 }
 //End of ConsoleChat class
