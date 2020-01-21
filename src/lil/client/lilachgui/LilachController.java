@@ -64,7 +64,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	void handle_complain_butt(ActionEvent event) throws IOException {
+	public void handle_complain_butt(ActionEvent event) throws IOException {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("ComplainPage.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
@@ -75,7 +75,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	void handle_manage_butt(ActionEvent event) throws IOException {
+	public void handle_manage_butt(ActionEvent event) throws IOException {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("ManageUsersPage.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
@@ -86,7 +86,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	void handle_menu_butt(ActionEvent event) throws IOException {
+	public void handle_menu_butt(ActionEvent event) throws IOException {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("MenuPage.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
@@ -97,7 +97,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	void handle_my_order_butt(ActionEvent event) throws IOException {
+	public void handle_my_order_butt(ActionEvent event) throws IOException {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource("myOrdersPage.fxml"));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
