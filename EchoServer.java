@@ -4,7 +4,10 @@
 
 import java.io.*;
 import src.ocsf.server.*;
+import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
+import src.lil.models.Login;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -26,10 +30,11 @@ import java.util.Map;
  */
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
+
 	/**
-	 * map of connected server.
+	 * Log in instance.
 	 */
-	private Map<Integer, Object> connected_users = new HashMap<Integer, Object>();
+	private Login _login = new Login();
 	/**
 	 * The default port to listen on.
 	 */
@@ -77,7 +82,37 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if (msg.toString().startsWith("#login ")) {
+
+		if (msg.toString().startsWith("Login ")) {
+
+			Integer user_id;
+			String password;
+			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
+			login_tokens.nextToken();
+			user_id = Integer.parseInt(login_tokens.nextToken());
+			password = login_tokens.nextToken();
+			LoginStatus status = this._login.user_login(user_id, password);
+			if (status == LoginStatus.AlreadyIn) {
+				try {
+					client.sendToClient("User already signed in!");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else if (status == LoginStatus.WrongCrad) {
+				try {
+					client.sendToClient("Wrong ID or Passowrd! try again:");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					client.sendToClient("successful");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else if (msg.toString().startsWith("#login ")) {
 			if (client.getInfo("loginID") != null) {
 				try {
 					client.sendToClient("You are already logged in.");
