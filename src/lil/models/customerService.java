@@ -38,7 +38,7 @@ public class customerService extends Employee {
                 order_Id=rs.getString("order_Id");
                 user_id=rs.getString("client_id");
                 date=rs.getDate("complain_date");
-                complainList.add(new Complain(complain_id,contact_email,contact_phone, complain_title, complain_text, store_adress, date,order_Id,user_id));
+                complainList.add(new Complain(contact_email,contact_phone, complain_title, complain_text, store_adress, date,order_Id,user_id));
 //		    	System.out.println("Complain date: "+date.toString()+" Complain ID: " + complain_id + " Contact email: " + contact_email + " Contact phone: " + contact_phone + " Store adress: "+store_adress+"\nTitle: " + complain_title+"\nComplain: "+complain_text);
             }
             rs.close();
