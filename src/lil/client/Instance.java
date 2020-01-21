@@ -2,12 +2,18 @@ package src.lil.client;
 
 
 import javafx.beans.property.SimpleBooleanProperty;
-import src.lil.models.User;
+
+import src.lil.Enums.Role;
+
 
 
 public class Instance {
     public static ClientConsole clientConsole;
+
     private static User currentUser = null;
+
+    private static Object currentUser = null;
+
     private static String response = null;
     private static Object tempReturnValue = null;
     private static String jsonReturnValue = null;
@@ -48,11 +54,10 @@ public class Instance {
         Instance.clientConsole = clientConsole;
     }
 
-    public static User getCurrentUser() {
-        return currentUser;
-    }
 
-    public static void setCurrentUser(User currentUser) {
+
+    public static void setCurrentUser(Object currentUser) {
+
         Instance.currentUser = currentUser;
         if (Instance.isVarListener()){
             Instance.varListenerProperty().set(false);
