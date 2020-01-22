@@ -26,11 +26,6 @@ public class ItemsInOrder extends Order {
 	private String price_Domian, Dominant_Color;
 	private int quantity;
 	private double Total_price; 
-	 
-	
-	
-	
-	
 	
 	
 	

@@ -24,7 +24,7 @@ public class Order implements OrderServices {
     LocalDateTime orderDate; 
     
     public void fillFieldsFromResultSet(ResultSet rs) throws SQLException {
-        
+       
     	
     	this.userId = rs.getInt("user_Id");
         this.orderId = rs.getInt("order_Id");
