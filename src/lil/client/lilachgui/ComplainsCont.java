@@ -1,5 +1,10 @@
 package src.lil.client.lilachgui;
 
-public class ComplainsCont extends LilachController{
+import javafx.fxml.FXML;
 
+public class ComplainsCont extends LilachController{
+	@FXML
+	public void initialize() {
+		this.check_logins();
+	}
 }

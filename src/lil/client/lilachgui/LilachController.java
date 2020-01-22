@@ -173,8 +173,9 @@ public abstract class LilachController {
 		stage.show();
 	}
 
-	@FXML
-	public void initialize() {
+	
+	public void check_logins() {
+		
 		if (Instance.getCurrentUser() == null) {
 			signout_btn1.setVisible(false);
 			complain_btn.setVisible(false);

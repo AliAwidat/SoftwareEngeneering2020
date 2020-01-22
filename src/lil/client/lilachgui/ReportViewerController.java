@@ -1,4 +1,5 @@
 package src.lil.client.lilachgui;
+
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -14,19 +15,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 public class ReportViewerController extends LilachController {
 
+	@FXML
+	private ChoiceBox<?> whichSto;
 
-    @FXML
-    private ChoiceBox<?> whichSto;
+	@FXML
+	private ChoiceBox<?> ReportTy;
 
-    @FXML
-    private ChoiceBox<?> ReportTy;
+	@FXML
+	private Button viewReport;
 
-    @FXML
-    private Button viewReport;
+	@FXML
+	private Text StoreMange;
 
-    @FXML
-    private Text StoreMange;
-
+	@FXML
+	public void initialize() {
+		this.check_logins();
+	}
 }

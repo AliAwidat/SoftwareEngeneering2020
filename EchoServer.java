@@ -8,6 +8,7 @@ import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
+import src.lil.models.Store;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,11 +16,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.google.gson.Gson;
+
+import javafx.util.Pair;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -38,6 +43,7 @@ public class EchoServer extends AbstractServer {
 	 * Log in instance.
 	 */
 	private Login _login = new Login();
+	private List<Pair<String,Integer>> store_addresses;
 	/**
 	 * The default port to listen on.
 	 */
@@ -131,6 +137,20 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			}
+		}
+		else if(msg.toString().startsWith("get stores")) {
+			store_addresses = Store.get_store_addresses();
+			List<String> addresses = new ArrayList<String>();
+			for (Pair<String, Integer> pair : store_addresses) {
+				addresses.add(pair.getKey());
+			}
+			Gson gson = new Gson();
+			String json = gson.toJson(addresses);
+			try {
+				client.sendToClient(json);
+			}catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		else if (msg.toString().startsWith("#login ")) {

@@ -43,6 +43,11 @@ public class LoginController extends LilachController {
 	}
 
 	@FXML
+	public void initialize() {
+		this.check_logins();
+	}
+
+	@FXML
 	void handle_login(ActionEvent event) throws IOException {
 		if (user_id.matches("[0-9]+") == false) {
 			error_txt.setText("User ID should contain numbers only!");
