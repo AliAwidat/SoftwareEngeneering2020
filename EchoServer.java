@@ -6,7 +6,9 @@ import java.io.*;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import src.lil.client.Instance;
 import src.lil.models.Complain;
+import src.lil.models.customerService;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
@@ -14,10 +16,7 @@ import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 
 import java.sql.*;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import com.google.gson.Gson;
 
@@ -85,14 +84,57 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) throws Exception {
-				Gson gson = new Gson();
-				if(String.valueOf(msg).startsWith("SubmitComplain")){
-					String complainAsString = String.valueOf(msg).split("SubmitComplain")[1];
-					Complain complain = gson.fromJson(complainAsString,Complain.class);
-					complain.addComplain();
+			Gson gson = new Gson();
+			if(String.valueOf(msg).startsWith("SubmitComplain")){
+				String complainAsString = String.valueOf(msg).split("SubmitComplain")[1];
+				Complain complain = gson.fromJson(complainAsString,Complain.class);
+				complain.addComplain();
+				return;
+			}
+			if(msg.toString().startsWith("GetAllComplains")){
+				try {
+					String complainAsString = String.valueOf(msg).split("GetAllComplains")[1];
+					customerService service = gson.fromJson(complainAsString,customerService.class);
+					String returnValue = "";
+					for(Complain complain: service.getComplains()){
+						returnValue += complain.getComplain_title() + " ~ ID: " + complain.getComplainId() +",";
+					}
+					returnValue = returnValue.substring(0, returnValue.length() - 1);
+					client.sendToClient(returnValue);
 					return;
 				}
-if (msg.toString().startsWith("Login ")) {
+				catch (Exception e){
+					client.sendToClient("error");
+				}
+			}
+		if(msg.toString().startsWith("GetComplainById")){
+			try {
+				String temp = String.valueOf(msg).split("GetComplainById")[1];
+				String id = temp.split(";")[0];
+				customerService service = gson.fromJson(temp.split(";")[1],customerService.class);
+				String returnValue = gson.toJson(service.getComplainById(Integer.parseInt(id)));
+				client.sendToClient(returnValue);
+				return;
+			}
+			catch (Exception e){
+				client.sendToClient("error");
+			}
+		}
+		if(msg.toString().startsWith("SetComplainReply")){
+			try {
+				String temp = String.valueOf(msg).split("SetComplainReply")[1];
+				String id = temp.split(";")[0];
+				customerService service = gson.fromJson(temp.split(";")[1],customerService.class);
+				Complain complain = service.getComplainById(Integer.parseInt(id));
+				if(service.replyComplain(complain,temp.split(";")[2],Double.parseDouble(temp.split(";")[3])))client.sendToClient("AllDone");
+				else client.sendToClient("error");
+				return;
+			}
+			catch (Exception e){
+				client.sendToClient("error");
+			}
+		}
+			if (msg.toString().startsWith("Login ")) {
 
 			Integer user_id;
 			String password;
@@ -115,7 +157,6 @@ if (msg.toString().startsWith("Login ")) {
 				}
 			} else {
 				try {
-					Gson gson = new Gson();
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
 					client.sendToClient("successful " + json );
