@@ -12,7 +12,12 @@ public class Client extends User {
     protected SubscriptionType subscriptionType;
     protected String creditCardNumber;
 
-
+    @Override
+    public String toString() {
+    	return "Client [shipping_add=" + this.shippingAddress + 
+    			",Subscription=" + this.subscriptionType +
+    			",credit_num=" + this.creditCardNumber +","+ to_String(); 
+    }
     @Override
     public boolean register() throws Exception {
         try{

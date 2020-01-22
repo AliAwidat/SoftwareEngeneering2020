@@ -13,42 +13,22 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class myOrdersCont extends LilachController {
+public class ReportViewerController extends LilachController {
 
 	@FXML
-	private TextField Contactname;
+	private ChoiceBox<?> whichSto;
 
 	@FXML
-	private TextField ReceiverPho;
+	private ChoiceBox<?> ReportTy;
 
 	@FXML
-	private TextField ShippingTime;
+	private Button viewReport;
 
 	@FXML
-	private TextField DeliveryLoc;
-
-	@FXML
-	private TextField greating;
-
-	@FXML
-	private TextField ShippingDate;
-
-	@FXML
-	private CheckBox Delivery;
-
-	@FXML
-	private CheckBox AddGreating;
-
-	@FXML
-	private ImageView cart_id1;
-
-	@FXML
-	private TextField OrderId;
-
-	@FXML
-	private Button purchase;
+	private Text StoreMange;
 
 	@FXML
 	public void initialize() {

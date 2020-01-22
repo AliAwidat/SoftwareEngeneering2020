@@ -1,5 +1,6 @@
 package src.lil.models;
 
+import src.lil.Enums.Role;
 import src.lil.common.DBConnection;
 
 import java.sql.Connection;
@@ -30,9 +31,18 @@ public abstract class User {
         this.storeId = storeId;
         this.balance = balance;
     }
-
+    public String to_String() {
+    	return "user_id=" + this.userId +",name=" + this.name
+    			+",phone="+this.phone+",bank_acc="+this.bankAccount+
+    			",email="+this.email+",password="+this.password+
+    			",block=" +this.isBlocked+",store_id=" + this.storeId+
+    			",balance="+this.balance +"]";
+    }
     public abstract boolean register() throws Exception;
-
+    
+    public Role getRole() {
+    	return Role.Client;
+    }
     public String getName() {
         return name;
     }

@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gson.Gson;
 
 import src.lil.Enums.LoginStatus;
 import src.lil.Enums.Role;
@@ -16,36 +19,44 @@ import src.lil.exceptions.WrongCredentials;
 
 public class Login implements LoginCont {
 	/**
-	 * This method signs in a user
-	 * @param
-	 * id : user id to sign in
-	 * password : user's password 
-	 * connected_map : data structurer to save which users are already connected
-	 * @return
-	 * Login status depending in the result.
+	 * map of connected server.
 	 */
-	public LoginStatus user_login(Integer id, String password, Map<Integer, Object> connected_map) {
-		// checks if the id is in the connected users vectors.
+	private Map<Integer, Object> connected_users;
+
+	/**
+	 * Constructor
+	 */
+
+	public Login() {
+		connected_users = new HashMap<Integer, Object>();
+	}
+
+	/**
+	 * This method signs in a user
+	 * 
+	 * @param id : user id to sign in password : user's password connected_map :
+	 *           data structurer to save which users are already connected
+	 * @return Login status depending in the result.
+	 */
+	public LoginStatus user_login(Integer id, String password) {
+
 		try {
-			check_connected_users(id, connected_map);
-		} catch (Exception e) {
+			check_connected_users(id);
+			connect_user(id, check_user(id, password));
+		} catch (WrongCredentials e) {
+			return LoginStatus.WrongCrad;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (AlreadyLoggedIn e) {
 			return LoginStatus.AlreadyIn;
-		}
-		try {
-			Role user_role = check_user(id, password);
-			connect_user(id,user_role,connected_map);
-		} catch (Exception e) {
-			if(e.getMessage().equals("Wrong user ID or password!")) {
-				return LoginStatus.WrongCrad;
-			}
-			return LoginStatus.SQLfailed;
 		}
 		return LoginStatus.Successful;
 	}
+
 	/**
 	 * This method checks if the entered credentials match with those in the DB.
 	 */
-	public Role check_user(Integer id, String password) throws SQLException, WrongCredentials {
+	public Object check_user(Integer id, String password) throws SQLException, WrongCredentials {
 		try (Connection db = DBConnection.getInstance().getConnection();
 				PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
 				PreparedStatement preparedStatement2 = db.prepareStatement("SELECT * FROM users WHERE user_id = ?")) {
@@ -55,7 +66,7 @@ public class Login implements LoginCont {
 				if (res.next()) {
 					String pw = res.getString("client_password");
 					if (pw.equals(password)) {
-						return Role.Client;
+						return new Client(res);
 					}
 				}
 			}
@@ -63,32 +74,55 @@ public class Login implements LoginCont {
 				if (res.next()) {
 					String pw = res.getString("user_password");
 					if (pw.equals(password)) {
-						return Role.valueOf(res.getString("user_role"));
+						if (Role.valueOf(res.getString("user_role")) == Role.Employee) {
+							return new Employee(res);
+						} else if (Role.valueOf(res.getString("user_role")) == Role.StoreManger) {
+							return new StoreManger(res);
+						} else if (Role.valueOf(res.getString("user_role")) == Role.ChainManger) {
+							return new ChainManger(res);
+						}
+
 					}
 				}
+			} catch (Exception e) {
+
+				e.printStackTrace();
 			}
 			db.close();
 		}
 		throw new WrongCredentials();
 	}
+
 	/**
-	 * This method signs out a connected user.
-	 * (can't use this method unless the user is connected).
+	 * gets the user's role
 	 */
-	public LoginStatus user_logout(Integer id,Map<Integer,Object> connected_map) {
+	public Object get_object(Integer id) {
+		return connected_users.get(id);
+	}
+	/**
+	 * This method signs out a connected user. (can't use this method unless the
+	 * user is connected).
+	 */
+	public LoginStatus user_logout(Integer id) {
 		try {
-			disconnect_user(id, connected_map);
+			disconnect_user(id);
 		} catch (NotSignedIn e) {
 			return LoginStatus.NotSignedIn;
 		}
 		return LoginStatus.Successful;
 	}
-
+	/**
+	 * get role
+	 */
+	public String get_role(Integer _id) {
+		String role = connected_users.get(_id).getClass().getName();
+		return role.substring(15, role.length());
+	}
 	/**
 	 * This method checks if a user is already connected
 	 */
-	public Boolean check_connected_users(Integer _id, Map<Integer, Object> connected_users) throws AlreadyLoggedIn {
-		if (connected_users.containsKey(_id)) {
+	public Boolean check_connected_users(Integer _id) throws AlreadyLoggedIn {
+		if (this.connected_users.containsKey(_id)) {
 			throw new AlreadyLoggedIn();
 		}
 		return false;
@@ -97,18 +131,18 @@ public class Login implements LoginCont {
 	/**
 	 * This method adds the user to the connected users after successful logging in.
 	 */
-	public void connect_user(Integer _id, Object _role, Map<Integer, Object> connected_users) {
-		connected_users.put(_id, _role);
+	public void connect_user(Integer _id, Object user) {
+		this.connected_users.put(_id, user);
 	}
 
 	/**
 	 * This method removes a connected user after logging out.
 	 */
-	public void disconnect_user(Integer _id, Map<Integer, Object> connected_users) throws NotSignedIn {
-		if(!connected_users.containsKey(_id)) {
+	public void disconnect_user(Integer _id) throws NotSignedIn {
+		if (!this.connected_users.containsKey(_id)) {
 			throw new NotSignedIn();
 		}
-		connected_users.remove(_id);
+		this.connected_users.remove(_id);
 	}
 
 }

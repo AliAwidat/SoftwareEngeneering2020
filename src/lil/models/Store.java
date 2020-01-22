@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
+import javafx.util.Pair;
 import src.lil.common.DBConnection;
 import src.lil.controllers.StoreInterface;
 import src.lil.exceptions.NoItemWithId;
@@ -141,7 +145,28 @@ public class Store implements StoreInterface {
 			}
 		}
 	}
-
+	/**
+	 * fetches the id and the store address from the DATABASE
+	 * @return List contains pairs (integer = id ,string = address).
+	 */
+	public static List<Pair<String,Integer>> get_store_addresses(){
+		List<Pair<String,Integer>> addresses = new ArrayList<Pair<String,Integer>>();
+		try{
+			Connection db = DBConnection.getInstance().getConnection();
+			PreparedStatement pstmt = db.prepareStatement("SELECT * FROM stores");
+			ResultSet res = pstmt.executeQuery();
+			while(res.next()) {
+				addresses.add(new Pair<String,Integer>(res.getString("store_address"),res.getInt("store_id")));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return addresses;
+	}
+	/**
+	 * 
+	 * @param _id
+	 */
 	public void set_id(Integer _id) {
 		this.store_id = _id;
 	}

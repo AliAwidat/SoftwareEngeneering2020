@@ -4,8 +4,7 @@ import javafx.fxml.FXML;
 
 public class MenuController extends LilachController{
 	@FXML
-	private void initialize() {
-		
-
+	public void initialize() {
+		this.check_logins();
 	}
 }
