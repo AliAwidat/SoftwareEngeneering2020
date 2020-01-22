@@ -1,6 +1,8 @@
 package src.lil.client.lilachgui;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import com.google.gson.Gson;
 
@@ -13,7 +15,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import src.lil.Enums.SubscriptionType;
 import src.lil.client.Instance;
+import src.lil.models.ChainManger;
+import src.lil.models.Client;
+import src.lil.models.Employee;
+import src.lil.models.StoreManger;
 
 public class SignupController extends LilachController {
 	@FXML
@@ -46,9 +56,41 @@ public class SignupController extends LilachController {
 	@FXML
 	private ComboBox<String> sub_type_box;
 
+	@FXML
+	private Text error_msg;
+
+	@FXML
+	private Text id_lable_id;
+
+	@FXML
+	private TextField address_txt;
 	////////////////////////////////////////
 
 	List<String> addresses;
+
+	public void fill_sub_type() {
+		sub_type_box.getItems().add("None");
+		sub_type_box.getItems().add("Monthly");
+		sub_type_box.getItems().add("Annually");
+	}
+
+	public boolean check_input() {
+
+		if (fullname_txt.getText().isEmpty() || user_id_txt.getText().isEmpty() || phone_num_txt.getText().isEmpty()
+				|| email_txt.getText().isEmpty() || password_txt.getText().isEmpty() || bank_acc_txt.getText().isEmpty()
+				|| credit_txt.getText().isEmpty() || store_add_box.getValue() == null
+				|| sub_type_box.getValue() == null) {
+			error_msg.setText("Please fill all fields");
+			return false;
+		} else if (user_id_txt.getText().matches("[0-9]+") == false) {
+			error_msg.setText("User ID should contain numbers only!");
+			user_id_txt.setStyle("-fx-background-color: yellow;");
+		} else if (!email_txt.getText().contains(".co") || !email_txt.getText().contains("@")) {
+			error_msg.setText("invalid E-Mail.");
+			email_txt.setStyle("-fx-background-color: yellow;");
+		}
+		return true;
+	}
 
 	////////////////////////////////////////
 	@FXML
@@ -68,11 +110,82 @@ public class SignupController extends LilachController {
 		for (String string : addresses) {
 			store_add_box.getItems().add(string);
 		}
-		
+		fill_sub_type();
 	}
 
 	@FXML
 	public void handle_reg_butt(ActionEvent event) {
+		Gson gson = new Gson();
+		user_id_txt.setStyle("-fx-background-color: white;");
+		email_txt.setStyle("-fx-background-color: white;");
+		id_lable_id.setFill(Color.BLACK);
+		error_msg.setText("");
+		if (check_input()) {
+			try {
+				Instance.resetResponse();
+				Instance.getClientConsole().get_client().sendToServer("getstoreid " + store_add_box.getValue());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			SubscriptionType val;
+			if (sub_type_box.getValue().equals("None")) {
+				val = SubscriptionType.nonSubscription;
+			} else if (sub_type_box.getValue().equals("Monthly")) {
+				val = SubscriptionType.Monthly;
+			} else {
+				val = SubscriptionType.Yearly;
+			}
+			Client register = new Client(Integer.parseInt(user_id_txt.getText()), fullname_txt.getText(),
+					phone_num_txt.getText(), bank_acc_txt.getText(), "", email_txt.getText(), password_txt.getText(),
+					val, credit_txt.getText(), address_txt.getText(), "0");
+			String json = gson.toJson(register);
+			try {
+				Instance.resetResponse();
+				Instance.getClientConsole().get_client().sendToServer("register " + json);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			while(Instance.getResponse()==null) {
+				System.out.println("Waiting...");
+			}
+			if (Instance.getResponse().equals("successfull")) {
+				try {
+					Instance.resetResponse();
+					Instance.getClientConsole().get_client().sendToServer(
+							"Login " + String.valueOf(register.getUserId()) + " " + register.getPassword());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				while (Instance.getResponse() == null) {
+					System.out.println("Waiting...");
+				}
+				if (Instance.getResponse().startsWith("successful")) {
+					Instance.set_id(String.valueOf(register.getUserId()));
+					login_btn.setVisible(false);
+					sigup_btn.setVisible(false);
+					signout_btn1.setVisible(true);
+					StringTokenizer roletok = new StringTokenizer(Instance.getResponse());
+					roletok.nextToken(" ");
+					String Role = roletok.nextToken();
+					Object current_user = null;
+					if (Role.contains("StoreManger")) {
+						current_user = gson.fromJson(Role, StoreManger.class);
+					} else if (Role.contains("ChainManger")) {
+						current_user = gson.fromJson(Role, ChainManger.class);
+					} else if (Role.contains("Employee")) {
+						current_user = gson.fromJson(Role, Employee.class);
+					} else {
+						current_user = gson.fromJson(Role, Client.class);
+					}
+					Instance.setCurrentUser(current_user);
+					try {
+						this.handle_menu_butt(null);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
 
 	}
 }

@@ -9,12 +9,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import javafx.util.Pair;
+import src.lil.models.Client;
 import src.lil.models.Complain;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
+import src.lil.models.Order.AlreadyExists;
 import src.lil.models.Store;
 
 import java.sql.*;
@@ -44,7 +46,7 @@ public class EchoServer extends AbstractServer {
 	 * Log in instance.
 	 */
 	private Login _login = new Login();
-	private  List<Pair<String,Integer>> store_addresses;
+	private Map<String, Integer> store_addresses;
 	/**
 	 * The default port to listen on.
 	 */
@@ -92,14 +94,14 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) throws Exception {
-				Gson gson = new Gson();
-				if(String.valueOf(msg).startsWith("SubmitComplain")){
-					String complainAsString = String.valueOf(msg).split("SubmitComplain")[1];
-					Complain complain = gson.fromJson(complainAsString,Complain.class);
-					complain.addComplain();
-					return;
-				}
-      if (msg.toString().startsWith("Login ")) {
+		Gson gson = new Gson();
+		if (String.valueOf(msg).startsWith("SubmitComplain")) {
+			String complainAsString = String.valueOf(msg).split("SubmitComplain")[1];
+			Complain complain = gson.fromJson(complainAsString, Complain.class);
+			complain.addComplain();
+			return;
+		}
+		if (msg.toString().startsWith("Login ")) {
 
 			Integer user_id;
 			String password;
@@ -124,41 +126,57 @@ public class EchoServer extends AbstractServer {
 				try {
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
-					client.sendToClient("successful " + json );
+					client.sendToClient("successful " + json);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-		}
-		else if(msg.toString().startsWith("Logout ")) {
+		} else if (msg.toString().startsWith("Logout ")) {
 			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
 			login_tokens.nextToken();
 			Integer user_id = Integer.parseInt(login_tokens.nextToken());
 			try {
 				this._login.disconnect_user(user_id);
 				client.sendToClient("successful");
-			}catch (Exception e) {
+			} catch (Exception e) {
 				try {
 					client.sendToClient("successful");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
-		}
-    else if(msg.toString().startsWith("get stores")) {
+		} else if (msg.toString().startsWith("get stores")) {
 			store_addresses = Store.get_store_addresses();
 			List<String> addresses = new ArrayList<String>();
-			for (Pair<String, Integer> pair : store_addresses) {
-				addresses.add(pair.getKey());
+			for (Map.Entry<String, Integer> entry : store_addresses.entrySet()) {
+				addresses.add(entry.getKey());
 			}
 			String json = gson.toJson(addresses);
 			try {
 				client.sendToClient(json);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		else if (msg.toString().startsWith("#login ")) {
+
+		else if (msg.toString().startsWith("getstoreid ")) {
+			try {
+				client.sendToClient(store_addresses.get(msg.toString().substring(11, msg.toString().length())));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (msg.toString().startsWith("register ")) {
+			Client reg = gson.fromJson(msg.toString().substring("register ".length(), msg.toString().length()),
+					Client.class);
+			try {
+				reg.register();
+				client.sendToClient("successfull");
+			} catch (AlreadyExists e) {
+				client.sendToClient("User with same ID already exists!");
+			} catch (SQLException e) {
+				client.sendToClient("SQL Exception!");
+			}
+		} else if (msg.toString().startsWith("#login ")) {
 			if (client.getInfo("loginID") != null) {
 				try {
 					client.sendToClient("You are already logged in.");

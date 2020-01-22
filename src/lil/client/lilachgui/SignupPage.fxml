@@ -50,7 +50,7 @@
       <Pane layoutX="14.0" layoutY="138.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
          <children>
             <TextField fx:id="user_id_txt" layoutX="185.0" layoutY="183.0" promptText="id" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="84.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:">
+            <Text fx:id="id_lable_id" layoutX="84.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:">
                <font>
                   <Font size="14.0" />
                </font>
@@ -72,36 +72,36 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="bank_acc_txt" layoutX="476.0" layoutY="141.0" promptText="Bank account" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="362.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bank account:">
+            <TextField fx:id="bank_acc_txt" layoutX="453.0" layoutY="142.0" promptText="Bank account" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="339.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bank account:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="credit_txt" layoutX="476.0" layoutY="183.0" promptText="CreditCard" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="363.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CreditCard:">
+            <TextField fx:id="credit_txt" layoutX="453.0" layoutY="184.0" promptText="CreditCard" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="340.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CreditCard:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="363.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Store:">
+            <Text layoutX="340.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Store:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <ComboBox fx:id="store_add_box" layoutX="484.0" layoutY="266.0" prefWidth="150.0" />
+            <ComboBox fx:id="store_add_box" layoutX="461.0" layoutY="308.0" prefWidth="150.0" />
             <Text layoutX="84.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
             <TextField fx:id="password_txt" layoutX="185.0" layoutY="312.0" promptText="Password" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="362.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription Type:">
+            <Text layoutX="339.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription Type:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="register_butt" layoutX="524.0" layoutY="344.0" mnemonicParsing="false" onAction="#handle_reg_butt" prefHeight="37.0" prefWidth="86.0" text="Register" />
+            <Button fx:id="register_butt" layoutX="493.0" layoutY="358.0" mnemonicParsing="false" onAction="#handle_reg_butt" prefHeight="37.0" prefWidth="86.0" text="Register" />
             <Text layoutX="92.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <Text fill="#ed0505" fontSmoothingType="LCD" layoutX="75.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To Our Flowers World">
                <font>
@@ -114,7 +114,14 @@
                </image>
             </ImageView>
             <TextField fx:id="fullname_txt" layoutX="185.0" layoutY="141.0" promptText="full name" style="-fx-background-color: #ffffff;" />
-            <ComboBox fx:id="sub_type_box" layoutX="484.0" layoutY="225.0" prefWidth="150.0" />
+            <ComboBox fx:id="sub_type_box" layoutX="461.0" layoutY="267.0" prefWidth="150.0" />
+            <Text fx:id="error_msg" fill="#f50000" layoutX="248.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="170.90785217285156" />
+            <Text layoutX="340.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <TextField fx:id="address_txt" layoutX="452.0" layoutY="224.0" promptText="address" style="-fx-background-color: #ffffff;" />
          </children></Pane>
       <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
          <font>
