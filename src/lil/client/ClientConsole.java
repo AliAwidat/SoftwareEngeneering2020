@@ -4,6 +4,7 @@
 package src.lil.client;
 import java.io.*;
 import src.lil.client.*;
+import src.lil.client.lilachgui.ComplainsCont;
 import src.lil.client.lilachgui.LilachMain;
 import src.lil.common.*;
 
@@ -131,10 +132,12 @@ public class ClientConsole implements ChatIF
       host = "localhost";
     }
     try {
+
       port = Integer.parseInt(args[2]);
     } catch (ArrayIndexOutOfBoundsException e){
       port = DEFAULT_PORT;
     }
+
     ClientConsole chat= new ClientConsole(loginID, host, port);
     Instance.setClientConsole(chat); 
     LilachMain.main(args);

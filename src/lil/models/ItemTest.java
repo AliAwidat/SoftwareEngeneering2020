@@ -7,12 +7,19 @@
 //import src.lil.Enums.ItemType;
 //
 //class ItemTest {
-//	Item getFromDb = new Item(ItemType.BOUQUET,"",0.0);
+////	Item getFromDb = new Item(ItemType.BOUQUET,"",0.0);
 ////	@Test
 ////    public void addItem() throws Exception{
-////    	Item addToDb = new Item(ItemType.BOUQUET,"",20.0);
+////    	Item addToDb = new Item(ItemType.BOUQUET,"",20.0,"");
 ////        if(!(addToDb.insert())) {System.out.println("Failed");}
-////    }
+////	}
+//	
+//	@Test
+//    public void insettest() throws Exception{
+//	Item newItem= new Item(ItemType.BOUQUET,"RED",100.0,"");
+//	newItem.insert();
+//	}
+//}
 //	@Test
 //    public void findItem() throws Exception{
 //    	Item getFromDb =  Item.findById(6);

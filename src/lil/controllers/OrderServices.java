@@ -15,5 +15,6 @@ public interface OrderServices {
 	List<Order> findAllByUserId(Integer user_id) throws SQLException, NotFound;
 	void fillFieldsFromResultSet(ResultSet rs)throws SQLException;
 	boolean DeleteOrder(Integer order_id) throws SQLException, NotFound, AlreadyExists;
+	boolean updateOrder() throws SQLException, NotFound, AlreadyExists;
 }
 
