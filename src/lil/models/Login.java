@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 import src.lil.Enums.LoginStatus;
 import src.lil.Enums.Role;
 import src.lil.common.DBConnection;
@@ -37,18 +39,16 @@ public class Login implements LoginCont {
 	 * @return Login status depending in the result.
 	 */
 	public LoginStatus user_login(Integer id, String password) {
-		// checks if the id is in the connected users vectors.
+
 		try {
-			connect_user(id, check_connected_users(id));
-		} catch (Exception e) {
-			return LoginStatus.AlreadyIn;
-		}
-		try {
-			check_user(id, password);
+			check_connected_users(id);
+			connect_user(id, check_user(id, password));
 		} catch (WrongCredentials e) {
 			return LoginStatus.WrongCrad;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (AlreadyLoggedIn e) {
+			return LoginStatus.AlreadyIn;
 		}
 		return LoginStatus.Successful;
 	}
@@ -94,6 +94,12 @@ public class Login implements LoginCont {
 	}
 
 	/**
+	 * gets the user's role
+	 */
+	public Object get_object(Integer id) {
+		return connected_users.get(id);
+	}
+	/**
 	 * This method signs out a connected user. (can't use this method unless the
 	 * user is connected).
 	 */
@@ -105,7 +111,13 @@ public class Login implements LoginCont {
 		}
 		return LoginStatus.Successful;
 	}
-
+	/**
+	 * get role
+	 */
+	public String get_role(Integer _id) {
+		String role = connected_users.get(_id).getClass().getName();
+		return role.substring(15, role.length());
+	}
 	/**
 	 * This method checks if a user is already connected
 	 */

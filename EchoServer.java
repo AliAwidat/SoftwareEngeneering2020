@@ -10,6 +10,7 @@ import src.lil.models.Complain;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
+import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 
 import java.sql.*;
@@ -17,6 +18,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+
+import com.google.gson.Gson;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -89,8 +92,54 @@ public class EchoServer extends AbstractServer {
 					complain.addComplain();
 					return;
 				}
+if (msg.toString().startsWith("Login ")) {
 
-		 if (msg.toString().startsWith("#login ")) {
+			Integer user_id;
+			String password;
+			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
+			login_tokens.nextToken();
+			user_id = Integer.parseInt(login_tokens.nextToken());
+			password = login_tokens.nextToken();
+			LoginStatus status = this._login.user_login(user_id, password);
+			if (status == LoginStatus.AlreadyIn) {
+				try {
+					client.sendToClient("User already signed in!");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else if (status == LoginStatus.WrongCrad) {
+				try {
+					client.sendToClient("Wrong ID or Passowrd! try again:");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					Gson gson = new Gson();
+					Object user = _login.get_object(user_id);
+					String json = gson.toJson(user);
+					client.sendToClient("successful " + json );
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else if(msg.toString().startsWith("Logout ")) {
+			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
+			login_tokens.nextToken();
+			Integer user_id = Integer.parseInt(login_tokens.nextToken());
+			try {
+				this._login.disconnect_user(user_id);
+				client.sendToClient("successful");
+			}catch (Exception e) {
+				try {
+					client.sendToClient("successful");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		else if (msg.toString().startsWith("#login ")) {
 			if (client.getInfo("loginID") != null) {
 				try {
 					client.sendToClient("You are already logged in.");
