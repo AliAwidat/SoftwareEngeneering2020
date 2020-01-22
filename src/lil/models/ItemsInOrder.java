@@ -31,6 +31,9 @@ public class ItemsInOrder extends Order {
 	
 	
 	
+	
+	
+	
 	public ItemsInOrder(ItemType item_type, CustomItemType custom_item_type, String price_Domian, String Dominant_Color, int quantity, double Total_price) {
 		
 		this.item_type = item_type;

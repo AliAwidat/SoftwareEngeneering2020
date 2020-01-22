@@ -25,6 +25,7 @@ public class Order implements OrderServices {
     
     public void fillFieldsFromResultSet(ResultSet rs) throws SQLException {
         
+    	
     	this.userId = rs.getInt("user_Id");
         this.orderId = rs.getInt("order_Id");
 //        this.orderType = OrderType.valueOf(rs.getString("order_Type"));
