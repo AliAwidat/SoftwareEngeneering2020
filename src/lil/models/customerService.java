@@ -16,6 +16,10 @@ public class customerService extends Employee {
         super(userId, name, phone, bankAccount,email, password, Role.customerService,"-1","-1");
         this.complains = viewComplains();
     }
+    public customerService(ResultSet rs) throws Exception {
+    	super(rs);
+    	this.complains = viewComplains();
+    }
     public customerService(){super();}
     public List<Complain> viewComplains() throws Order.NotFound, IOException {
         String contact_email,contact_phone,complain_title,complain_text,store_adress,sql,order_Id, user_id;

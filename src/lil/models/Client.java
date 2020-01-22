@@ -2,6 +2,7 @@ package src.lil.models;
 
 import src.lil.Enums.SubscriptionType;
 import src.lil.common.DBConnection;
+import src.lil.models.Order.AlreadyExists;
 
 import java.io.IOException;
 import java.sql.*;
@@ -19,15 +20,14 @@ public class Client extends User {
     			",credit_num=" + this.creditCardNumber +","+ to_String(); 
     }
     @Override
-    public boolean register() throws Exception {
+    public boolean register() throws AlreadyExists , SQLException {
         try{
             Connection connection = DBConnection.getInstance().getConnection();
             //check if exist
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *  FROM clients WHERE client_id=" + userId);
             if(rs.getRow() != 0 ) {
-                System.out.println("Client already exist");
-                return false;
+                throw new AlreadyExists();
             }
             String SQL_INSERT = "INSERT INTO clients (client_id, client_name, client_phone, client_bankAccount, client_email," +
                     " client_password, client_creditCard, client_shippingAddress, client_subscriptionType, client_block,store_id," +
@@ -50,9 +50,8 @@ public class Client extends User {
             connection.close();
             return true;
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            return false;
+        catch (SQLException e){
+            throw e;
         }
     }
 

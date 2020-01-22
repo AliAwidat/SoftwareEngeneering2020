@@ -149,14 +149,14 @@ public class Store implements StoreInterface {
 	 * fetches the id and the store address from the DATABASE
 	 * @return List contains pairs (integer = id ,string = address).
 	 */
-	public static List<Pair<String,Integer>> get_store_addresses(){
-		List<Pair<String,Integer>> addresses = new ArrayList<Pair<String,Integer>>();
+	public static Map<String,Integer> get_store_addresses(){
+		Map<String,Integer> addresses = new HashMap<String,Integer>();
 		try{
 			Connection db = DBConnection.getInstance().getConnection();
 			PreparedStatement pstmt = db.prepareStatement("SELECT * FROM stores");
 			ResultSet res = pstmt.executeQuery();
 			while(res.next()) {
-				addresses.add(new Pair<String,Integer>(res.getString("store_address"),res.getInt("store_id")));
+				addresses.put(res.getString("store_address"),res.getInt("store_id"));
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();

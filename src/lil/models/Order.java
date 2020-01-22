@@ -240,7 +240,7 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
-	@Override
+
     public boolean updateOrder() throws SQLException, NotFound, AlreadyExists {
         try {
         	Connection db = DBConnection.getInstance().getConnection();
