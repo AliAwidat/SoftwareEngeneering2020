@@ -10,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 import src.lil.client.Instance;
 
 import java.io.IOException;

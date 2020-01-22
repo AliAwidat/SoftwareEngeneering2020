@@ -115,6 +115,7 @@ if (msg.toString().startsWith("Login ")) {
 				}
 			} else {
 				try {
+					Gson gson = new Gson();
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
 					client.sendToClient("successful " + json );
