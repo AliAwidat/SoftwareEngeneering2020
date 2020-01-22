@@ -157,7 +157,7 @@ public abstract class User {
 		List<Object> employees = new ArrayList<Object>();
 		try {
 			Connection db = DBConnection.getInstance().getConnection();
-			PreparedStatement pstmt = db.prepareStatement("SELECT * FROM clients");
+			PreparedStatement pstmt = db.prepareStatement("SELECT * FROM users");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				if (!rs.getString("user_role").equals("ChainManger")) {
