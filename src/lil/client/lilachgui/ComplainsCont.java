@@ -44,7 +44,10 @@ public class ComplainsCont extends LilachController{
     @FXML
     private Text message_to_client;
 
-
+    @FXML
+	   public void initialize() {
+		this.check_logins();
+	}
 
 
     @FXML

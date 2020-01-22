@@ -1,3 +1,4 @@
+
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -7,6 +8,9 @@ import java.io.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import src.lil.client.Instance;
+
+import javafx.util.Pair;
+import src.lil.models.Client;
 import src.lil.models.Complain;
 import src.lil.models.customerService;
 import src.ocsf.server.*;
@@ -14,10 +18,18 @@ import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
+import src.lil.models.Order.AlreadyExists;
+import src.lil.models.Store;
+import src.lil.models.User;
 
 import java.sql.*;
 import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 import com.google.gson.Gson;
 
 /**
@@ -37,6 +49,7 @@ public class EchoServer extends AbstractServer {
 	 * Log in instance.
 	 */
 	private Login _login = new Login();
+	private Map<String, Integer> store_addresses;
 	/**
 	 * The default port to listen on.
 	 */
@@ -134,7 +147,7 @@ public class EchoServer extends AbstractServer {
 				client.sendToClient("error");
 			}
 		}
-			if (msg.toString().startsWith("Login ")) {
+		if (msg.toString().startsWith("Login ")) {
 
 			Integer user_id;
 			String password;
@@ -159,27 +172,65 @@ public class EchoServer extends AbstractServer {
 				try {
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
-					client.sendToClient("successful " + json );
+					client.sendToClient("successful " + json);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
-		}
-		else if(msg.toString().startsWith("Logout ")) {
+		} else if (msg.toString().startsWith("Logout ")) {
 			StringTokenizer login_tokens = new StringTokenizer(msg.toString(), " ");
 			login_tokens.nextToken();
 			Integer user_id = Integer.parseInt(login_tokens.nextToken());
 			try {
 				this._login.disconnect_user(user_id);
 				client.sendToClient("successful");
-			}catch (Exception e) {
+			} catch (Exception e) {
 				try {
 					client.sendToClient("successful");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
+		} else if (msg.toString().startsWith("get stores")) {
+			store_addresses = Store.get_store_addresses();
+			List<String> addresses = new ArrayList<String>();
+			for (Map.Entry<String, Integer> entry : store_addresses.entrySet()) {
+				addresses.add(entry.getKey());
+			}
+			String json = gson.toJson(addresses);
+			try {
+				client.sendToClient(json);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+
+		else if (msg.toString().startsWith("getstoreid ")) {
+			try {
+				client.sendToClient(store_addresses.get(msg.toString().substring(11, msg.toString().length())));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (msg.toString().startsWith("register ")) {
+			Client reg = gson.fromJson(msg.toString().substring("register ".length(), msg.toString().length()),
+					Client.class);
+			try {
+				reg.register();
+				client.sendToClient("successfull");
+			} catch (AlreadyExists e) {
+				client.sendToClient("User with same ID already exists!");
+			} catch (SQLException e) {
+				client.sendToClient("SQL Exception!");
+			}
+		} else if (msg.toString().equals("getallclients")) {
+			List<Client> clients_list = User.get_all_clients();
+			String json = gson.toJson(clients_list);
+			client.sendToClient(json);
+		}else if (msg.toString().equals("getallemployees")) {
+			List<Object> employees_list = User.get_all_employees();
+			client.sendToClient(gson.toJson(employees_list));
+		}
+
 		else if (msg.toString().startsWith("#login ")) {
 			if (client.getInfo("loginID") != null) {
 				try {

@@ -4,12 +4,16 @@ import src.lil.common.*;
 import src.lil.models.Order.AlreadyExists;
 import java.lang.String;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Item {
 	private int id,updated=0;
 	private String dominantColor="",image;
 	private ItemType type;
 	private Double price;
+	private Boolean canAddToBouquet=false;
+	private List<Item> flowerInItem;
 	
 	public Item(ResultSet rs) throws SQLException{
 		super();
@@ -20,9 +24,12 @@ public class Item {
         this.id = rs.getInt("item_Id");
         this.dominantColor = rs.getString("dominant_color");
         this.type = ItemType.valueOf(rs.getString("item_type"));
-        //this.price = rs.getDouble("item_price");
+        this.price = getItemPrice(this.id);
         this.updated = rs.getInt("updated");
         this.image = rs.getString("image");
+        this.updated=rs.getInt("updated");
+        this.flowerInItem=getFlowersInItemFromDb(this.id);
+        this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
 
     }
     public static Item findById(Integer id) throws SQLException, AlreadyExists {
@@ -57,25 +64,11 @@ public class Item {
             throw new AlreadyExists();
         }
     }
-//    //discount all items
-//    public static boolean changePriceAllItems(Integer itemId,Double newPrice) throws AlreadyExists {
-//        try (Connection db = DBConnection.getInstance().getConnection();
-//        	PreparedStatement preparedStatement2 = db.prepareStatement("update prices set price =price*?")){
-//            preparedStatement2.setDouble(1, newPrice);
-//            preparedStatement2.setInt(2, itemId);
-//            preparedStatement2.executeUpdate();
-//            db.close();
-//            return true;
-//        } catch (Exception e) {
-//           	System.out.println(e.getMessage());
-//            throw new AlreadyExists();
-//        }
-//    }
-    //discount all items in one store
+
     public static boolean changePricesInStore(Integer storeId,Double newPrice) throws AlreadyExists { // item id's "1,5,3,100"
         try (Connection db = DBConnection.getInstance().getConnection();
         	PreparedStatement preparedStatement2 = db.prepareStatement("update prices set price = price*? where store_id =?")){
-            preparedStatement2.setDouble(1, newPrice);
+            preparedStatement2.setInt(1, newPrice.intValue());
             preparedStatement2.setInt(2, storeId);
             preparedStatement2.executeUpdate();
             db.close();
@@ -113,12 +106,14 @@ public class Item {
     	int itemId=0;
     	String list="";
         try (Connection db = DBConnection.getInstance().getConnection();
-                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated,canAddToBouquet,flowersInItem) values (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, this.type.toString());
         	preparedStatement.setString(2, this.dominantColor);
         	preparedStatement.setDouble(3, this.price);
         	preparedStatement.setString(4, this.image);
         	preparedStatement.setInt(5, this.updated);
+        	preparedStatement.setBoolean(6, this.canAddToBouquet);
+        	preparedStatement.setString(7, itemsToString());
         	preparedStatement.executeUpdate();
         	db.close();
         } catch (Exception e) {
@@ -156,8 +151,8 @@ public class Item {
 	        list = list.substring(0, list.length()-1) + ";";
 	        System.out.println(list);
 	        try (Connection db2 = DBConnection.getInstance().getConnection();
-	        		PreparedStatement preparedStatement2 = db2.prepareStatement("INSERT INTO prices(store_id, price, item_id) values ?")) {
-	               preparedStatement2.setString(1, list);
+	        		PreparedStatement preparedStatement2 = db2.prepareStatement("INSERT INTO prices(store_id, price, item_id) values"+list)) {
+	               //preparedStatement2.setString(1, list);
 	           	preparedStatement2.executeUpdate();
 	           	db2.close();
 	        } catch (Exception e) {
@@ -170,12 +165,10 @@ public class Item {
     } 
     public static boolean update(Item item) throws SQLException, AlreadyExists{
         try (Connection db = DBConnection.getInstance().getConnection();
-
-            PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=? , image=? ,updated=? WHERE item_Id=?")) {
+            PreparedStatement preparedStatement = db.prepareStatement("UPDATE items SET item_type=? ,dominant_color=?,item_price=? , image=? ,updated=? WHERE item_Id=?")) {
         	preparedStatement.setString(1, item.type.toString());
         	preparedStatement.setString(2, item.dominantColor);
-        	//preparedStatement.setDouble(3, item.price);
-
+        	preparedStatement.setDouble(3, item.price);
         	preparedStatement.setString(4, item.image);
         	preparedStatement.setInt(5, 1);
         	preparedStatement.setInt(6, item.id);
@@ -187,15 +180,94 @@ public class Item {
             throw new AlreadyExists();
         }
     }
+    // recieves item id and returns arrayList of all the flowers in it
+    public static List<Item> getFlowersInItemFromDb(int itemId){
+    	String flowers=getFlowersInItemIdFromDb(itemId);
+    	List<Item> items=new ArrayList<Item>();
+        try (Connection db = DBConnection.getInstance().getConnection();
+        		ResultSet rs = db.prepareStatement("select * from Items where item_id="+flowers).executeQuery()){
+                while (rs.next()) {
+                    Item item = new Item(rs);
+                	items.add(item);
+                }
+        } catch (Exception e) {
+            	System.out.println(e.getMessage());
+            	return null;
+        }
+        return items;
+    }
     
-    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image) {
+    private  String itemsToString() {
+    	String str="";
+    	if(type==ItemType.CUSTOM) {
+	    	for(Item item : flowerInItem) {
+	    		str+=item.getId()+",";
+	    	}
+	    	str = str.substring(0, str.length()-1) + ";";
+    	}
+    	return str;
+    }
+    
+    public static String getFlowersInItemIdFromDb(int itemId) {
+    	String flowers="";
+        try (Connection db = DBConnection.getInstance().getConnection();
+        		ResultSet rs = db.prepareStatement("select flowersInItem from items where item_id="+itemId).executeQuery()){
+                if (rs.next()) {
+                	flowers = rs.getString(1);
+                }
+        } catch (Exception e) {
+            	System.out.println(e.getMessage());
+            	return null;
+        }
+        return flowers;
+    }
+    
+//    public double getItemPrice(int itemId) {
+//    	double totalPrice=0;
+//    	List<Item> items=new ArrayList<Item>();
+//    	items=getFlowersInItemFromDb(itemId);
+//        for (Item item : items) { 		      
+//        	totalPrice+=item.getPrice();
+//        }
+//        return totalPrice;
+//    }
+    
+    public double getItemPrice() {
+    	double totalPrice=0;
+        for (Item item : flowerInItem) { 		      
+        	totalPrice+=item.getPrice();
+        }
+        return totalPrice;
+    }
+    
+    //filters
+    public static List<Item> filterItems(String type){
+    	List<Item> items=new ArrayList<Item>();
+        try (Connection db = DBConnection.getInstance().getConnection();
+        		ResultSet rs = db.prepareStatement("select flowersInItem from Items where item_type="+type).executeQuery()){
+                if (rs.next()) {
+                    Item item = new Item(rs);
+                	items.add(item);                }
+        } catch (Exception e) {
+            	System.out.println(e.getMessage());
+            	return null;
+        }
+    	return items;
+    }
+    	
+    
+  //  public static boolean update
+    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image , Boolean canAddToBouquet) {
     	//this.id = itemId;
     	this.type = itemType;
 	    this.dominantColor = dominantColor;
 	    this.price = itemPrice;
 	    this.updated = 0;
 	    this.image = image;
+	    this.canAddToBouquet=canAddToBouquet;
+	    this.flowerInItem=new ArrayList<Item>();
     }
+    
     
     public int getId() {
     	return id;
@@ -244,5 +316,14 @@ public class Item {
     public void setPrice(Double price) {
     	this.price = price;
     }
-    
+    public void addItem(Item item) {
+    	flowerInItem.add(item);
+    }
+    public void removeItem(Item item) {
+         for (Item i : flowerInItem) { 		      
+        	 if(item.getId()==i.getId()) {
+        		 flowerInItem.remove(i);
+        	 }
+         }
+    }
 }

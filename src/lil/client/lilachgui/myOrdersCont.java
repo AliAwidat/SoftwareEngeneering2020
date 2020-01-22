@@ -1,4 +1,5 @@
 package src.lil.client.lilachgui;
+
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -16,39 +17,41 @@ import javafx.stage.Stage;
 
 public class myOrdersCont extends LilachController {
 
-    @FXML
-    private TextField Contactname;
+	@FXML
+	private TextField Contactname;
 
-    @FXML
-    private TextField ReceiverPho;
+	@FXML
+	private TextField ReceiverPho;
 
-    @FXML
-    private TextField ShippingTime;
+	@FXML
+	private TextField ShippingTime;
 
-    @FXML
-    private TextField DeliveryLoc;
+	@FXML
+	private TextField DeliveryLoc;
 
-    @FXML
-    private TextField greating;
+	@FXML
+	private TextField greating;
 
-    @FXML
-    private TextField ShippingDate;
+	@FXML
+	private TextField ShippingDate;
 
-    @FXML
-    private CheckBox Delivery;
+	@FXML
+	private CheckBox Delivery;
 
-    @FXML
-    private CheckBox AddGreating;
+	@FXML
+	private CheckBox AddGreating;
 
-    @FXML
-    private ImageView cart_id1;
+	@FXML
+	private ImageView cart_id1;
 
-    @FXML
-    private TextField OrderId;
+	@FXML
+	private TextField OrderId;
 
-    @FXML
-    private Button purchase;
+	@FXML
+	private Button purchase;
 
+	@FXML
+	public void initialize() {
+		this.check_logins();
 	}
-
-
+}

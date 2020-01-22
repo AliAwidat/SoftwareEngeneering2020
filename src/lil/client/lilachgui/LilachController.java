@@ -78,55 +78,8 @@ public abstract class LilachController {
 		sigup_btn.setVisible(true);
 	}
 
-	/***************************************************/
-
-	@FXML
-	public void handle_login_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("LoginPage.fxml"));
-		Scene scene = new Scene(pane);
-
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-		stage.setScene(scene);
-		stage.setTitle("Login");
-		stage.show();
-	}
-
-	@FXML
-	public void handle_signup_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("SignupPage.fxml"));
-		Scene scene = new Scene(pane);
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-
-		stage.setScene(scene);
-		stage.setTitle("Sign up");
-		stage.show();
-	}
-
-	@FXML
-	public void handle_complain_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("ComplainPage.fxml"));
-		Scene scene = new Scene(pane);
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-
-		stage.setScene(scene);
-		stage.setTitle("Complain!");
-		stage.show();
-	}
-
-	@FXML
-	public void handle_manage_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("ManageUsersPage.fxml"));
-		Scene scene = new Scene(pane);
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-
-		stage.setScene(scene);
-		stage.setTitle("User managment.");
-		stage.show();
-	}
-
-	@FXML
-	public void handle_menu_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("MenuPage.fxml"));
+	public void get_scene(String file_name, String Title) throws IOException {
+		AnchorPane pane = FXMLLoader.load(getClass().getResource(file_name));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
 		if (Instance.getCurrentUser() != null) {
@@ -141,40 +94,57 @@ public abstract class LilachController {
 						e.printStackTrace();
 					}
 					while (Instance.getResponse() == null) {
-						}
+					}
 					Instance.getClientConsole().get_client().quit();
 				}
 			});
 		}
 		stage.setScene(scene);
-		stage.setTitle("Welcome to Lilach.");
+		stage.setTitle(Title);
 		stage.show();
+	}
+
+	/***************************************************/
+
+	@FXML
+	public void handle_login_butt(ActionEvent event) throws IOException {
+		get_scene("LoginPage.fxml", "Login");
+	}
+
+	@FXML
+	public void handle_signup_butt(ActionEvent event) throws IOException {
+		get_scene("SignupPage.fxml", "Sign up");
+	}
+
+	@FXML
+	public void handle_complain_butt(ActionEvent event) throws IOException {
+		get_scene("ComplainPage.fxml", "Complain!");
+	}
+
+	@FXML
+	public void handle_manage_butt(ActionEvent event) throws IOException {
+		get_scene("ManageUsersPage.fxml", "User managment.");
+	}
+
+	@FXML
+	public void handle_menu_butt(ActionEvent event) throws IOException {
+		
+		get_scene("MenuPage.fxml", "Welcome to Lilach.");
 	}
 
 	@FXML
 	public void handle_my_order_butt(ActionEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("myOrdersPage.fxml"));
-		Scene scene = new Scene(pane);
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-
-		stage.setScene(scene);
-		stage.setTitle("My orders history");
-		stage.show();
+		get_scene("myOrdersPage.fxml", "My orders history");
 	}
 
 	@FXML
 	public void handle_cart_click(MouseEvent event) throws IOException {
-		AnchorPane pane = FXMLLoader.load(getClass().getResource("cartView.fxml"));
-		Scene scene = new Scene(pane);
-		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-
-		stage.setScene(scene);
-		stage.setTitle("Cart");
-		stage.show();
+		
+		get_scene("cartView.fxml", "Cart");
 	}
 
-	@FXML
-	public void initialize() {
+	public void check_logins() {
+
 		if (Instance.getCurrentUser() == null) {
 			signout_btn1.setVisible(false);
 			complain_btn.setVisible(false);
