@@ -3,18 +3,18 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import src.lil.models.Complain;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -84,9 +84,15 @@ public class EchoServer extends AbstractServer {
 	 * @param msg    The message received from the client.
 	 * @param client The connection from which the message originated.
 	 */
-	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
-		if (msg.toString().startsWith("Login ")) {
+	public void handleMessageFromClient(Object msg, ConnectionToClient client) throws Exception {
+				Gson gson = new Gson();
+				if(String.valueOf(msg).startsWith("SubmitComplain")){
+					String complainAsString = String.valueOf(msg).split("SubmitComplain")[1];
+					Complain complain = gson.fromJson(complainAsString,Complain.class);
+					complain.addComplain();
+					return;
+				}
+if (msg.toString().startsWith("Login ")) {
 
 			Integer user_id;
 			String password;
