@@ -18,6 +18,7 @@ import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 import src.lil.models.Order.AlreadyExists;
 import src.lil.models.Store;
+import src.lil.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -176,7 +177,16 @@ public class EchoServer extends AbstractServer {
 			} catch (SQLException e) {
 				client.sendToClient("SQL Exception!");
 			}
-		} else if (msg.toString().startsWith("#login ")) {
+		} else if (msg.toString().equals("getallclients")) {
+			List<Client> clients_list = User.get_all_clients();
+			String json = gson.toJson(clients_list);
+			client.sendToClient(json);
+		}else if (msg.toString().equals("getallemployees")) {
+			List<Object> employees_list = User.get_all_employees();
+			client.sendToClient(gson.toJson(employees_list));
+		}
+
+		else if (msg.toString().startsWith("#login ")) {
 			if (client.getInfo("loginID") != null) {
 				try {
 					client.sendToClient("You are already logged in.");
