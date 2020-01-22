@@ -45,6 +45,22 @@ public class Complain implements ComplainsInterface {
 
 
 	}
+	public Complain(int complain_id, String contact_email, String contact_phone, String complain_title, String complain_text, String store_adress, Date date, String order_Id, String user_id){
+		this.complain_text = complain_text;
+		this.contact_email = contact_email;
+		this.contact_phone = contact_phone;
+		this.complain_title = complain_title;
+		this.store_adress = store_adress;
+		this.date = date;
+		this.order_Id = order_Id;
+		this.user_id = user_id;
+		this.complain_id = complain_id;
+
+	}
+
+	public String getComplain_title() {
+		return complain_title;
+	}
 
 	public String getOrder_Id() {
 		return order_Id;

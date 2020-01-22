@@ -42,7 +42,7 @@ public class customerService extends Employee {
                 order_Id=rs.getString("order_Id");
                 user_id=rs.getString("client_id");
                 date=rs.getDate("complain_date");
-                complainList.add(new Complain(contact_email,contact_phone, complain_title, complain_text, store_adress, date,order_Id,user_id));
+                complainList.add(new Complain(complain_id,contact_email,contact_phone, complain_title, complain_text, store_adress, date,order_Id,user_id));
 //		    	System.out.println("Complain date: "+date.toString()+" Complain ID: " + complain_id + " Contact email: " + contact_email + " Contact phone: " + contact_phone + " Store adress: "+store_adress+"\nTitle: " + complain_title+"\nComplain: "+complain_text);
             }
             rs.close();
@@ -89,7 +89,7 @@ public class customerService extends Employee {
     public boolean replyComplain(Complain complain,String reply_text, double refund){
         try{
             Connection connection = DBConnection.getInstance().getConnection();
-                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE complains SET reply_text=?, refund=?,complain_closed=1 WHERE user_id=?");
+                PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE complains SET reply_text=?, refund=?,complain_closed=1 WHERE complain_id=?");
                 updateUserQuery.setString(1,reply_text);
                 updateUserQuery.setString(2, String.valueOf(refund));
                 updateUserQuery.setInt(3,complain.getComplain_id());
@@ -105,7 +105,7 @@ public class customerService extends Employee {
                         new sendMail(new String[]{complain.getContact_email()},"Complain " + complain.getComplainId() + " Closed", text);
                     }
                 }
-            String text = "Hello :)\n Our costumer service had resolve your complain\n Costumer service reply:\n"+reply_text+"\n Thank you and best regards\n Lilach Ltd";
+            String text = "Hello :)\n Our costumer service had resolve your complain\n Costumer service reply:\n\n"+reply_text+"\n\n\n Thank you and best regards\n Lilach Ltd";
             new sendMail(new String[]{complain.getContact_email()},"Complain " + complain.getComplainId() + " Closed", text);
 
 
@@ -117,5 +117,38 @@ public class customerService extends Employee {
         }
     }
 
+    public List<Complain> getComplains() {
+        return complains;
+    }
 
+    public Complain getComplainById(int id){
+        try{
+            Complain complain = null;
+            String contact_email,contact_phone,complain_title,complain_text,store_adress,order_Id, user_id;
+            int complain_id;
+            Date date;
+            Connection connection = DBConnection.getInstance().getConnection();
+            Statement stmt = connection.createStatement();
+            String sql  = "select * from  complains  WHERE complain_id=" +String.valueOf(id);
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()) {
+                complain_id=rs.getInt("complain_id");
+                contact_email=rs.getString("contact_email");
+                contact_phone=rs.getString("contact_phone");
+                complain_title=rs.getString("complain_title");
+                complain_text=rs.getString("complain_text");
+                store_adress=rs.getString("store_adress");
+                order_Id=rs.getString("order_Id");
+                user_id=rs.getString("client_id");
+                date=rs.getDate("complain_date");
+                complain = new Complain(complain_id,contact_email,contact_phone, complain_title, complain_text, store_adress, date,order_Id,user_id);
+            }
+            connection.close();
+            return complain;
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 }
