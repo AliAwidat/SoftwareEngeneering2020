@@ -106,7 +106,7 @@ public class Item {
     	int itemId=0;
     	String list="";
         try (Connection db = DBConnection.getInstance().getConnection();
-                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated) values (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated,canAddToBouquet,flowersInItem) values (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, this.type.toString());
         	preparedStatement.setString(2, this.dominantColor);
         	preparedStatement.setDouble(3, this.price);
@@ -151,8 +151,8 @@ public class Item {
 	        list = list.substring(0, list.length()-1) + ";";
 	        System.out.println(list);
 	        try (Connection db2 = DBConnection.getInstance().getConnection();
-	        		PreparedStatement preparedStatement2 = db2.prepareStatement("INSERT INTO prices(store_id, price, item_id) values ?")) {
-	               preparedStatement2.setString(1, list);
+	        		PreparedStatement preparedStatement2 = db2.prepareStatement("INSERT INTO prices(store_id, price, item_id) values"+list)) {
+	               //preparedStatement2.setString(1, list);
 	           	preparedStatement2.executeUpdate();
 	           	db2.close();
 	        } catch (Exception e) {
@@ -211,7 +211,7 @@ public class Item {
     public static String getFlowersInItemIdFromDb(int itemId) {
     	String flowers="";
         try (Connection db = DBConnection.getInstance().getConnection();
-        		ResultSet rs = db.prepareStatement("select flowersInItem from Items where item_id="+itemId).executeQuery()){
+        		ResultSet rs = db.prepareStatement("select flowersInItem from items where item_id="+itemId).executeQuery()){
                 if (rs.next()) {
                 	flowers = rs.getString(1);
                 }
@@ -222,11 +222,19 @@ public class Item {
         return flowers;
     }
     
-    public static double getItemPrice(int itemId) {
+//    public double getItemPrice(int itemId) {
+//    	double totalPrice=0;
+//    	List<Item> items=new ArrayList<Item>();
+//    	items=getFlowersInItemFromDb(itemId);
+//        for (Item item : items) { 		      
+//        	totalPrice+=item.getPrice();
+//        }
+//        return totalPrice;
+//    }
+    
+    public double getItemPrice() {
     	double totalPrice=0;
-    	List<Item> items=new ArrayList<Item>();
-    	items=getFlowersInItemFromDb(itemId);
-        for (Item item : items) { 		      
+        for (Item item : flowerInItem) { 		      
         	totalPrice+=item.getPrice();
         }
         return totalPrice;
@@ -249,14 +257,15 @@ public class Item {
     	
     
   //  public static boolean update
-    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image ,String flowers ) {
+    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image , Boolean canAddToBouquet) {
     	//this.id = itemId;
     	this.type = itemType;
 	    this.dominantColor = dominantColor;
 	    this.price = itemPrice;
 	    this.updated = 0;
 	    this.image = image;
-	    
+	    this.canAddToBouquet=canAddToBouquet;
+	    this.flowerInItem=new ArrayList<Item>();
     }
     
     
@@ -307,6 +316,14 @@ public class Item {
     public void setPrice(Double price) {
     	this.price = price;
     }
-
-    
+    public void addItem(Item item) {
+    	flowerInItem.add(item);
+    }
+    public void removeItem(Item item) {
+         for (Item i : flowerInItem) { 		      
+        	 if(item.getId()==i.getId()) {
+        		 flowerInItem.remove(i);
+        	 }
+         }
+    }
 }
