@@ -1,31 +1,31 @@
-package src.lil.models;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.time.format.DateTimeFormatter;
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-
-import junit.framework.TestCase;
-import src.lil.Enums.OrderType;
-
-class orderTest extends TestCase {
-	
-	List<Integer> my_list = new ArrayList();
-	LocalTime ShippingHour = LocalTime.parse("16:17:00");
-	LocalDate ShippingDate = LocalDate.parse("2020-01-25");
-	LocalDateTime orderDate = LocalDateTime.now();
-    //CHECKED
-	@Test
-    public void checkInsertIntoOrders() throws Exception{
-		my_list.add(2);
-		my_list.add(3);
-    	Order TestOrder = new Order(4444,4541112,OrderType.FromTheCatlaog,my_list, "","0522245689",
-    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "1") ; 
-    	Assert.assertTrue(TestOrder.insertIntoOrders()== true);
-    }
+//package src.lil.models;
+//import java.time.LocalDate;
+//import java.time.LocalDateTime;
+//import java.time.LocalTime;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.time.format.DateTimeFormatter;
+//import org.junit.Assert;
+//import org.junit.jupiter.api.Test;
+//
+//import junit.framework.TestCase;
+//import src.lil.Enums.OrderType;
+//
+//class orderTest extends TestCase {
+//	
+//	List<Integer> my_list = new ArrayList();
+//	LocalTime ShippingHour = LocalTime.parse("16:17:00");
+//	LocalDate ShippingDate = LocalDate.parse("2020-01-25");
+//	LocalDateTime orderDate = LocalDateTime.now();
+//    //CHECKED
+//	@Test
+//    public void checkInsertIntoOrders() throws Exception{
+//		my_list.add(2);
+//		my_list.add(3);
+//    	Order TestOrder = new Order(4444,4541112,OrderType.FromTheCatlaog,my_list, "","0522245689",
+//    			orderDate,"2-10", true,"Bab jacobs",ShippingHour,ShippingDate, true ,"2ere b jacobs","basel", "1") ; 
+//    	Assert.assertTrue(TestOrder.insertIntoOrders()== true);
+//    }
 	
 //	    
 //	//CHECKED
@@ -76,4 +76,4 @@ class orderTest extends TestCase {
 //	      String  e = myLastOrder.orderTimeDiff(myLastOrder);
 //	      System.out.println(e);
 //	  }
-}
+//}

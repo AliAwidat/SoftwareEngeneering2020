@@ -7,16 +7,21 @@ import java.io.*;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import javafx.util.Pair;
 import src.lil.models.Complain;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
+import src.lil.models.Store;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -39,6 +44,7 @@ public class EchoServer extends AbstractServer {
 	 * Log in instance.
 	 */
 	private Login _login = new Login();
+	private  List<Pair<String,Integer>> store_addresses;
 	/**
 	 * The default port to listen on.
 	 */
