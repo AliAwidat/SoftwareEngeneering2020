@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -50,82 +49,72 @@
       </AnchorPane>
       <Pane layoutX="14.0" layoutY="138.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
          <children>
-            <TextField fx:id="ContactId" layoutX="185.0" layoutY="183.0" promptText="id" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="84.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id">
+            <TextField fx:id="user_id_txt" layoutX="185.0" layoutY="183.0" promptText="id" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="84.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="84.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full name">
+            <Text layoutX="84.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full name: ">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="FullName" layoutX="185.0" layoutY="139.0" promptText="Full name" style="-fx-background-color: #ffffff;">
-               <effect>
-                  <Bloom />
-               </effect>
-            </TextField>
-            <Text layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number">
+            <Text layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="phoneNum" layoutX="185.0" layoutY="225.0" promptText="Phone number" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="email" layoutX="185.0" layoutY="269.0" promptText="Email" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="84.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
+            <TextField fx:id="phone_num_txt" layoutX="185.0" layoutY="225.0" promptText="Phone number" style="-fx-background-color: #ffffff;" />
+            <TextField fx:id="email_txt" layoutX="185.0" layoutY="266.0" promptText="Email" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="84.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="bankAcc" layoutX="476.0" layoutY="141.0" promptText="Bank account" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="368.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bank account">
+            <TextField fx:id="bank_acc_txt" layoutX="476.0" layoutY="141.0" promptText="Bank account" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="362.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bank account:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="balance" layoutX="475.0" layoutY="186.0" promptText="Balance" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="369.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance">
+            <TextField fx:id="credit_txt" layoutX="476.0" layoutY="183.0" promptText="CreditCard" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="363.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CreditCard:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="creditCard" layoutX="477.0" layoutY="224.0" promptText="CreditCard" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="367.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CreditCard">
+            <Text layoutX="363.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Store:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="368.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Store ">
+            <ComboBox fx:id="store_add_box" layoutX="484.0" layoutY="266.0" prefWidth="150.0" />
+            <Text layoutX="84.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <ComboBox fx:id="StoreNum" layoutX="483.0" layoutY="310.0" prefWidth="150.0" />
-            <Text layoutX="84.0" layoutY="334.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
+            <TextField fx:id="password_txt" layoutX="185.0" layoutY="312.0" promptText="Password" style="-fx-background-color: #ffffff;" />
+            <Text layoutX="362.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription Type:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="pass" layoutX="185.0" layoutY="316.0" promptText="Password" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="367.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription Type">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="SubType" layoutX="486.0" layoutY="270.0" promptText="Subscription Type" style="-fx-background-color: #ffffff;" />
-            <Button fx:id="register" layoutX="523.0" layoutY="388.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="86.0" text="Register" />
+            <Button fx:id="register_butt" layoutX="524.0" layoutY="344.0" mnemonicParsing="false" onAction="#handle_reg_butt" prefHeight="37.0" prefWidth="86.0" text="Register" />
             <Text layoutX="92.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <Text fill="#ed0505" fontSmoothingType="LCD" layoutX="75.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To Our Flowers World">
                <font>
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Text>
-            <ImageView fx:id="cart_id1" fitHeight="37.0" fitWidth="41.0" layoutX="350.0" layoutY="65.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="41.0" layoutX="350.0" layoutY="65.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@assets/flower.jpg" />
                </image>
             </ImageView>
+            <TextField fx:id="fullname_txt" layoutX="185.0" layoutY="141.0" promptText="full name" style="-fx-background-color: #ffffff;" />
+            <ComboBox fx:id="sub_type_box" layoutX="484.0" layoutY="225.0" prefWidth="150.0" />
          </children></Pane>
       <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
          <font>

@@ -1,3 +1,4 @@
+
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -92,7 +93,7 @@ public class EchoServer extends AbstractServer {
 					complain.addComplain();
 					return;
 				}
-if (msg.toString().startsWith("Login ")) {
+      if (msg.toString().startsWith("Login ")) {
 
 			Integer user_id;
 			String password;
@@ -115,7 +116,6 @@ if (msg.toString().startsWith("Login ")) {
 				}
 			} else {
 				try {
-					Gson gson = new Gson();
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
 					client.sendToClient("successful " + json );
@@ -137,6 +137,19 @@ if (msg.toString().startsWith("Login ")) {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+			}
+		}
+    else if(msg.toString().startsWith("get stores")) {
+			store_addresses = Store.get_store_addresses();
+			List<String> addresses = new ArrayList<String>();
+			for (Pair<String, Integer> pair : store_addresses) {
+				addresses.add(pair.getKey());
+			}
+			String json = gson.toJson(addresses);
+			try {
+				client.sendToClient(json);
+			}catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		else if (msg.toString().startsWith("#login ")) {
