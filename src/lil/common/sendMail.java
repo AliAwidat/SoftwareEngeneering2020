@@ -4,7 +4,6 @@ package src.lil.common;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.security.auth.Subject;
 
 //lilach ltd 2-factor login
 //        5817 7897
@@ -18,7 +17,7 @@ import javax.security.auth.Subject;
 //        7009 2146
 //        7757 9307
 public class sendMail {
-    public sendMail(String[] to, String subject, String text){
+    public sendMail(ArrayList<String> to, String subject, String text){
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
@@ -34,11 +33,11 @@ public class sendMail {
         try {
             String from="lilach.ltd@gmail.com";
             message.setFrom(new InternetAddress(from));
-            InternetAddress[] toAddress = new InternetAddress[to.length];
+            InternetAddress[] toAddress = new InternetAddress[to.size()];
 
             // To get the array of addresses
-            for( int i = 0; i < to.length; i++ ) {
-                toAddress[i] = new InternetAddress(to[i]);
+            for( int i = 0; i < to.size(); i++ ) {
+                toAddress[i] = new InternetAddress(to.get(i));
             }
 
             for (InternetAddress address : toAddress) {
