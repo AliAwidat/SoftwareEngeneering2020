@@ -76,14 +76,14 @@ public class Order implements OrderServices {
     	return ;
     }
     
-    /**
-     * adding  items to cart
-     *
-     * @param id
-     * @return  set of items
-     * @throws SQLException
-     * @throws NotFound
-     */
+//    /**
+//     * adding  items to cart
+//     *
+//     * @param id
+//     * @return  set of items
+//     * @throws SQLException
+//     * @throws NotFound
+//     */
     public List<Integer> addToCart(int item_id) {
     	this.items.add(item_id);
     	return items;
@@ -118,14 +118,14 @@ public class Order implements OrderServices {
     public Order() {
 	}
 
-    /**
-     * find Order of a given Order ID
-     *
-     * @param id
-     * @return matching Order
-     * @throws SQLException
-     * @throws NotFound
-     */
+//    /**
+//     * find Order of a given Order ID
+//     *
+//     * @param id
+//     * @return matching Order
+//     * @throws SQLException
+//     * @throws NotFound
+//     */
     public Order findOrderById(Integer id) throws SQLException, NotFound {
         try {Connection db = DBConnection.getInstance().getConnection();
         		Statement statment = db.createStatement();
@@ -133,7 +133,9 @@ public class Order implements OrderServices {
         		rs.next();
                 Order order = new Order();
                 order.fillFieldsFromResultSet(rs);
+            db.close();
                 return order;
+
             }
     	catch(Exception e) {
        	System.out.println(e.getMessage());
@@ -141,19 +143,20 @@ public class Order implements OrderServices {
         }
     }
 
-    /**
-     * count number of order of a user
-     *
-     * @param id
-     * @return number of matching order
-     * @throws SQLException
-     * @throws NotFound
-     */
+//    /**
+//     * count number of order of a user
+//     *
+//     * @param id
+//     * @return number of matching order
+//     * @throws SQLException
+//     * @throws NotFound
+//     */
     public  int countForUser(Integer id) throws SQLException, NotFound {
         try {Connection db =DBConnection.getInstance().getConnection();
          		Statement statment = db.createStatement();
         		ResultSet rs = statment.executeQuery("SELECT COUNT(*) AS total FROM orders WHERE user_id ="+userId);
         		rs.next();
+            db.close();
                 return rs.getInt("total");
             }
        	catch(Exception e) {
@@ -166,7 +169,7 @@ public class Order implements OrderServices {
     /**
      * find Order of a given user
      *
-     * @param user_id
+//     * @param user_id
      * @return List of matching orders
      * @throws SQLException
      * @throws NotFound
@@ -197,40 +200,39 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
-	@Override
-    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
-        try {
-        	Connection db = DBConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = db.prepareStatement("insert into orders",Statement.RETURN_GENERATED_KEYS); {
-//            preparedStatement.setInt(1, getuserId());
-////            preparedStatement.setInt(2, getorderId());
-////            preparedStatement.setString(2,getOrderType().toString());
-//            preparedStatement.setString(3, getItems());
-////            preparedStatement.setString(4, getDomiantColor());
-////            preparedStatement.setString(4,getColors());
-//            preparedStatement.setString(5, getReciverPhone());
-//            preparedStatement.setString(6, getOrderDate());
-////            preparedStatement.setString(7, getpriceDomain());
-//            preparedStatement.setBoolean(8, getDelivery());
-//            preparedStatement.setString(9, getDeliveryLocation());
-//            preparedStatement.setString(10,getTime());
-//            preparedStatement.setString(11, getShippingDate());
-//            preparedStatement.setBoolean(12, getGreating());
-//            preparedStatement.setString(13, getGreatingText());
-//            preparedStatement.setString(14, getContactName());
-//            preparedStatement.setString(15, getStoreId());
-//            preparedStatement.setString(16, orderCost);
-//            System.out.println(OrderCost());
-            // run the insert command
-            preparedStatement.executeUpdate();
-            db.close();
-            return true;
-             }
-        } catch (Exception e) {
-        	System.out.println(e.getMessage());
-        	return false;
-        }
-    }
+//    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
+//        try {
+//        	Connection db = DBConnection.getInstance().getConnection();
+//             PreparedStatement preparedStatement = db.prepareStatement("insert into orders",Statement.RETURN_GENERATED_KEYS); {
+////            preparedStatement.setInt(1, getuserId());
+//////            preparedStatement.setInt(2, getorderId());
+//////            preparedStatement.setString(2,getOrderType().toString());
+////            preparedStatement.setString(3, getItems());
+//////            preparedStatement.setString(4, getDomiantColor());
+//////            preparedStatement.setString(4,getColors());
+////            preparedStatement.setString(5, getReciverPhone());
+////            preparedStatement.setString(6, getOrderDate());
+//////            preparedStatement.setString(7, getpriceDomain());
+////            preparedStatement.setBoolean(8, getDelivery());
+////            preparedStatement.setString(9, getDeliveryLocation());
+////            preparedStatement.setString(10,getTime());
+////            preparedStatement.setString(11, getShippingDate());
+////            preparedStatement.setBoolean(12, getGreating());
+////            preparedStatement.setString(13, getGreatingText());
+////            preparedStatement.setString(14, getContactName());
+////            preparedStatement.setString(15, getStoreId());
+////            preparedStatement.setString(16, orderCost);
+////            System.out.println(OrderCost());
+//            // run the insert command
+//            preparedStatement.executeUpdate();
+//            db.close();
+//            return true;
+//             }
+//        } catch (Exception e) {
+//        	System.out.println(e.getMessage());
+//        	return false;
+//        }
+//    }
 	
 
     /**
@@ -241,7 +243,7 @@ public class Order implements OrderServices {
      * @throws AlreadyExists
      */
 
-    public boolean updateOrder() throws SQLException, NotFound, AlreadyExists {
+    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
         try {
         	Connection db = DBConnection.getInstance().getConnection();
              PreparedStatement preparedStatement = db.prepareStatement("insert into orders (user_id,  receiver_phone,order_Date,delivery,delivery_location,Shipping_Hour,Shipping_Date,greating,greating_text,contact_name,store_id,order_price ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS); {
@@ -251,18 +253,18 @@ public class Order implements OrderServices {
 //            preparedStatement.setString(3, getItems());
 //            preparedStatement.setString(4, getDomiantColor());
 //            preparedStatement.setString(4,getColors());
-            preparedStatement.setString(5, getReciverPhone());
-            preparedStatement.setString(6, getOrderDate());
+            preparedStatement.setString(2, getReciverPhone());
+            preparedStatement.setString(3, getOrderDate());
 //            preparedStatement.setString(7, getpriceDomain());
-            preparedStatement.setBoolean(8, getDelivery());
-            preparedStatement.setString(9, getDeliveryLocation());
-            preparedStatement.setString(10,getTime());
-            preparedStatement.setString(11, getShippingDate());
-            preparedStatement.setBoolean(12, getGreating());
+            preparedStatement.setBoolean(4, getDelivery());
+            preparedStatement.setString(5, getDeliveryLocation());
+            preparedStatement.setString(6,getTime());
+            preparedStatement.setString(7, getShippingDate());
+            preparedStatement.setBoolean(8, getGreating());
             preparedStatement.setString(13, getGreatingText());
             preparedStatement.setString(14, getContactName());
-            preparedStatement.setString(15, getStoreId());
-            preparedStatement.setString(16, orderCost);
+//            preparedStatement.setString(15, getStoreId());
+//            preparedStatement.setString(16, orderCost);
 //            System.out.println(OrderCost());
             // run the insert command
             preparedStatement.executeUpdate();
@@ -421,6 +423,7 @@ public class Order implements OrderServices {
 	         statement.setInt(1, Integer.parseInt(this.getStoreId()));
 	    	 ResultSet result = statement.executeQuery();
 	         result.next();
+            db.close();
 	          sum = result.getString(1);
 	    	}
     		   catch (Exception e) {
@@ -433,6 +436,7 @@ public class Order implements OrderServices {
 	         PreparedStatement statement =  db.prepareStatement("select client_subscriptionType from clients where client_id = " + userId);
 	         ResultSet result = statement.executeQuery();
 	         result.next();
+            db.close();
 	         SubscriptionType sub = SubscriptionType.valueOf(result.getString(1));
 	         double discount =1;
 	         if(sub == SubscriptionType.Monthly)

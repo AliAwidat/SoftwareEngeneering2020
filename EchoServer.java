@@ -99,6 +99,12 @@ public class EchoServer extends AbstractServer {
 				complain.addComplain();
 				return;
 			}
+		if(String.valueOf(msg).startsWith("SubmitPurchase")){
+			String orderAsString = String.valueOf(msg).split("SubmitPurchase")[1];
+			Order myOrderDetails = gson.fromJson(orderAsString,Order.class);
+			myOrderDetails.insertIntoOrders();
+			return;
+		}
 			if(msg.toString().startsWith("GetAllComplains")){
 				try {
 					String complainAsString = String.valueOf(msg).split("GetAllComplains")[1];

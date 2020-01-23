@@ -2,6 +2,8 @@ package src.lil.client.lilachgui;
 
 import java.io.IOException;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import src.lil.client.Instance;
+import src.lil.models.Client;
+import src.lil.models.User;
 
 public class myOrdersCont extends LilachController {
 
@@ -29,8 +36,6 @@ public class myOrdersCont extends LilachController {
 	@FXML
 	private TextField DeliveryLoc;
 
-	@FXML
-	private TextField greating;
 
 	@FXML
 	private TextField ShippingDate;
@@ -51,7 +56,95 @@ public class myOrdersCont extends LilachController {
 	private Button purchase;
 
 	@FXML
+	private CheckBox WithDelivery;
+
+
+	@FXML
+	private Text msg_to_client;
+
+	@FXML
+	private TextArea Deliverylocation;
+	@FXML
+	private TextArea greating;
+	@FXML
+	private Text star4;
+
+	@FXML
+	private Text star3;
+
+	@FXML
+	private Text star2;
+
+	@FXML
+	private Text star1;
+
+	@FXML
 	public void initialize() {
 		this.check_logins();
+		Client currUser = ((Client)Instance.getCurrentUser());
+		Contactname.setText(currUser.getName());
+		ReceiverPho.setText(currUser.getName());
 	}
+	@FXML
+	void handle_Add_greating_butt(ActionEvent event){
+		if (AddGreating.isSelected()) {
+			greating.setVisible(true);
+		}
+		else {
+			greating.setVisible(false);
+		}
+	}
+	@FXML
+	void handle_Add_dele_butt(ActionEvent event){
+		if (WithDelivery.isSelected()) {
+			Deliverylocation.setVisible(true);
+		}
+		else {
+			Deliverylocation.setVisible(false);
+		}
+	}
+	@FXML
+	void handle_purchase_butt(ActionEvent event) throws IOException {
+		try{
+			if(Contactname.getText().isEmpty() || ReceiverPho.getText().isEmpty() || ShippingTime.getText().isEmpty()||ShippingDate.getText().isEmpty()){
+				if(Contactname.getText().isEmpty()){
+					Contactname.setStyle("-fx-background-color: yellow;");
+					star1.setVisible(true);
+				}
+				if(ReceiverPho.getText().isEmpty()) {
+					ReceiverPho.setStyle("-fx-background-color: yellow;");
+					star2.setVisible(true);
+				}
+				if(ShippingTime.getText().isEmpty()) {
+					ShippingTime.setStyle("-fx-background-color: yellow;");
+					star3.setVisible(true);
+				}
+				if(ShippingDate.getText().isEmpty()) {
+					ShippingDate.setStyle("-fx-background-color: yellow;");
+					star4.setVisible(true);
+				}
+				msg_to_client.setText("Please fill in the yellow fields");
+				return;
+			}
+			JsonObject myData = new JsonObject();
+			myData.addProperty("contact_name",Contactname.getText());
+			myData.addProperty("receiver_phone",ReceiverPho.getText());
+			myData.addProperty("Shipping_Hour",ShippingTime.getText());
+			myData.addProperty("Shipping_Date",ShippingDate.getText());
+			myData.addProperty("greating",AddGreating.isSelected());
+			myData.addProperty("greating_text",greating.getText());
+			myData.addProperty("WithDelivery",WithDelivery.isSelected());
+			myData.addProperty("delivery_location",Deliverylocation.getText());
+			Gson gson = new Gson();
+			String element = gson.toJson(myData);
+			element = "SubmitPurchase" + element;
+			Instance.getClientConsole().get_client().sendToServer(element);
+			msg_to_client.setText("purchase sent successfully :)");
+
+		}
+		catch (Exception e){
+			msg_to_client.setText("Something went wrong ! please Try again");
+		}
+	}
+
 }
