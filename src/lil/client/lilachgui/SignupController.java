@@ -137,7 +137,7 @@ public class SignupController extends LilachController {
 			}
 			Client register = new Client(Integer.parseInt(user_id_txt.getText()), fullname_txt.getText(),
 					phone_num_txt.getText(), bank_acc_txt.getText(), "", email_txt.getText(), password_txt.getText(),
-					val, credit_txt.getText(), address_txt.getText(), "0");
+					val, credit_txt.getText(), address_txt.getText(), 0.0);
 			String json = gson.toJson(register);
 			try {
 				Instance.resetResponse();

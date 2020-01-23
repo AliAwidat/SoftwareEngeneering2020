@@ -6,8 +6,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.customerServiceController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.BlockUsersController">
     <children>
         <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
         <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
@@ -37,7 +35,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <ScrollBar layoutX="690.0" layoutY="10.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
+        <ScrollBar layoutX="696.0" layoutY="4.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
         <AnchorPane layoutX="8.0" layoutY="32.0" prefHeight="98.0" prefWidth="128.0">
             <children>
                 <ImageView fx:id="logo" fitHeight="105.0" fitWidth="127.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
@@ -49,22 +47,22 @@
         </AnchorPane>
         <Pane layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
          <children>
-            <Text fill="#cd63ad" layoutX="86.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose complain title to handle" textAlignment="CENTER" wrappingWidth="295.6848602294922">
+            <Text fill="#c92626" layoutX="79.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Check User to block">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Berlin Sans FB Demi Bold" size="22.0" />
                </font>
             </Text>
-            <Text fx:id="complain_title" layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain title: " wrappingWidth="594.0598945617676" />
-            <Text fx:id="complain" layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain: " wrappingWidth="594.0598945617676" />
-            <Text layoutX="14.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reply:" />
-            <TextArea fx:id="reply_text" layoutX="56.0" layoutY="231.0" prefHeight="200.0" prefWidth="306.0" promptText="reply text" />
-            <Button layoutX="485.0" layoutY="386.0" mnemonicParsing="false" onAction="#submit_complain_reply" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Submit " />
-            <Text layoutX="405.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refund" />
-            <TextField fx:id="refund" layoutX="452.0" layoutY="237.0" promptText="Refund only in numbers" />
-            <ComboBox fx:id="all_titles" layoutX="398.0" layoutY="10.0" onAction="#handle_change_complain" prefWidth="150.0" />
-            <Text fx:id="messageToEmployee" fill="#cd63ad" layoutX="378.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="295.6848602294922">
+            <Text layoutX="79.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List is sorted from biggest balance to smallest">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Verdana Bold" size="9.0" />
+               </font>
+            </Text>
+            <ComboBox fx:id="users_with_balance" layoutX="381.0" layoutY="44.0" onAction="#handle_user_change" prefWidth="150.0" promptText="User name" />
+            <Text fx:id="user_balance" layoutX="381.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance" wrappingWidth="40.60546875" />
+            <Button layoutX="413.0" layoutY="204.0" mnemonicParsing="false" onAction="#handle_block_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Block" />
+            <Text fx:id="messageToManger" fill="RED" layoutX="445.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Text>
          </children></Pane>
@@ -87,11 +85,10 @@
         </ImageView>
         <Button fx:id="signout_btn1" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Out" />
         <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
-        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
+        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users">
             <font>
                 <Font size="10.0" />
             </font>
         </Button>
     </children>
-
 </AnchorPane>

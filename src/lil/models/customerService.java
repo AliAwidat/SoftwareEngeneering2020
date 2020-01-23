@@ -13,7 +13,7 @@ import java.util.List;
 public class customerService extends Employee {
     private List<Complain> complains;
     public customerService(int userId, String name, String phone, String email, String password,  String bankAccount) throws Order.NotFound, IOException {
-        super(userId, name, phone, bankAccount,email, password, Role.customerService,"-1","-1");
+        super(userId, name, phone, bankAccount,email, password, Role.customerService,"-1",-1.0);
         this.complains = viewComplains();
     }
     public customerService(ResultSet rs) throws Exception {
