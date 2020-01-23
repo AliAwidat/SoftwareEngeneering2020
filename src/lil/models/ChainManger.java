@@ -12,7 +12,7 @@ public class ChainManger extends StoreManger implements UserManagement {
 
 	
     public ChainManger(int userId, String name, String phone, String email, String password,  String bankAccount) {
-        super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1","-1");
+        super(userId, name, phone, bankAccount,email, password, Role.ChainManger,"-1",-1.0);
     }
     public ChainManger(){super();}
     public ChainManger(ResultSet rs) throws Exception {
@@ -42,7 +42,7 @@ public class ChainManger extends StoreManger implements UserManagement {
                 updateUserQuery.setString(5,((Employee) updatedUser).getBankAccount());
                 updateUserQuery.setString(6,((Employee) updatedUser).getPhone());
                 updateUserQuery.setString(7,((Employee) updatedUser).getStoreId());
-                updateUserQuery.setString(8,((Employee) updatedUser).getBalance());
+                updateUserQuery.setDouble(8,((Employee) updatedUser).getBalance());
                 updateUserQuery.setInt(9,((Employee) updatedUser).getUserId());
                 updateUserQuery.executeUpdate();
                 connection.close();
@@ -60,7 +60,7 @@ public class ChainManger extends StoreManger implements UserManagement {
                 updateUserQuery.setString(8,((Client) updatedUser).getSubscriptionType().toString());
                 updateUserQuery.setBoolean(9,((Client) updatedUser).getIsConnected());
                 updateUserQuery.setString(9,((Client) updatedUser).getStoreId());
-                updateUserQuery.setString(9,((Client) updatedUser).getBalance());
+                updateUserQuery.setDouble(9,((Client) updatedUser).getBalance());
                 updateUserQuery.setInt(10,((Client) updatedUser).getUserId());
                 updateUserQuery.executeUpdate();
                 connection.close();
@@ -164,6 +164,25 @@ public class ChainManger extends StoreManger implements UserManagement {
         catch (Exception e){
             System.out.println(e.getMessage());
             return false;
+        }
+    }
+
+    public String getAllUsersWithBalance(){
+        try{
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT *  FROM clients  WHERE client_balance > 0 and client_block=0");
+        StringBuilder result = new StringBuilder();
+        while(rs.next()){
+            result.append(rs.getString("client_name")).append(" ~ ID: ").append(rs.getString("client_id")).append("-").append(rs.getDouble("client_balance")).append(",");
+        }
+        result = new StringBuilder(result.substring(0, result.length() - 1));
+        connection.close();
+        return result.toString();
+        }
+        catch (Exception e){
+        System.out.println(e.getMessage());
+        return null;
         }
     }
 }

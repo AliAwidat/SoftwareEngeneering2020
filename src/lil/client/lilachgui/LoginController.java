@@ -13,10 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import src.lil.client.Instance;
-import src.lil.models.ChainManger;
-import src.lil.models.Client;
-import src.lil.models.Employee;
-import src.lil.models.StoreManger;
+import src.lil.models.*;
 
 public class LoginController extends LilachController {
 
@@ -75,6 +72,8 @@ public class LoginController extends LilachController {
 					current_user = gson.fromJson(Role, StoreManger.class);
 				} else if (Role.contains("ChainManger")) {
 					current_user = gson.fromJson(Role, ChainManger.class);
+				}else if (Role.contains("customerService")) {
+					current_user = gson.fromJson(Role, customerService.class);
 				} else if (Role.contains("Employee")) {
 					current_user = gson.fromJson(Role, Employee.class);
 				} else {

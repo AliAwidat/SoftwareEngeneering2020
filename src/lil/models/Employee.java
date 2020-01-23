@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class Employee extends User {
     protected Role role;
 
-    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId, String balannce) {
+    public Employee(int userId, String name, String phone, String bankAccount, String email, String password,  Role role, String storeId, Double balannce) {
         super(userId, name, phone, bankAccount, email, password, storeId,balannce);
         this.role = role;
     }
@@ -41,7 +41,7 @@ public class Employee extends User {
             updateUserQuery.setString(6,bankAccount);
             updateUserQuery.setString(7,phone);
             updateUserQuery.setString(8,storeId);
-            updateUserQuery.setString(9,balance);
+            updateUserQuery.setDouble(9,balance);
             updateUserQuery.executeUpdate();
             connection.close();
             return true;
@@ -53,7 +53,7 @@ public class Employee extends User {
     }
 
     public Employee(ResultSet rs) throws Exception{
-        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"),rs.getString("user_balance"));
+        this(rs.getInt("user_id"),rs.getString("user_name"),rs.getString("user_phone"),rs.getString("user_bankAccount"),rs.getString("user_email"),rs.getString("user_password"), Role.valueOf(rs.getString("user_role")),rs.getString("store_id"),rs.getDouble("user_balance"));
     }
 
     public Employee(){super();}

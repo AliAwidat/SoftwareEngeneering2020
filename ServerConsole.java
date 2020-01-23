@@ -3,6 +3,11 @@
 // license found at www.lloseng.com 
 
 import java.io.*;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import src.lil.common.*;
 
 /**
@@ -123,6 +128,20 @@ public class ServerConsole implements ChatIF
     }
     ServerConsole server = new ServerConsole(port);
     server.accept();  //Wait for console data
+
+    Calendar today = Calendar.getInstance();
+    today.set(Calendar.HOUR_OF_DAY, 2);
+    today.set(Calendar.MINUTE, 0);
+    today.set(Calendar.SECOND, 0);
+
+    // Every night at 2AM run messaging service
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        ScheduledOps.messageAboutComplain();
+      }
+    }, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
   }
 }
 //End of ServerConsole class
