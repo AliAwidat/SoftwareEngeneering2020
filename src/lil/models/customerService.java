@@ -88,6 +88,8 @@ public class customerService extends Employee {
 
     public boolean replyComplain(Complain complain,String reply_text, double refund){
         try{
+            ArrayList<String> email = null;
+            email.add(complain.getContact_email());
             Connection connection = DBConnection.getInstance().getConnection();
                 PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE complains SET reply_text=?, refund=?,complain_closed=1 WHERE complain_id=?");
                 updateUserQuery.setString(1,reply_text);
@@ -102,11 +104,11 @@ public class customerService extends Employee {
                         assert client != null;
                         client.pay(refund);
                         String text = "Hello :)\n Our costumer service had resolve your complain\n Costumer service reply:\n"+reply_text+"\n You have got refund: " + String.valueOf(refund) +"\n Thank you and best regards\n Lilach Ltd";
-                        new sendMail(new String[]{complain.getContact_email()},"Complain " + complain.getComplainId() + " Closed", text);
+                        new sendMail(email,"Complain " + complain.getComplainId() + " Closed", text);
                     }
                 }
             String text = "Hello :)\n Our costumer service had resolve your complain\n Costumer service reply:\n\n"+reply_text+"\n\n\n Thank you and best regards\n Lilach Ltd";
-            new sendMail(new String[]{complain.getContact_email()},"Complain " + complain.getComplainId() + " Closed", text);
+            new sendMail(email,"Complain " + complain.getComplainId() + " Closed", text);
 
 
             return true;

@@ -118,7 +118,14 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_complain_butt(ActionEvent event) throws IOException {
-		get_scene("ComplainPage.fxml", "Complain!");
+		if(Instance.getCurrentUser().getClass().getName().contains("customerService")){
+			complain_btn.setText("Complains Handle");
+			get_scene("customerServiceView.fxml", "Complains Handle!");
+		}
+		else{
+			complain_btn.setText("Complain");
+			get_scene("ComplainPage.fxml", "Complain!");
+		}
 	}
 
 	@FXML
