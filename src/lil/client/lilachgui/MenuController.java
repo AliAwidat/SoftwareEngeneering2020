@@ -54,36 +54,6 @@ public class MenuController extends LilachController{
 		displayItems();
 	}
 
-	@FXML
-	public void handle_login_butt(ActionEvent event) throws IOException {
-		get_scene("LoginPage.fxml", "Login");
-	}
-
-	@FXML
-	public void handle_signup_butt(ActionEvent event) throws IOException {
-		get_scene("SignupPage.fxml", "Sign up");
-	}
-
-	@FXML
-	public void handle_complain_butt(ActionEvent event) throws IOException {
-		get_scene("ComplainPage.fxml", "Complain!");
-	}
-
-	@FXML
-	public void handle_manage_butt(ActionEvent event) throws IOException {
-		get_scene("ManageUsersPage.fxml", "User managment.");
-	}
-
-	@FXML
-	public void handle_menu_butt(ActionEvent event) throws IOException {
-
-		get_scene("MenuPage.fxml", "Welcome to Lilach.");
-	}
-
-	@FXML
-	public void handle_my_order_butt(ActionEvent event) throws IOException {
-		get_scene("myOrdersPage.fxml", "My orders history");
-	}
 
 	private void displayItems() {
 //		Item item = new Item();

@@ -120,7 +120,7 @@ public abstract class User {
 	public void setStoreId(String storeId) {
 		this.storeId= storeId;
 	}
-	public void setBalance(String _balance) {
+	public void setBalance(Double _balance) {
 		this.balance = _balance;
 	}
 	public boolean pay(double amount) {

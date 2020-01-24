@@ -61,7 +61,7 @@ public class Client extends User {
     		String bankAccount, String shippingAddress,
     		String email, String password, 
     		SubscriptionType subscriptionType, 
-    		String creditCardNumber, String store_id, String balance) {
+    		String creditCardNumber, String store_id, Double balance) {
 
         super(userId,name,phone,bankAccount,email,password,store_id,balance);
         this.creditCardNumber = creditCardNumber;

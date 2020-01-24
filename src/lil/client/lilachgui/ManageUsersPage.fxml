@@ -139,11 +139,13 @@
             <Label fx:id="sub_lbl" layoutX="304.0" layoutY="81.0" prefHeight="25.0" prefWidth="79.0" text="Subscription:" />
             <ComboBox fx:id="store_combobox" layoutX="402.0" layoutY="119.0" prefWidth="150.0" />
             <Label layoutX="313.0" layoutY="119.0" prefHeight="25.0" prefWidth="70.0" text="Store:" />
-            <Button fx:id="save_btn" layoutX="416.0" layoutY="240.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Save">
+            
+            <Button fx:id="save_btn" layoutX="408.0" layoutY="240.0" mnemonicParsing="false" onAction="#handle_submit_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Save">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
+            
             <ImageView fx:id="back_arrow_icon" fitHeight="37.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@assets/back_arrow.png" />
@@ -151,7 +153,12 @@
             </ImageView>
          </children>
       </Pane>
-  
+   <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
 
    </children>
+   
 </AnchorPane>

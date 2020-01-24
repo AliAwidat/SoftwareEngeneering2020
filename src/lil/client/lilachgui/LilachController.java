@@ -51,6 +51,7 @@ public abstract class LilachController {
 
 	@FXML
 	protected Button signout_btn1;
+	
 	@FXML
 	protected Button block_Users;
 
@@ -138,7 +139,7 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_menu_butt(ActionEvent event) throws IOException {
-		if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
+		if (Instance.getCurrentUser()!=null && Instance.getCurrentUser().getClass().getName().contains("Client")) {
 			Client client = (Client) Instance.getCurrentUser();
 			if (client.isBlocked()) {
 				get_scene("unblockUser.fxml", "Please pay your balance");
@@ -164,7 +165,7 @@ public abstract class LilachController {
 	}
 	@FXML
 	void handle_block_users(ActionEvent event) throws IOException {
-		get_scene("block_users.fxml", "Cart");
+		get_scene("block_users.fxml", "Block_user");
 	}
 
 	public void check_logins() {
@@ -182,6 +183,8 @@ public abstract class LilachController {
 			show_sign_out_butt();
 		} else if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")) {
 			block_Users.setVisible(true);
+			show_manager_butt();
+			show_sign_out_butt();
 		} else {
 			show_manager_butt();
 			show_sign_out_butt();
