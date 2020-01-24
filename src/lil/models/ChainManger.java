@@ -61,7 +61,7 @@ public class ChainManger extends StoreManger implements UserManagement {
                 updateUserQuery.setBoolean(9,((Client) updatedUser).getIsConnected());
 
                 updateUserQuery.setString(10,((Client) updatedUser).getStoreId());
-                updateUserQuery.setString(11,((Client) updatedUser).getBalance());
+                updateUserQuery.setDouble(11,((Client) updatedUser).getBalance());
                 updateUserQuery.setInt(12,((Client) updatedUser).getUserId());
 
                 updateUserQuery.executeUpdate();

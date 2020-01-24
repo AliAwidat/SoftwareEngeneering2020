@@ -27,8 +27,7 @@ import javafx.scene.layout.Pane;
 import src.lil.Enums.Role;
 import src.lil.Enums.SubscriptionType;
 import src.lil.client.Instance;
-import src.lil.controllers.UserManagement;
-import src.lil.models.ChainManger;
+
 import src.lil.models.Client;
 import src.lil.models.Employee;
 import src.lil.models.StoreManger;
@@ -171,7 +170,6 @@ public class ManageUsersCont extends LilachController {
 		subscription_combobox.getItems().add("Annually");
 		subscription_combobox.getItems().add("None");
 		subscription_combobox.getItems().add("Monthly");
-		
 
 	}
 
@@ -179,7 +177,7 @@ public class ManageUsersCont extends LilachController {
 		role_combobox.getItems().add("Employee");
 		role_combobox.getItems().add("Customers Service");
 		role_combobox.getItems().add("Store Manager");
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -226,14 +224,14 @@ public class ManageUsersCont extends LilachController {
 			current_credit_txt.setVisible(true);
 			role_lbl.setVisible(false);
 			role_combobox.setVisible(false);
-			st = ((Client)obj).getSubscriptionType().toString();
+			st = ((Client) obj).getSubscriptionType().toString();
 			if (st.equals("nonSubscription")) {
 				subscription_combobox.setValue("None");
 			} else if (st.equals("Monthly")) {
 				subscription_combobox.setValue("Monthly");
 			} else
 				subscription_combobox.setValue("Annually");
-			current_balance_txt.setText(((Client) obj).getBalance());
+			current_balance_txt.setText(String.valueOf(((Client) obj).getBalance()));
 			current_address_txt.setText(((Client) obj).getShippingAddress());
 			if (((Client) obj).isBlocked()) {
 				block_checkbox.setIndeterminate(true);
@@ -258,7 +256,7 @@ public class ManageUsersCont extends LilachController {
 			current_credit_txt.setVisible(false);
 			role_lbl.setVisible(true);
 			role_combobox.setVisible(true);
-			st = ((Employee)obj).getRole().toString();
+			st = ((Employee) obj).getRole().toString();
 
 			if (st.equals("Employee")) {
 				role_combobox.setValue("Employee");
@@ -309,7 +307,7 @@ public class ManageUsersCont extends LilachController {
 		((Client) obj).setSubscriptionType(convert_to_subscription(subscription_combobox.getValue()));
 		((Client) obj).setShippingAddress(current_address_txt.getText());
 		((Client) obj).setCreditCardNumber(current_credit_txt.getText());
-		((Client) obj).setBalance(current_balance_txt.getText());
+		((Client) obj).setBalance(Double.parseDouble(current_balance_txt.getText()));
 		((Client) obj).setBlocked(block_checkbox.isSelected());
 	}
 
@@ -384,6 +382,7 @@ public class ManageUsersCont extends LilachController {
 		}
 		employees_table_id.getItems().clear();
 		employees_table_id.getItems().setAll(emp_data);
+
 	}
 
 	@FXML
@@ -401,16 +400,23 @@ public class ManageUsersCont extends LilachController {
 		users_table_id.getColumns().clear();
 		users_table_id.setRowFactory(tv -> {
 			TableRow<Client> row = new TableRow<>();
+			if(row.getItem() != null && row.getItem().isBlocked()) {
+				System.out.println("YES I DO ENTER THIS");
+				row.setStyle("-fx-background-color: #ff0000");
+			}
 			row.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
+			
 				@Override
 				public void handle(MouseEvent event) {
 					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						
 						client_flag = true;
 						obj = row.getItem();
 						start_changes_view();
 					}
-				}
+				};
+
+
 
 			});
 			return row;
@@ -425,13 +431,14 @@ public class ManageUsersCont extends LilachController {
 		for (Client client : clients) {
 			cli_data.add(client);
 		}
-
+		
 		users_table_id.getItems().clear();
 		users_table_id.getItems().setAll(cli_data);
+		
 	}
 
 	@FXML
-	public void handle_complain_butt(ActionEvent e) {
+	public void handle_submit_butt(ActionEvent e) {
 		update_user_fields();
 		if (client_flag) {
 			update_client_fields();
@@ -444,14 +451,19 @@ public class ManageUsersCont extends LilachController {
 		}
 		try {
 			Instance.resetResponse();
-			Instance.getClientConsole().get_client().sendToServer("update " + 
-			((StoreManger)Instance.getCurrentUser()).getUserId() + " " +
-					client_flag + " " +		gson.toJson(obj));
-			while(Instance.getResponse() == null) {
+			Instance.getClientConsole().get_client()
+					.sendToServer("update " + ((StoreManger) Instance.getCurrentUser()).getUserId() + " " + client_flag
+							+ " " + gson.toJson(obj));
+			while (Instance.getResponse() == null) {
 				System.out.println("VVaiting...");
 			}
-			
-		}catch (Exception ee) {
+			if(obj.getClass().getName().contains("Client")) {
+				handle_view_clients_butt(null);
+			}else {
+				handle_view_employees_butt(null);
+			}
+
+		} catch (Exception ee) {
 			ee.printStackTrace();
 		}
 	}
