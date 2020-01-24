@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import src.lil.client.Instance;
+import src.lil.models.Client;
 
 public abstract class LilachController {
 
@@ -50,6 +51,8 @@ public abstract class LilachController {
 
 	@FXML
 	protected Button signout_btn1;
+	@FXML
+	protected Button block_Users;
 
 	/***************************************************/
 	public void show_client_butt() {
@@ -118,7 +121,14 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_complain_butt(ActionEvent event) throws IOException {
-		get_scene("ComplainPage.fxml", "Complain!");
+		if(Instance.getCurrentUser().getClass().getName().contains("customerService")){
+			complain_btn.setText("Complains Handle");
+			get_scene("customerServiceView.fxml", "Complains Handle!");
+		}
+		else{
+			complain_btn.setText("Complain");
+			get_scene("ComplainPage.fxml", "Complain!");
+		}
 	}
 
 	@FXML
@@ -128,8 +138,18 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_menu_butt(ActionEvent event) throws IOException {
-		
-		get_scene("MenuPage.fxml", "Welcome to Lilach.");
+		if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
+			Client client = (Client) Instance.getCurrentUser();
+			if (client.isBlocked()) {
+				get_scene("unblockUser.fxml", "Please pay your balance");
+			} else {
+				this.check_logins();
+				get_scene("MenuPage.fxml", "Welcome to Lilach.");
+			}
+		} else {
+			this.check_logins();
+			get_scene("MenuPage.fxml", "Welcome to Lilach.");
+		}
 	}
 
 	@FXML
@@ -142,6 +162,10 @@ public abstract class LilachController {
 		
 		get_scene("cartView.fxml", "Cart");
 	}
+	@FXML
+	void handle_block_users(ActionEvent event) throws IOException {
+		get_scene("block_users.fxml", "Cart");
+	}
 
 	public void check_logins() {
 
@@ -151,10 +175,13 @@ public abstract class LilachController {
 			myorders_btn.setVisible(false);
 			manageusers_btn.setVisible(false);
 			cart_id.setVisible(false);
+			block_Users.setVisible(false);
 			hide_sign_out_butt();
 		} else if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
 			show_client_butt();
 			show_sign_out_butt();
+		} else if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")) {
+			block_Users.setVisible(true);
 		} else {
 			show_manager_butt();
 			show_sign_out_butt();

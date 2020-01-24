@@ -20,13 +20,13 @@ public abstract class User {
 	protected String email;
 	protected String password;
 	protected String storeId;
-	protected String balance;
+	protected double balance;
 
 	public User() {
 	}
 
 	public User(int userId, String name, String phone, String bankAccount, String email, String password,
-			String storeId, String balance) {
+			String storeId, double balance) {
 		this.userId = userId;
 		this.name = name;
 		this.phone = phone;
@@ -86,7 +86,7 @@ public abstract class User {
 		return storeId;
 	}
 
-	public String getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
@@ -129,10 +129,12 @@ public abstract class User {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT client_balance  FROM clients WHERE client_id=" + userId);
 			rs.next();
-			String balance = rs.getString(1);
-			balance = String.valueOf(Double.parseDouble(balance) - amount);
-			String SQL_INSERT = "UPDATE clients" + "SET client_balance = " + balance + "WHERE client_id=" + userId;
-			PreparedStatement updateUserQuery = connection.prepareStatement(SQL_INSERT);
+			double balance = rs.getDouble("client_balance");
+			balance = balance - amount;
+			PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE clients SET client_balance = ? , client_block = ? WHERE client_id = ?");
+			updateUserQuery.setDouble(1,balance);
+			updateUserQuery.setBoolean(2,false);
+			updateUserQuery.setInt(3,userId);
 			updateUserQuery.executeUpdate();
 			connection.close();
 			return true;
