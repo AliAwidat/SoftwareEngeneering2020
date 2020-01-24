@@ -66,7 +66,7 @@ public class SignupController extends LilachController {
 	private TextField address_txt;
 	////////////////////////////////////////
 
-	List<String> addresses;
+	private List<String> addresses;
 
 	public void fill_sub_type() {
 		sub_type_box.getItems().add("None");
@@ -121,12 +121,6 @@ public class SignupController extends LilachController {
 		id_lable_id.setFill(Color.BLACK);
 		error_msg.setText("");
 		if (check_input()) {
-			try {
-				Instance.resetResponse();
-				Instance.getClientConsole().get_client().sendToServer("getstoreid " + store_add_box.getValue());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			SubscriptionType val;
 			if (sub_type_box.getValue().equals("None")) {
 				val = SubscriptionType.nonSubscription;
@@ -136,8 +130,10 @@ public class SignupController extends LilachController {
 				val = SubscriptionType.Yearly;
 			}
 			Client register = new Client(Integer.parseInt(user_id_txt.getText()), fullname_txt.getText(),
-					phone_num_txt.getText(), bank_acc_txt.getText(), "", email_txt.getText(), password_txt.getText(),
-					val, credit_txt.getText(), address_txt.getText(), 0.0);
+
+					phone_num_txt.getText(), bank_acc_txt.getText(), address_txt.getText(), email_txt.getText(), password_txt.getText(),
+					val, credit_txt.getText(),  store_add_box.getValue().split("-")[1], "0");
+
 			String json = gson.toJson(register);
 			try {
 				Instance.resetResponse();
@@ -184,6 +180,11 @@ public class SignupController extends LilachController {
 						e.printStackTrace();
 					}
 				}
+			}else if(Instance.getResponse().equals("SQL Exception!")) {
+				error_msg.setText("Failed to connect to the DATABASE!");
+			}else {
+				error_msg.setText("User with same ID already exists!");
+				user_id_txt.setStyle("-fx-background-color: yellow;");
 			}
 		}
 

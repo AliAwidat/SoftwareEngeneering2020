@@ -22,6 +22,7 @@ public class Login implements LoginCont {
 	 * map of connected server.
 	 */
 	private Map<Integer, Object> connected_users;
+	Connection db ;
 
 	/**
 	 * Constructor
@@ -29,6 +30,20 @@ public class Login implements LoginCont {
 
 	public Login() {
 		connected_users = new HashMap<Integer, Object>();
+		try {
+			db = DBConnection.getInstance().getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void finalize(){
+		try {
+			db.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -57,8 +72,7 @@ public class Login implements LoginCont {
 	 * This method checks if the entered credentials match with those in the DB.
 	 */
 	public Object check_user(Integer id, String password) throws SQLException, WrongCredentials {
-		try (Connection db = DBConnection.getInstance().getConnection();
-				PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
+		try (	PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
 				PreparedStatement preparedStatement2 = db.prepareStatement("SELECT * FROM users WHERE user_id = ?")) {
 			preparedStatement.setInt(1, id);
 			preparedStatement2.setInt(1, id);
@@ -66,7 +80,8 @@ public class Login implements LoginCont {
 				if (res.next()) {
 					String pw = res.getString("client_password");
 					if (pw.equals(password)) {
-						return new Client(res);
+						Client cli = new Client(res);
+						return cli;
 					}
 				}
 			}
@@ -75,20 +90,27 @@ public class Login implements LoginCont {
 					String pw = res.getString("user_password");
 					if (pw.equals(password)) {
 						if (Role.valueOf(res.getString("user_role")) == Role.Employee) {
-							return new Employee(res);
+							Employee em = new Employee(res);
+							return em;
 						} else if (Role.valueOf(res.getString("user_role")) == Role.StoreManger) {
-							return new StoreManger(res);
+							StoreManger SM = new StoreManger(res);
+							return SM;
 						} else if (Role.valueOf(res.getString("user_role")) == Role.ChainManger) {
-							return new ChainManger(res);
+							ChainManger CM = new ChainManger(res);
+							 
+							return CM;
+						}else {
+							customerService CS = new customerService(res);
+							 
+							return CS;
 						}
 
 					}
 				}
 			} catch (Exception e) {
-
+				 
 				e.printStackTrace();
 			}
-			db.close();
 		}
 		throw new WrongCredentials();
 	}

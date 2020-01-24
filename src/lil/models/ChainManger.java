@@ -59,9 +59,11 @@ public class ChainManger extends StoreManger implements UserManagement {
                 updateUserQuery.setString(7,((Client) updatedUser).getShippingAddress());
                 updateUserQuery.setString(8,((Client) updatedUser).getSubscriptionType().toString());
                 updateUserQuery.setBoolean(9,((Client) updatedUser).getIsConnected());
-                updateUserQuery.setString(9,((Client) updatedUser).getStoreId());
-                updateUserQuery.setDouble(9,((Client) updatedUser).getBalance());
-                updateUserQuery.setInt(10,((Client) updatedUser).getUserId());
+
+                updateUserQuery.setString(10,((Client) updatedUser).getStoreId());
+                updateUserQuery.setString(11,((Client) updatedUser).getBalance());
+                updateUserQuery.setInt(12,((Client) updatedUser).getUserId());
+
                 updateUserQuery.executeUpdate();
                 connection.close();
                 return true;

@@ -117,7 +117,12 @@ public abstract class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
+	public void setStoreId(String storeId) {
+		this.storeId= storeId;
+	}
+	public void setBalance(String _balance) {
+		this.balance = _balance;
+	}
 	public boolean pay(double amount) {
 		try {
 			Connection connection = DBConnection.getInstance().getConnection();
@@ -166,7 +171,7 @@ public abstract class User {
 					if (rs.getString("user_role").equals("Employee")) {
 						employees.add(new Employee(rs));
 					} else if (rs.getString("user_role").equals("customerService")) {
-						employees.add(new customerService());
+						employees.add(new customerService(rs));
 					} else {
 						employees.add(new StoreManger(rs));
 					}

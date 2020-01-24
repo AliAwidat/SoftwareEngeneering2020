@@ -17,7 +17,7 @@ public class Employee extends User {
     }
     @Override
     public String toString() {
-    	return "Employee [,"+to_String();
+    	return "Employee ["+to_String();
     }
     @Override
     public boolean register() throws Exception {

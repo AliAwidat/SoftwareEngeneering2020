@@ -26,7 +26,7 @@ public class Client extends User {
             //check if exist
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *  FROM clients WHERE client_id=" + userId);
-            if(rs.getRow() != 0 ) {
+            if(rs.next()) {
                 throw new AlreadyExists();
             }
             String SQL_INSERT = "INSERT INTO clients (client_id, client_name, client_phone, client_bankAccount, client_email," +
@@ -57,7 +57,12 @@ public class Client extends User {
 
     public Client(){super();}
 
-    public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber, String store_id, double balance) {
+    public Client(int userId, String name, String phone,
+    		String bankAccount, String shippingAddress,
+    		String email, String password, 
+    		SubscriptionType subscriptionType, 
+    		String creditCardNumber, String store_id, String balance) {
+
         super(userId,name,phone,bankAccount,email,password,store_id,balance);
         this.creditCardNumber = creditCardNumber;
         this.subscriptionType = subscriptionType;
