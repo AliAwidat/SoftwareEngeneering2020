@@ -130,8 +130,10 @@ public class SignupController extends LilachController {
 				val = SubscriptionType.Yearly;
 			}
 			Client register = new Client(Integer.parseInt(user_id_txt.getText()), fullname_txt.getText(),
+
 					phone_num_txt.getText(), bank_acc_txt.getText(), address_txt.getText(), email_txt.getText(), password_txt.getText(),
 					val, credit_txt.getText(),  store_add_box.getValue().split("-")[1], "0");
+
 			String json = gson.toJson(register);
 			try {
 				Instance.resetResponse();

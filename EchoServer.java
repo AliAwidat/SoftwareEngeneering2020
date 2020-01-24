@@ -10,20 +10,16 @@ import com.google.gson.JsonObject;
 import src.lil.client.Instance;
 
 import javafx.util.Pair;
-import src.lil.models.ChainManger;
-import src.lil.models.Client;
-import src.lil.models.Complain;
-import src.lil.models.Employee;
-import src.lil.models.customerService;
+
+
+import src.lil.models.*;
+
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
 import src.lil.common.*;
 import src.lil.exceptions.AlreadyLoggedIn;
-import src.lil.models.Login;
 import src.lil.models.Order.AlreadyExists;
-import src.lil.models.Store;
-import src.lil.models.StoreManger;
-import src.lil.models.User;
+
 
 import java.sql.*;
 import java.util.*;
@@ -107,6 +103,12 @@ public class EchoServer extends AbstractServer {
 				complain.addComplain();
 				return;
 			}
+		if(String.valueOf(msg).startsWith("SubmitPurchase")){
+			String orderAsString = String.valueOf(msg).split("SubmitPurchase")[1];
+			Order myOrderDetails = gson.fromJson(orderAsString,Order.class);
+			myOrderDetails.insertIntoOrders();
+			return;
+		}
 			if(msg.toString().startsWith("GetAllComplains")){
 				try {
 					String complainAsString = String.valueOf(msg).split("GetAllComplains")[1];
@@ -117,6 +119,46 @@ public class EchoServer extends AbstractServer {
 					}
 					returnValue = returnValue.substring(0, returnValue.length() - 1);
 					client.sendToClient(returnValue);
+					return;
+				}
+				catch (Exception e){
+					client.sendToClient("error");
+				}
+			}
+			if(msg.toString().startsWith("GetAllBalances")){
+				try {
+					String complainAsString = String.valueOf(msg).split("GetAllBalances")[1];
+					ChainManger chainManger = gson.fromJson(complainAsString, ChainManger.class);
+					client.sendToClient(chainManger.getAllUsersWithBalance());
+					return;
+				}
+				catch (Exception e){
+					client.sendToClient("error");
+				}
+			}
+			if(msg.toString().startsWith("BlockClientById")){
+				try {
+					String complainAsString = String.valueOf(msg).split("BlockClientById")[1].split("@")[0];
+					String id = String.valueOf(msg).split("BlockClientById")[1].split("@")[1];
+					ChainManger chainManger = gson.fromJson(complainAsString, ChainManger.class);
+					if(chainManger.setUserAbilityToOrder(Integer.parseInt(id),true))
+						client.sendToClient("AllGood");
+					else
+						client.sendToClient("error");
+					return;
+				}
+				catch (Exception e){
+					client.sendToClient("error");
+				}
+			}
+			if(msg.toString().startsWith("PayBalanceForUser")){
+				try {
+					String complainAsString = String.valueOf(msg).split("PayBalanceForUser")[1];
+					Client client1 = gson.fromJson(complainAsString, Client.class);
+					if(client1.pay(client1.getBalance()))
+						client.sendToClient("AllGood");
+					else
+						client.sendToClient("error");
 					return;
 				}
 				catch (Exception e){

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,109 +15,104 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.LoginController">
-   <children>
-      <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
-      <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
-      <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <ScrollBar layoutX="696.0" layoutY="4.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
-      <AnchorPane layoutX="8.0" layoutY="32.0" prefHeight="98.0" prefWidth="128.0">
-         <children>
-            <ImageView fx:id="logo" fitHeight="105.0" fitWidth="127.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/LilachLogo.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-      <Pane layoutX="20.0" layoutY="138.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
-         <children>
-            <TextField fx:id="Contactname" layoutX="199.0" layoutY="144.0" promptText="Contact name" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="76.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact name">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="73.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shipping Time">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="75.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Receiver phone">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="ReceiverPho" layoutX="199.0" layoutY="197.0" promptText="Receiver" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="ShippingTime" layoutX="199.0" layoutY="249.0" promptText="Shipping Time" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="DeliveryLoc" layoutX="501.0" layoutY="297.0" promptText="Delivery location" style="-fx-background-color: #ffffff;" />
-            <Text layoutX="74.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shipping Date">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text layoutX="379.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Greating">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="greating" layoutX="486.0" layoutY="197.0" promptText="Greating" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="ShippingDate" layoutX="199.0" layoutY="297.0" promptText="Shipping Date" style="-fx-background-color: #ffffff;" />
-            <CheckBox fx:id="Delivery" layoutX="386.0" layoutY="253.0" mnemonicParsing="false" text="Delivery" />
-            <Text layoutX="381.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delivery location">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <CheckBox fx:id="AddGreating" layoutX="386.0" layoutY="148.0" mnemonicParsing="false" text="Add greating" />
-            <ImageView fx:id="cart_id1" fitHeight="37.0" fitWidth="41.0" layoutX="231.0" layoutY="51.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@assets/image-removebg-preview.png" />
-               </image>
-            </ImageView>
-            <Text layoutX="40.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Id" />
-            <TextField fx:id="OrderId" layoutX="105.0" layoutY="58.0" prefHeight="25.0" prefWidth="32.0" />
-            <Text layoutX="173.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My items" />
-            <Button fx:id="purchase" layoutX="529.0" layoutY="414.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="92.0" text="purchase" />
-         </children></Pane>
-      <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-     <Button fx:id="manageusers_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_manage_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Manage Users">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Button>
-      <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
-      <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
+<AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.myOrdersCont">
+    <children>
+        <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
+        <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
+        <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <ScrollBar layoutX="696.0" layoutY="4.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
+        <AnchorPane layoutX="8.0" layoutY="32.0" prefHeight="98.0" prefWidth="128.0">
+            <children>
+                <ImageView fx:id="logo" fitHeight="105.0" fitWidth="127.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@assets/LilachLogo.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <Pane layoutX="6.0" layoutY="138.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
+            <children>
+                <TextField fx:id="Contactname" layoutX="199.0" layoutY="144.0" promptText="Contact name" style="-fx-background-color: #ffffff;" />
+                <Text layoutX="76.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact name">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <Text layoutX="73.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shipping Time">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <Text layoutX="75.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Receiver phone">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="ReceiverPho" layoutX="199.0" layoutY="197.0" promptText="Receiver" style="-fx-background-color: #ffffff;" />
+                <TextField fx:id="ShippingTime" layoutX="199.0" layoutY="249.0" promptText="Shipping Time" style="-fx-background-color: #ffffff;" />
+                <Text layoutX="74.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Shipping Date">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="ShippingDate" layoutX="199.0" layoutY="297.0" promptText="Shipping Date" style="-fx-background-color: #ffffff;" />
+                <CheckBox fx:id="WithDelivery" layoutX="386.0" layoutY="291.0" mnemonicParsing="false" onAction="#handle_Add_dele_butt" text="Delivery" />
+                <CheckBox fx:id="AddGreating" layoutX="386.0" layoutY="148.0" mnemonicParsing="false" onAction="#handle_Add_greating_butt" text="Add greating" />
+                <ImageView fx:id="cart_id1" fitHeight="37.0" fitWidth="41.0" layoutX="231.0" layoutY="51.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@assets/image-removebg-preview.png" />
+                    </image>
+                </ImageView>
+                <Text layoutX="40.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Id" />
+                <TextField fx:id="OrderId" layoutX="105.0" layoutY="58.0" prefHeight="25.0" prefWidth="32.0" />
+                <Text layoutX="173.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My items" />
+                <Button fx:id="purchase" layoutX="529.0" layoutY="414.0" mnemonicParsing="false" onAction="#handle_purchase_butt" prefHeight="37.0" prefWidth="92.0" text="purchase" />
+                <Text fx:id="msg_to_client" fill="#f80808" layoutX="260.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="128.0" />
+                <TextArea fx:id="greating" layoutX="394.0" layoutY="174.0" prefHeight="94.0" prefWidth="248.0" promptText="Greating Text" visible="false" />
+                <TextArea fx:id="Deliverylocation" layoutX="394.0" layoutY="332.0" prefHeight="38.0" prefWidth="211.0" promptText="Delivery location" visible="false" />
+                <Text fx:id="star4" fill="#fa0303" layoutX="176.0" layoutY="314.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+                <Text fx:id="star3" fill="#fa0303" layoutX="176.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+                <Text fx:id="star2" fill="#fa0303" layoutX="176.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+                <Text fx:id="star1" fill="#fa0303" layoutX="176.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false" />
+            </children></Pane>
+        <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Button>
+        <Button fx:id="manageusers_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_manage_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Manage Users">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Button>
+        <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
+        <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
 
-  <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="30.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@assets/image-removebg-preview.png" />
-         </image>
-      </ImageView>
-  <Button fx:id="signout_btn1" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Out" />
-  
+        <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="36.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@assets/image-removebg-preview.png" />
+            </image>
+        </ImageView>
+        <Button fx:id="signout_btn1" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Out" />
 
-   </children>
+
+    </children>
 </AnchorPane>

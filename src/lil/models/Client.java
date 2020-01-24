@@ -45,7 +45,7 @@ public class Client extends User {
             updateUserQuery.setString(9,subscriptionType.toString());
             updateUserQuery.setBoolean(10, isBlocked);
             updateUserQuery.setString(11,storeId);
-            updateUserQuery.setString(12,balance);
+            updateUserQuery.setDouble(12,balance);
             updateUserQuery.executeUpdate();
             connection.close();
             return true;
@@ -62,20 +62,28 @@ public class Client extends User {
     		String email, String password, 
     		SubscriptionType subscriptionType, 
     		String creditCardNumber, String store_id, String balance) {
+
         super(userId,name,phone,bankAccount,email,password,store_id,balance);
         this.creditCardNumber = creditCardNumber;
         this.subscriptionType = subscriptionType;
         if(this.subscriptionType == SubscriptionType.Monthly){
-            this.balance = "50";
+            this.balance = 50;
         }
         else if(this.subscriptionType == SubscriptionType.Yearly){
-            this.balance = "300";
+            this.balance = 300;
         }
         this.shippingAddress = shippingAddress;
     }
+    public Client(int userId, String name, String phone, String bankAccount, String shippingAddress, String email, String password,  SubscriptionType subscriptionType, String creditCardNumber, String store_id, double balance,boolean isBlocked) {
+        super(userId,name,phone,bankAccount,email,password,store_id,balance);
+        this.creditCardNumber = creditCardNumber;
+        this.subscriptionType = subscriptionType;
+        this.shippingAddress = shippingAddress;
+        this.isBlocked = isBlocked;
+    }
 
     public Client(ResultSet rs) throws SQLException {
-        this(rs.getInt("client_id"), rs.getString("client_name"), rs.getString("client_phone"), rs.getString("client_bankAccount"), rs.getString("client_shippingAddress"), rs.getString("client_email"), rs.getString("client_password"), SubscriptionType.valueOf(rs.getString("client_subscriptionType")), rs.getString("client_creditCard"), rs.getString("store_id"), rs.getString("client_balance"));
+        this(rs.getInt("client_id"), rs.getString("client_name"), rs.getString("client_phone"), rs.getString("client_bankAccount"), rs.getString("client_shippingAddress"), rs.getString("client_email"), rs.getString("client_password"), SubscriptionType.valueOf(rs.getString("client_subscriptionType")), rs.getString("client_creditCard"), rs.getString("store_id"), rs.getDouble("client_balance"), rs.getBoolean("client_block"));
     }
 
     public String getCreditCardNumber() {
