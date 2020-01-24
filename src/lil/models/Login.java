@@ -22,7 +22,6 @@ public class Login implements LoginCont {
 	 * map of connected server.
 	 */
 	private Map<Integer, Object> connected_users;
-	Connection db ;
 
 	/**
 	 * Constructor
@@ -30,20 +29,6 @@ public class Login implements LoginCont {
 
 	public Login() {
 		connected_users = new HashMap<Integer, Object>();
-		try {
-			db = DBConnection.getInstance().getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public void finalize(){
-		try {
-			db.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -72,7 +57,8 @@ public class Login implements LoginCont {
 	 * This method checks if the entered credentials match with those in the DB.
 	 */
 	public Object check_user(Integer id, String password) throws SQLException, WrongCredentials {
-		try (	PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
+		try (Connection db = DBConnection.getInstance().getConnection();
+				PreparedStatement preparedStatement = db.prepareStatement("SELECT * FROM clients WHERE client_id = ?");
 				PreparedStatement preparedStatement2 = db.prepareStatement("SELECT * FROM users WHERE user_id = ?")) {
 			preparedStatement.setInt(1, id);
 			preparedStatement2.setInt(1, id);
@@ -81,6 +67,7 @@ public class Login implements LoginCont {
 					String pw = res.getString("client_password");
 					if (pw.equals(password)) {
 						Client cli = new Client(res);
+						db.close();
 						return cli;
 					}
 				}
@@ -91,24 +78,26 @@ public class Login implements LoginCont {
 					if (pw.equals(password)) {
 						if (Role.valueOf(res.getString("user_role")) == Role.Employee) {
 							Employee em = new Employee(res);
+							db.close();
 							return em;
 						} else if (Role.valueOf(res.getString("user_role")) == Role.StoreManger) {
 							StoreManger SM = new StoreManger(res);
+							db.close();
 							return SM;
 						} else if (Role.valueOf(res.getString("user_role")) == Role.ChainManger) {
 							ChainManger CM = new ChainManger(res);
-							 
+							db.close();
 							return CM;
 						}else {
 							customerService CS = new customerService(res);
-							 
+							db.close();
 							return CS;
 						}
 
 					}
 				}
 			} catch (Exception e) {
-				 
+				db.close();
 				e.printStackTrace();
 			}
 		}
