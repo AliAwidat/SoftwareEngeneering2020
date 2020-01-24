@@ -79,7 +79,7 @@ public class customerServiceController extends LilachController{
         refund.setText("");
         messageToEmployee.setText("");
         Gson gson = new Gson();
-        super.initialize();
+        this.check_logins();
         complain_btn.setText("Handle Complains");
         String command = "GetAllComplains" + gson.toJson((Employee)Instance.getCurrentUser());
         try {

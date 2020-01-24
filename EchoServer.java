@@ -10,8 +10,10 @@ import com.google.gson.JsonObject;
 import src.lil.client.Instance;
 
 import javafx.util.Pair;
+import src.lil.models.ChainManger;
 import src.lil.models.Client;
 import src.lil.models.Complain;
+import src.lil.models.Employee;
 import src.lil.models.customerService;
 import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
@@ -20,6 +22,7 @@ import src.lil.exceptions.AlreadyLoggedIn;
 import src.lil.models.Login;
 import src.lil.models.Order.AlreadyExists;
 import src.lil.models.Store;
+import src.lil.models.StoreManger;
 import src.lil.models.User;
 
 import java.sql.*;
@@ -195,7 +198,7 @@ public class EchoServer extends AbstractServer {
 			store_addresses = Store.get_store_addresses();
 			List<String> addresses = new ArrayList<String>();
 			for (Map.Entry<String, Integer> entry : store_addresses.entrySet()) {
-				addresses.add(entry.getKey());
+				addresses.add(entry.getKey() + "-" + entry.getValue());
 			}
 			String json = gson.toJson(addresses);
 			try {
@@ -229,6 +232,20 @@ public class EchoServer extends AbstractServer {
 		}else if (msg.toString().equals("getallemployees")) {
 			List<Object> employees_list = User.get_all_employees();
 			client.sendToClient(gson.toJson(employees_list));
+		}else if (msg.toString().startsWith("update")) {
+
+			String[] parms = msg.toString().split(" ");
+			
+		
+			ChainManger manager = (ChainManger) _login.get_object(Integer.parseInt(parms[1]));
+			if(parms[2].equals("true")) {
+				System.out.println(gson.fromJson(parms[3], Client.class));
+				manager.updateUser(gson.fromJson(parms[3], Client.class));
+			}else {
+				manager.updateUser(gson.fromJson(parms[3], Employee.class));
+			}
+			
+			client.sendToClient("successful.");
 		}
 
 		else if (msg.toString().startsWith("#login ")) {

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,6 +20,26 @@
 
 <AnchorPane fx:id="main_anchor_pane" prefHeight="656.0" prefWidth="718.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.ManageUsersCont">
    <children>
+      <Pane fx:id="clients_pane" layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <ScrollPane prefHeight="498.0" prefWidth="678.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="676.0">
+                     <children>
+                        <TableView fx:id="users_table_id" prefHeight="498.0" prefWidth="678.0">
+                          <columns>
+                            <TableColumn fx:id="name_col" prefWidth="130.39999103546143" text="Name:" />
+                            <TableColumn fx:id="id_col" prefWidth="129.6000518798828" text="ID:" />
+                              <TableColumn fx:id="balance_col" minWidth="0.0" prefWidth="95.199951171875" text="Balance" />
+                              <TableColumn fx:id="email_col" prefWidth="168.800048828125" text="E-mail:" />
+                              <TableColumn fx:id="phone_col" prefWidth="160.0" text="Phone number:" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children></Pane>
       <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
       <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
       <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
@@ -44,7 +71,6 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Pane layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;" />
       <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
          <font>
             <Font size="10.0" />
@@ -63,6 +89,67 @@
          </image>
       </ImageView>
   <Button fx:id="signout_btn1" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Out" />
+      <Button fx:id="clients_butt" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_view_clients_butt" prefHeight="46.0" prefWidth="55.0" style="-fx-background-color: #1E90FF;" text="Clients" />
+      <Button fx:id="employees_butt" layoutX="326.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_view_employees_butt" prefHeight="46.0" prefWidth="70.0" style="-fx-background-color: #1E90FF;" text="Employee" />
+      <Pane fx:id="employees_pane" layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <ScrollPane prefHeight="498.0" prefWidth="678.0">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="498.0" prefWidth="676.0">
+                     <children>
+                        <TableView fx:id="employees_table_id" prefHeight="498.0" prefWidth="678.0">
+                           <columns>
+                              <TableColumn fx:id="employees_role_col" prefWidth="96.80001544952393" text="Role:" />
+                              <TableColumn fx:id="employee_name_col" prefWidth="160.8000030517578" text="Name:" />
+                              <TableColumn fx:id="employee_id_col" prefWidth="105.5999755859375" text="ID:" />
+                              <TableColumn fx:id="employee_email_col" prefWidth="146.39996337890625" text="E-mail:" />
+                              <TableColumn fx:id="employee_phone_col" prefWidth="167.99997558593748" text="Phone number:">
+                               
+                              </TableColumn>
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Pane fx:id="changes_pane" layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0">
+         <children>
+            <TextField fx:id="current_phone_txt" layoutX="135.0" layoutY="81.0" />
+            <TextField fx:id="current_bank_txt" layoutX="135.0" layoutY="119.0" />
+            <TextField fx:id="current_email_txt" layoutX="135.0" layoutY="160.0" />
+            <TextField fx:id="current_password_txt" layoutX="135.0" layoutY="198.0" />
+            <TextField fx:id="current_balance_txt" layoutX="135.0" layoutY="274.0" />
+            <TextField fx:id="current_address_txt" layoutX="135.0" layoutY="238.0" />
+            <TextField fx:id="current_credit_txt" layoutX="135.0" layoutY="308.0" />
+            <ComboBox fx:id="role_combobox" layoutX="402.0" layoutY="81.0" prefWidth="150.0" />
+            <ComboBox fx:id="subscription_combobox" layoutX="402.0" layoutY="81.0" prefWidth="150.0" />
+            <CheckBox fx:id="block_checkbox" layoutX="469.0" layoutY="164.0" mnemonicParsing="false" />
+            <Label layoutX="53.0" layoutY="81.0" prefHeight="25.0" prefWidth="70.0" text="Phone:" />
+            <Label layoutX="44.0" layoutY="119.0" prefHeight="25.0" prefWidth="79.0" text="Bank Account:" />
+            <Label layoutX="53.0" layoutY="160.0" prefHeight="25.0" prefWidth="70.0" text="E-mail:" />
+            <Label layoutX="53.0" layoutY="198.0" prefHeight="25.0" prefWidth="70.0" text="Password:" />
+            <Label fx:id="balance_lbl" layoutX="53.0" layoutY="274.0" prefHeight="25.0" prefWidth="70.0" text="Balance:" />
+            <Label layoutX="53.0" layoutY="238.0" prefHeight="25.0" prefWidth="70.0" text="Address:" />
+            <Label fx:id="card_lbl" layoutX="53.0" layoutY="308.0" prefHeight="25.0" prefWidth="70.0" text="CreditCard:" />
+            <Label fx:id="role_lbl" layoutX="313.0" layoutY="81.0" prefHeight="25.0" prefWidth="70.0" text="Role:" />
+            <Label fx:id="block_lbl" layoutX="313.0" layoutY="160.0" prefHeight="25.0" prefWidth="70.0" text="Block:" />
+            <Label fx:id="sub_lbl" layoutX="304.0" layoutY="81.0" prefHeight="25.0" prefWidth="79.0" text="Subscription:" />
+            <ComboBox fx:id="store_combobox" layoutX="402.0" layoutY="119.0" prefWidth="150.0" />
+            <Label layoutX="313.0" layoutY="119.0" prefHeight="25.0" prefWidth="70.0" text="Store:" />
+            <Button fx:id="save_btn" layoutX="416.0" layoutY="240.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Save">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <ImageView fx:id="back_arrow_icon" fitHeight="37.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/back_arrow.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
   
    </children>
 </AnchorPane>
