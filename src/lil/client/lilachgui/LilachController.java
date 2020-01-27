@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public abstract class LilachController {
 
-	private ObservableList<Item> selected_items;
+	public ObservableList<Item> selected_items;
 
 	@FXML
 	protected AnchorPane main_anchor_pane;
