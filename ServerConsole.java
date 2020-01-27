@@ -1,14 +1,15 @@
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
+import src.lil.common.ChatIF;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-
-import src.lil.common.*;
 
 /**
  * This class constructs the UI for a chat server.  It implements the
@@ -112,7 +113,7 @@ public class ServerConsole implements ChatIF
   /**
    * This method is responsible for the creation of the Server UI.
    *
-   * @param args[0] The port to connect to.
+   * @param args The port to connect to.
    */
   public static void main(String[] args) 
   {
