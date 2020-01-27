@@ -1,8 +1,11 @@
 package src.lil.models;
-import src.lil.Enums.*;
-import src.lil.common.*;
+
+import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
+import src.lil.Enums.ItemType;
+import src.lil.common.DBConnection;
 import src.lil.models.Order.AlreadyExists;
-import java.lang.String;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +17,15 @@ public class Item {
 	private Double price;
 	private Boolean canAddToBouquet=false;
 	private List<Item> flowerInItem;
+	private ImageView object_image;
+	public CheckBox checked;
 	
 	public Item(ResultSet rs) throws SQLException{
 		//super();
 		this.fillFieldsFromResultSet(rs);
 	}
 	
-	public void fillFieldsFromResultSet(ResultSet rs) throws SQLException {
+	public void fillFieldsFromResultSet(ResultSet rs) throws SQLException{
         this.id = rs.getInt("item_Id");
         this.dominantColor = rs.getString("dominant_color");
         this.type = ItemType.valueOf(rs.getString("item_type"));
@@ -36,6 +41,13 @@ public class Item {
         	this.flowerInItem=null;
         }
         this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
+        this.checked = new CheckBox();
+		if(!image.isEmpty()) {
+			this.object_image = new ImageView(image);
+			this.object_image.setFitHeight(200);
+			this.object_image.setFitWidth(200);
+		}else
+			this.object_image=null;
     }
 	
 //    public static boolean calcPriceOfCustomItem(Item item,int storeId) throws AlreadyExists { // item id's "1,5,3,100"
@@ -373,6 +385,22 @@ public class Item {
     	flowerInItem.add(item);
     	price+=item.getPrice();
     }
+
+    public CheckBox getChecked(){
+		return this.checked;
+	}
+
+	public void setChecked(CheckBox new_checked){
+		this.checked=new_checked;
+	}
+
+	public void setObject_image(String imagev){
+		this.object_image=new ImageView(imagev);
+	}
+
+	public ImageView getObject_image(){
+		return this.object_image;
+	}
     public void removeItem(Item item) {
          for (Item i : flowerInItem) { 		      
         	 if(item.getId()==i.getId()) {

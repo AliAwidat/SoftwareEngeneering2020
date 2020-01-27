@@ -2,30 +2,34 @@ package src.lil.client.lilachgui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.CheckBox;
+import javafx.scene.Cursor;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import src.lil.Enums.ItemType;
 import src.lil.client.Instance;
 import src.lil.models.Item;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MenuController extends LilachController{
 
-
+	@FXML
+	private ComboBox<String> combo_box;
+	@FXML
+	private ImageView go_btn;
+	@FXML
+	private Label finish_order_label;
 	@FXML
 	private TableView<Item> menue_tableview;
+
+	@FXML
+	private AnchorPane anchor_bar;
 
 	@FXML
 	private TableColumn<Item, String> id_cul;
@@ -37,69 +41,176 @@ public class MenuController extends LilachController{
 	private TableColumn<Item, Double> price_cul;
 
 	@FXML
+	private TableColumn<Item, ItemType> type_cul;
+
+	@FXML
 	private TableColumn<CheckBox,CheckBox> checkbox_cul;
 
 	@FXML
 	private Button add_cart_order;
 
 	@FXML
-	void handle_order_cart(MouseEvent event) {
+	private TableColumn<Item,String>Type_cul;
+
+	@FXML
+	private TextField to_field;
+
+	@FXML
+	private TextField from_field;
+
+	private FilteredList<Item> filtered_list;
+
+	private ObservableList<Item>original_list;
+	@FXML
+	void handle_order_cart(MouseEvent event) throws IOException {
+		selected_items=FXCollections.observableArrayList();
+		selected_items.addAll(getCheckedItems());
+		get_scene("myOrdersPage.fxml", "My orders history");
 
 	}
 
 	@FXML
 	public void initialize() {
 		this.check_logins();
-		isLoggedin();
 		displayItems();
 	}
 
 
 	private void displayItems() {
-//		Item item = new Item();
-//		List<Item> items =item.filterItems("FLOWER");
+//		Gson gson=new Gson();
+		List<Item> items;
+		items=Item.filterItems(" <> 'CUSTOM'",1);
+		combo_box=new ComboBox<String>();
+		combo_box.getItems().addAll("red","blue","white");
 		id_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
-		pic_cul.setCellValueFactory(new PropertyValueFactory<>("image1"));
+		pic_cul.setCellValueFactory(new PropertyValueFactory<Item,ImageView>("object_image"));
+		type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
 		price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
-		checkbox_cul.setCellValueFactory(new PropertyValueFactory<>("select"));
-		menue_tableview.setItems(getItems());
+		checkbox_cul.setCellValueFactory(new PropertyValueFactory<>("checked"));
+		menue_tableview.setItems(getItems(items));
+		original_list= menue_tableview.getItems();
 	}
 
-	public ObservableList<Item>getItems(){
+	public ObservableList<Item>getItems(List getFromDB){
 		ObservableList<Item> items = FXCollections.observableArrayList();
-		Item item1=new Item();
-		Item item2=new Item();
-		Item item3=new Item();
-		item1.setPrice(70.0);
-		item1.setId(1);
-		item1.setImage("flower.jpg");
-		item1.setImage1(new ImageView());
-//		Image tmp=new Image(item1.getImage());
-//		item1.getImage1().setImage(tmp);
-
-		item1.setSelect(new CheckBox());
-		items.add(item1);
-		item2.setPrice(60.0);
-		item2.setId(2);
-		item2.setImage("flower.jpg");
-		item2.setImage1(new ImageView());
-//		item2.getImage1().setImage(new Image(item2.getImage()));
-		item2.setSelect(new CheckBox());
-		items.add(item2);
-		item3.setPrice(100.0);
-		item3.setId(3);
-		item3.setImage("flower.jpg");
-		item3.setImage1(new ImageView());
-//		item3.getImage1().setImage(new Image(item3.getImage()));
-		item3.setSelect(new CheckBox());
-		item3.getSelect().setAlignment(Pos.CENTER);
-		items.add(item3);
+		if (Instance.getCurrentUser() == null){
+			for(Object item : getFromDB){
+				Item toItem = (Item)item;
+				toItem.checked.setVisible(false);
+				finish_order_label.setVisible(false);
+			}
+		}
+		items.addAll(getFromDB);
 
 		return items;
 	}
-	public void isLoggedin(){
-		if (Instance.getCurrentUser() == null)
-			checkbox_cul.setVisible(false);
+
+	public void set_mouse_hand(){
+		add_cart_order.getScene().setCursor(Cursor.HAND);
+	}
+
+	public void handle_go_btn(MouseEvent mouseEvent) throws IOException {
+		filtered_list= new FilteredList<>(original_list);
+		Label error_msg = new Label("Wrong parameters!");
+		error_msg.maxHeight(17);
+		error_msg.maxWidth(160);
+		try {
+			if (to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+				if (combo_box.getValue() == null) {
+					filtered_list = new FilteredList<>(original_list);
+					return;
+				} else {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getDominantColor() == combo_box.getValue())
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				}
+			}
+			if (combo_box.getValue() == null) {
+				if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(to_field.getText()))
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				} else if (to_field.getText().isEmpty() && !from_field.getText().isEmpty()) {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(from_field.getText()))
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				} else if (Double.parseDouble(to_field.getText()) < Double.parseDouble(from_field.getText())) {
+					anchor_bar.getChildren().add(error_msg);
+					return;
+				} else {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getPrice() >= Double.parseDouble(from_field.getText()))
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				}
+			} else {
+				if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getDominantColor() == combo_box.getValue())
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				} else if (to_field.getText().isEmpty() && !from_field.getText().isEmpty()) {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(from_field.getText()) && t.getDominantColor() == combo_box.getValue())
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				} else if (Double.parseDouble(to_field.getText()) < Double.parseDouble(from_field.getText())) {
+					anchor_bar.getChildren().add(error_msg);
+					return;
+				} else {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getPrice() >= Double.parseDouble(from_field.getText()) && t.getDominantColor() == combo_box.getValue())
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+				}
+			}
+		}catch (NumberFormatException e) {
+			anchor_bar.getChildren().add(error_msg);
+			e.printStackTrace();
+		}
+	}
+
+	public ObservableList<Item>getCheckedItems(){
+		ObservableList<Item> items_to_order = FXCollections.observableArrayList();
+		for(Object item : menue_tableview.getItems()){
+			Item toItem = (Item)item;
+			if(toItem.getChecked().isSelected())
+				items_to_order.add(toItem);
+				toItem.setChecked(new CheckBox());
+		}
+
+		return items_to_order;
 	}
 }
 
