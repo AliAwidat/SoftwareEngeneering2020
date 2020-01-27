@@ -1,26 +1,18 @@
 package src.lil.client.lilachgui;
 
-import java.io.IOException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import src.lil.Enums.ItemType;
 import src.lil.client.Instance;
 import src.lil.models.Client;
-import src.lil.models.User;
+import src.lil.models.Item;
+
+import java.io.IOException;
 
 public class myOrdersCont extends LilachController {
 
@@ -79,11 +71,35 @@ public class myOrdersCont extends LilachController {
 	private Text star1;
 
 	@FXML
+	private TableView<Item> selected;
+
+	@FXML
+	private TableColumn<Item, String> sel_item_cul;
+
+	@FXML
+	private TableColumn<Item, ItemType> sel_type_cul;
+
+	@FXML
+	private TableColumn<Item, String> sel_color_cul;
+
+	@FXML
+	private TableColumn<Item, Double> sel_price_cul;
+
+	@FXML
 	public void initialize() {
 		this.check_logins();
 		Client currUser = ((Client)Instance.getCurrentUser());
 		Contactname.setText(currUser.getName());
 		ReceiverPho.setText(currUser.getName());
+		if(selected_items == null){
+			System.out.println("here");
+		}
+//		sel_item_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
+//		sel_type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
+//		sel_color_cul.setCellValueFactory(new PropertyValueFactory<>("dominantColor"));
+//		sel_price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
+//		selected.setItems(selected_items);
+
 	}
 	@FXML
 	void handle_Add_greating_butt(ActionEvent event){

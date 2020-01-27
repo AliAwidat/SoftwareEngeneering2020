@@ -114,7 +114,7 @@
          </image>
       </ImageView>
       <Button fx:id="signout_btn1" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #87CEFA;" text="Sign-Out" />
-      <Button fx:id="sigup_btn" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #00BFFF;" text="Sign-Up" />
+      <Button fx:id="sigup_btn" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
            <font>
                <Font size="10.0" />
