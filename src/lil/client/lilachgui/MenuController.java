@@ -19,6 +19,7 @@ import java.util.List;
 
 public class MenuController extends LilachController{
 
+	ObservableList<String>combo_list=FXCollections.observableArrayList("White","Red","Blue");
 	@FXML
 	private ComboBox<String> combo_box;
 	@FXML
@@ -80,8 +81,8 @@ public class MenuController extends LilachController{
 //		Gson gson=new Gson();
 		List<Item> items;
 		items=Item.filterItems(" <> 'CUSTOM'",1);
-		combo_box=new ComboBox<String>();
-		combo_box.getItems().addAll("red","blue","white");
+		combo_box.setValue("None");
+		combo_box.setItems(combo_list);
 		id_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
 		pic_cul.setCellValueFactory(new PropertyValueFactory<Item,ImageView>("object_image"));
 		type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -114,24 +115,12 @@ public class MenuController extends LilachController{
 		Label error_msg = new Label("Wrong parameters!");
 		error_msg.maxHeight(17);
 		error_msg.maxWidth(160);
-		try {
-			if (to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
-				if (combo_box.getValue() == null) {
-					filtered_list = new FilteredList<>(original_list);
-					return;
-				} else {
-					filtered_list.setPredicate(
-							t -> {
-								if (t.getDominantColor() == combo_box.getValue())
-									return true;
-								return false; // or true
-							}
-					);
-					menue_tableview.setItems(filtered_list);
-				}
-			}
-			if (combo_box.getValue() == null) {
-				if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+		try{
+			if(combo_box.getValue().equalsIgnoreCase("None")){
+					if (to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+						filtered_list = new FilteredList<>(original_list);
+						return;
+					}if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
 					filtered_list.setPredicate(
 							t -> {
 								if (t.getPrice() <= Double.parseDouble(to_field.getText()))
@@ -162,11 +151,21 @@ public class MenuController extends LilachController{
 					);
 					menue_tableview.setItems(filtered_list);
 				}
-			} else {
-				if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+			}else{
+				if (to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
 					filtered_list.setPredicate(
 							t -> {
-								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getDominantColor() == combo_box.getValue())
+								if (t.getDominantColor().equalsIgnoreCase(combo_box.getValue()))
+									return true;
+								return false; // or true
+							}
+					);
+					menue_tableview.setItems(filtered_list);
+					return;
+				}else if (!to_field.getText().isEmpty() && from_field.getText().isEmpty()) {
+					filtered_list.setPredicate(
+							t -> {
+								if (t.getPrice()<= Double.parseDouble(to_field.getText()) && t.getDominantColor().equalsIgnoreCase(combo_box.getValue()))
 									return true;
 								return false; // or true
 							}
@@ -175,7 +174,7 @@ public class MenuController extends LilachController{
 				} else if (to_field.getText().isEmpty() && !from_field.getText().isEmpty()) {
 					filtered_list.setPredicate(
 							t -> {
-								if (t.getPrice() <= Double.parseDouble(from_field.getText()) && t.getDominantColor() == combo_box.getValue())
+								if (t.getPrice()>= Double.parseDouble(from_field.getText()) && t.getDominantColor().equalsIgnoreCase(combo_box.getValue()))
 									return true;
 								return false; // or true
 							}
@@ -187,7 +186,7 @@ public class MenuController extends LilachController{
 				} else {
 					filtered_list.setPredicate(
 							t -> {
-								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getPrice() >= Double.parseDouble(from_field.getText()) && t.getDominantColor() == combo_box.getValue())
+								if (t.getPrice() <= Double.parseDouble(to_field.getText()) && t.getPrice() >= Double.parseDouble(from_field.getText()) && t.getDominantColor().equalsIgnoreCase(combo_box.getValue()))
 									return true;
 								return false; // or true
 							}
@@ -199,6 +198,7 @@ public class MenuController extends LilachController{
 			anchor_bar.getChildren().add(error_msg);
 			e.printStackTrace();
 		}
+
 	}
 
 	public ObservableList<Item>getCheckedItems(){
