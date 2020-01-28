@@ -3,6 +3,7 @@ import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import src.lil.Enums.OrderType;
 import src.lil.Enums.SubscriptionType;
@@ -18,7 +19,7 @@ public class Order implements OrderServices {
     private String DominantColor, receiver_phone,delLocation,priceDomain,storeid,contactName,greatingText,orderCost;
     private OrderType orderType;
     private boolean Delivrey, greating;
-    List<Integer> items;
+    List<Integer> items = new ArrayList<>();
     List<String> Colors;
     String ShippingHour;
     //    LocalTime ShippingHour;
@@ -242,23 +243,27 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
-    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
-
+    public boolean insertIntoOrders() throws Exception {
+        if(items.isEmpty()){
+            throw new Exception("cart is empty");
+        }
+        if(Optional.ofNullable(userId).orElse(0) == 0){
+            throw new Exception("user is Undefined");
+        }
         try (Connection db = DBConnection.getInstance().getConnection()){
             PreparedStatement preparedStatement = db.prepareStatement("insert into orders(user_id,contact_name,receiver_phone,Shipping_Hour,Shipping_Date,greating,greating_text,delivery,delivery_location,order_Date) value (?,?,?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,String.valueOf(getuserId()));
             preparedStatement.setString(2, getContactName());
             preparedStatement.setString(3, getReceiver_phone());
             preparedStatement.setString(4,getTime());
-            preparedStatement.setString(5, getShippingHour());
+            preparedStatement.setString(5, getShippingDate());
             preparedStatement.setBoolean(6, getGreating());
             preparedStatement.setString(7, getGreatingText());
             preparedStatement.setBoolean(8, getDelivery());
             preparedStatement.setString(9, getDeliveryLocation());
-            preparedStatement.setString(10, getShippingHour());
+            preparedStatement.setString(10, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now()));
             try{
                 preparedStatement.executeUpdate();
-                System.out.println("give me a sign ya zbe");
                 db.close();
                 preparedStatement.close();
             }catch(SQLException se) {
