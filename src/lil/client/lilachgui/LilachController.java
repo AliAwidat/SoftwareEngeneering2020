@@ -1,5 +1,6 @@
 package src.lil.client.lilachgui;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,7 +22,7 @@ import java.io.IOException;
 
 public abstract class LilachController {
 
-	public ObservableList<Item> selected_items;
+	public static ObservableList<Item> selected_items= FXCollections.observableArrayList();
 
 	@FXML
 	protected AnchorPane main_anchor_pane;
@@ -165,7 +166,7 @@ public abstract class LilachController {
 	@FXML
 	public void handle_cart_click(MouseEvent event) throws IOException {
 
-		get_scene("cartView.fxml", "Cart");
+		get_scene("myOrdersPage.fxml", "Cart");
 	}
 	@FXML
 	void handle_block_users(ActionEvent event) throws IOException {

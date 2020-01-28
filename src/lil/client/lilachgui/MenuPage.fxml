@@ -59,12 +59,17 @@
                         <TableView fx:id="menue_tableview" layoutY="59.0" prefHeight="508.0" prefWidth="908.0" style="-fx-background-color: #778899#778899;" AnchorPane.topAnchor="58.0">
                           <columns>
                               <TableColumn fx:id="id_cul" editable="false" prefWidth="97.0" sortable="false" style="-fx-border-color: #696969;" text="ID" />
-                              <TableColumn fx:id="pic_cul" prefWidth="424.0" style="-fx-border-color: #696969;" text="Picture" />
-                              <TableColumn fx:id="type_cul" prefWidth="127.0" style="-fx-border-color: #696969;" text="Type" />
-                            <TableColumn fx:id="price_cul" minWidth="0.0" prefWidth="118.0" style="-fx-border-color: #696969;" text="Price" />
-                              <TableColumn fx:id="checkbox_cul" prefWidth="140.0" style="-fx-border-color: #696969;">
+                              <TableColumn fx:id="pic_cul" prefWidth="381.0" style="-fx-border-color: #696969;" text="Picture" />
+                              <TableColumn fx:id="type_cul" prefWidth="100.0" style="-fx-border-color: #696969;" text="Type" />
+                            <TableColumn fx:id="price_cul" minWidth="0.0" prefWidth="72.0" style="-fx-border-color: #696969;" text="Price" />
+                              <TableColumn fx:id="checkbox_cul" prefWidth="138.0" style="-fx-border-color: #696969;">
                                  <graphic>
                                     <Button fx:id="add_cart_order" ellipsisString="Add To Cart" mnemonicParsing="false" onDragEntered="#set_mouse_hand" onMouseClicked="#handle_order_cart" prefHeight="30.0" prefWidth="123.0" style="-fx-background-color: #00CED1; -fx-border-color: #000000;" text="Add To Cart" textAlignment="CENTER" />
+                                 </graphic>
+                              </TableColumn>
+                              <TableColumn fx:id="create_boque_cul" prefWidth="115.0" style="-fx-border-color: #696969;">
+                                 <graphic>
+                                    <Button fx:id="creat_boque_btn" mnemonicParsing="false" onMouseClicked="#handle_creat_boq" prefHeight="28.0" prefWidth="104.0" text="Creat and Add" />
                                  </graphic>
                               </TableColumn>
                           </columns>

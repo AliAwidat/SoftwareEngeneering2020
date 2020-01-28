@@ -19,7 +19,10 @@ import java.util.List;
 
 public class MenuController extends LilachController{
 
+	public Item boque_items;
 	ObservableList<String>combo_list=FXCollections.observableArrayList("White","Red","Blue");
+	@FXML
+	Spinner<Integer> spinner;
 	@FXML
 	private ComboBox<String> combo_box;
 	@FXML
@@ -28,6 +31,12 @@ public class MenuController extends LilachController{
 	private Label finish_order_label;
 	@FXML
 	private TableView<Item> menue_tableview;
+
+	@FXML
+	private TableColumn<Item, CheckBox> create_boque_cul;
+
+	@FXML
+	private Button creat_boque_btn;
 
 	@FXML
 	private AnchorPane anchor_bar;
@@ -45,7 +54,8 @@ public class MenuController extends LilachController{
 	private TableColumn<Item, ItemType> type_cul;
 
 	@FXML
-	private TableColumn<CheckBox,CheckBox> checkbox_cul;
+	private TableColumn<Item,CheckBox> checkbox_cul;
+
 
 	@FXML
 	private Button add_cart_order;
@@ -64,9 +74,8 @@ public class MenuController extends LilachController{
 	private ObservableList<Item>original_list;
 	@FXML
 	void handle_order_cart(MouseEvent event) throws IOException {
-		selected_items=FXCollections.observableArrayList();
-		selected_items.addAll(getCheckedItems());
-		get_scene("myOrdersPage.fxml", "My orders history");
+		List<Item>tmp =getCheckedItems();
+		selected_items.addAll(tmp);
 
 	}
 
@@ -88,6 +97,8 @@ public class MenuController extends LilachController{
 		type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
 		price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
 		checkbox_cul.setCellValueFactory(new PropertyValueFactory<>("checked"));
+		create_boque_cul.setCellValueFactory(new PropertyValueFactory<>("flowers_number"));
+		boque_items=new Item();
 		menue_tableview.setItems(getItems(items));
 		original_list= menue_tableview.getItems();
 	}
@@ -99,6 +110,10 @@ public class MenuController extends LilachController{
 				Item toItem = (Item)item;
 				toItem.checked.setVisible(false);
 				finish_order_label.setVisible(false);
+				if(toItem.getType().equals("FLOWER"))
+					toItem.getFlowers_number().setVisible(true);
+				else
+					toItem.getFlowers_number().setVisible(false);
 			}
 		}
 		items.addAll(getFromDB);
@@ -209,8 +224,25 @@ public class MenuController extends LilachController{
 				items_to_order.add(toItem);
 				toItem.setChecked(new CheckBox());
 		}
+		return items_to_order;
+	}
+
+	public ObservableList<Item>getCoustomCheckedItems(){
+		ObservableList<Item> items_to_order = FXCollections.observableArrayList();
+		for(Object item : menue_tableview.getItems()){
+			Item toItem = (Item)item;
+			if(toItem.getFlowers_number().isSelected())
+				items_to_order.add(toItem);
+			toItem.setChecked(new CheckBox());
+		}
 
 		return items_to_order;
+	}
+
+	public void handle_creat_boq(MouseEvent mouseEvent) {
+		Item tmp=new Item();
+		tmp.getFlowersInItem().addAll(getCoustomCheckedItems());
+		selected_items.add(tmp);
 	}
 }
 
