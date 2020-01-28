@@ -223,7 +223,7 @@ public abstract class LilachController {
 		}
 		if (Instance.getResponse().equals("successful")) {
 			Instance.setCurrentUser(null);
-			this.handle_menu_butt(null);
+			get_scene("LilachMainScene.fxml", "Welcome to Lilach.");
 		}
 	}
 }
