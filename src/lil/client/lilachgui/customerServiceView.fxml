@@ -2,10 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -15,29 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.customerServiceController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.customerServiceController">
     <children>
-        <Button fx:id="login_btn" layoutX="507.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Log-in" />
-        <MenuBar layoutX="-4.0" prefHeight="30.0" prefWidth="698.0">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
-        <ScrollBar layoutX="690.0" layoutY="10.0" orientation="VERTICAL" prefHeight="646.0" prefWidth="16.0" />
+       <ImageView fx:id="bg_image" fitHeight="733.0" fitWidth="971.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/main_background.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="login_btn" layoutX="757.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_login_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #db7092;" text="Log-in" />
         <AnchorPane layoutX="8.0" layoutY="32.0" prefHeight="98.0" prefWidth="128.0">
             <children>
                 <ImageView fx:id="logo" fitHeight="105.0" fitWidth="127.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
@@ -47,51 +28,52 @@
                 </ImageView>
             </children>
         </AnchorPane>
-        <Pane layoutX="14.0" layoutY="146.0" prefHeight="498.0" prefWidth="678.0" style="-fx-background-color: #ffffff;">
+        <Pane layoutX="22.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="926.0" style="-fx-background-color: #FFFAF0;">
          <children>
-            <Text fill="#cd63ad" layoutX="86.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose complain title to handle" textAlignment="CENTER" wrappingWidth="295.6848602294922">
+            <Text fill="#cd63ad" layoutX="238.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose complain title to handle" textAlignment="CENTER" wrappingWidth="295.6848602294922">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text fx:id="complain_title" layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain title: " wrappingWidth="594.0598945617676" />
-            <Text fx:id="complain" layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain: " wrappingWidth="594.0598945617676" />
-            <Text layoutX="14.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reply:" />
-            <TextArea fx:id="reply_text" layoutX="56.0" layoutY="231.0" prefHeight="200.0" prefWidth="306.0" promptText="reply text" />
-            <Button layoutX="485.0" layoutY="386.0" mnemonicParsing="false" onAction="#submit_complain_reply" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Submit " />
-            <Text layoutX="405.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refund" />
-            <TextField fx:id="refund" layoutX="452.0" layoutY="237.0" promptText="Refund only in numbers" />
-            <ComboBox fx:id="all_titles" layoutX="398.0" layoutY="10.0" onAction="#handle_change_complain" prefWidth="150.0" />
-            <Text fx:id="messageToEmployee" fill="#cd63ad" layoutX="378.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="295.6848602294922">
+            <Text fx:id="complain_title" layoutX="166.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain title: " wrappingWidth="594.0598945617676" />
+            <Text fx:id="complain" layoutX="166.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Complain: " wrappingWidth="594.0598945617676" />
+            <Text layoutX="166.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reply:" />
+            <TextArea fx:id="reply_text" layoutX="208.0" layoutY="263.0" prefHeight="200.0" prefWidth="306.0" promptText="reply text" />
+            <Button layoutX="637.0" layoutY="418.0" mnemonicParsing="false" onAction="#submit_complain_reply" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #5cb85c;" text="Submit " />
+            <Text layoutX="557.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refund" />
+            <TextField fx:id="refund" layoutX="604.0" layoutY="269.0" promptText="Refund only in numbers" />
+            <ComboBox fx:id="all_titles" layoutX="550.0" layoutY="42.0" onAction="#handle_change_complain" prefWidth="150.0" />
+            <Text fx:id="messageToEmployee" fill="#cd63ad" layoutX="532.0" layoutY="403.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="295.6848602294922">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
          </children></Pane>
-        <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Complain">
-            <font>
-                <Font size="10.0" />
-            </font>
-        </Button>
-        <Button fx:id="manageusers_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_manage_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="Manage Users">
-            <font>
-                <Font size="10.0" />
-            </font>
-        </Button>
-        <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text=" Menu" />
-        <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #1E90FF;" text="My Orders" />
-        <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="146.0" layoutY="30.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@assets/image-removebg-preview.png" />
-            </image>
-        </ImageView>
-        <Button fx:id="signout_btn1" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Out" />
-        <Button fx:id="sigup_btn" layoutX="601.0" layoutY="32.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #1E90FF;" text="Sign-Up" />
-        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
-            <font>
-                <Font size="10.0" />
-            </font>
-        </Button>
-    </children>
+         <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="Complain">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="manageusers_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_manage_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="Manage Users">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text=" Menu" />
+      <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="My Orders" />
+      <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="622.0" layoutY="20.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@assets/image-removebg-preview.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="signout_btn1" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #ab2b54;" text="Sign-Out" />
+      <Button fx:id="sigup_btn" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #db7092;" text="Sign-Up" />
+       <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
+      <Label fx:id="finish_order_label" layoutX="543.0" layoutY="30.0" text="Finish Order:" />
+   </children>
 
 </AnchorPane>
