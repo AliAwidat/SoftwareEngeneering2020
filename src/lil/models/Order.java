@@ -233,9 +233,9 @@ public class Order implements OrderServices {
         catch(Exception e) {
             System.out.println(e.getMessage());
             return null;
+
         }
     }
-
     /**
      * add order (with all related details) to the data base
      *
@@ -243,6 +243,7 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
+
     public boolean insertIntoOrders() throws Exception {
         if(items.isEmpty()){
             throw new Exception("cart is empty");
@@ -285,6 +286,7 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
+
 //
 //    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
 //        try {
