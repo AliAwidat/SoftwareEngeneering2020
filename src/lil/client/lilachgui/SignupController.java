@@ -82,8 +82,8 @@ public class SignupController extends LilachController {
 				|| sub_type_box.getValue() == null) {
 			error_msg.setText("Please fill all fields");
 			return false;
-		} else if (user_id_txt.getText().matches("[0-9]+") == false) {
-			error_msg.setText("User ID should contain numbers only!");
+		} else if (user_id_txt.getText().matches("[0-9]+") == false && user_id_txt.getText().length() <9) {
+			error_msg.setText("User ID should contain numbers only and length of 9!");
 			user_id_txt.setStyle("-fx-background-color: yellow;");
 		} else if (!email_txt.getText().contains(".co") || !email_txt.getText().contains("@")) {
 			error_msg.setText("invalid E-Mail.");
