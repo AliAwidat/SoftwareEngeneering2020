@@ -92,17 +92,12 @@ public class myOrdersCont extends LilachController {
 		Client currUser = ((Client)Instance.getCurrentUser());
 		Contactname.setText(currUser.getName());
 		ReceiverPho.setText(currUser.getName());
-		System.out.println("here1");
 		sel_item_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
-		System.out.println("here2");
 		sel_type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
-		System.out.println("here3");
 		sel_color_cul.setCellValueFactory(new PropertyValueFactory<>("dominantColor"));
-		System.out.println("here4");
 		sel_price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
-		System.out.println("here5");
 		selected.setItems(selected_items);
-		System.out.println("here6");
+
 	}
 	@FXML
 	void handle_Add_greating_butt(ActionEvent event){
