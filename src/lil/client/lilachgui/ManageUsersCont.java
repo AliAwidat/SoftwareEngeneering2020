@@ -390,8 +390,8 @@ public class ManageUsersCont extends LilachController {
 		clients_pane.setVisible(false);
 		employees_pane.setVisible(true);
 		changes_pane.setVisible(false);
-		employees_butt.setStyle("-fx-background-color: #a7d4ff");
-		clients_butt.setStyle("-fx-background-color: #1e90ff");
+		employees_butt.setStyle("-fx-background-color: #9b274c");
+		clients_butt.setStyle("-fx-background-color: #db7092");
 
 	}
 
@@ -473,8 +473,8 @@ public class ManageUsersCont extends LilachController {
 		clients_pane.setVisible(true);
 		employees_pane.setVisible(false);
 		changes_pane.setVisible(false);
-		clients_butt.setStyle("-fx-background-color: #a7d4ff");
-		employees_butt.setStyle("-fx-background-color: #1e90ff");
+		clients_butt.setStyle("-fx-background-color: #9b274c");
+		employees_butt.setStyle("-fx-background-color: #db7092");
 	}
 
 	@FXML

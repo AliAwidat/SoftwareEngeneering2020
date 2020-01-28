@@ -1,29 +1,31 @@
 package src.lil.client.lilachgui;
 
-import java.io.IOException;
+
+
 import java.sql.SQLException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
 import javafx.stage.Stage;
 import src.lil.Enums.SubscriptionType;
 import src.lil.client.Instance;
-import src.lil.models.Client;
+
 import src.lil.models.Order;
 import src.lil.models.User;
+
+import src.lil.Enums.ItemType;
+import src.lil.client.Instance;
+import src.lil.models.Client;
+import src.lil.models.Item;
+
+import java.io.IOException;
+
 
 public class myOrdersCont extends LilachController {
 
@@ -82,6 +84,7 @@ public class myOrdersCont extends LilachController {
 	private Text star1;
 
 	@FXML
+
 	private TextField orderCost;
 
 
@@ -99,6 +102,8 @@ public class myOrdersCont extends LilachController {
 //		catch(Exception e){
 //			System.out.println(e.getMessage());
 //		}
+
+	
 	}
 	@FXML
 	void handle_Add_greating_butt(ActionEvent event){
