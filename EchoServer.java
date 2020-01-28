@@ -103,10 +103,23 @@ public class EchoServer extends AbstractServer {
 				complain.addComplain();
 				return;
 			}
-		if(String.valueOf(msg).startsWith("SubmitPurchase")){
-			String orderAsString = String.valueOf(msg).split("SubmitPurchase")[1];
-			Order myOrderDetails = gson.fromJson(orderAsString,Order.class);
-			myOrderDetails.insertIntoOrders();
+			if(String.valueOf(msg).startsWith("SubmitPurchase")) {
+				String OrderAsString = String.valueOf(msg).split("SubmitPurchase")[1];
+				Order submitOrder = gson.fromJson(OrderAsString, Order.class);
+				submitOrder.insertIntoOrders();
+				client.sendToClient("successfull");
+				return;
+			}
+		if(String.valueOf(msg).startsWith("TryToDelete")) {
+			String OrderAsString = String.valueOf(msg).split("TryToDelete")[1];
+			Order tryDelete = gson.fromJson(OrderAsString, Order.class);
+			double dele = tryDelete.orderTimeDiff();
+			if(dele > 0.0){
+				tryDelete.DeleteOrder();
+				client.sendToClient("successfull");
+				return;
+			}
+			client.sendToClient("you cant cancel this order");
 			return;
 		}
 			if(msg.toString().startsWith("GetAllComplains")){
@@ -250,12 +263,14 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 
-		else if (msg.toString().startsWith("getstoreid ")) {
+			else if (msg.toString().startsWith("getstoreid ")) {
 			try {
 				client.sendToClient(store_addresses.get(msg.toString().substring(11, msg.toString().length())));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
+
 		} else if (msg.toString().startsWith("register ")) {
 			Client reg = gson.fromJson(msg.toString().substring("register ".length(), msg.toString().length()),
 					Client.class);
