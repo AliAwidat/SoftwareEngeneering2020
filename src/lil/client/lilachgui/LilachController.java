@@ -166,7 +166,7 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_my_order_butt(ActionEvent event) throws IOException {
-		get_scene("myOrdersPage.fxml", "My orders history");
+		get_scene("OrderHistory.fxml", "My orders history");
 	}
 
 	@FXML
@@ -223,7 +223,7 @@ public abstract class LilachController {
 		}
 		if (Instance.getResponse().equals("successful")) {
 			Instance.setCurrentUser(null);
-			this.handle_menu_butt(null);
+			get_scene("LilachMainScene.fxml", "Welcome to Lilach.");
 		}
 	}
 }
