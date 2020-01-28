@@ -13,13 +13,17 @@ import java.util.List;
 public class Item {
 	private int id,updated=0;
 	private String dominantColor="",image;
-	private static ItemType type;
+	private String type;
 	private Double price;
 	private Boolean canAddToBouquet=false;
 	private List<Item> flowerInItem;
 	private ImageView object_image;
-	public CheckBox checked;
-	
+	public CheckBox checked,flowers_number;
+
+	public Item(){
+
+	}
+
 	public Item(ResultSet rs) throws SQLException{
 		//super();
 		this.fillFieldsFromResultSet(rs);
@@ -28,20 +32,22 @@ public class Item {
 	public void fillFieldsFromResultSet(ResultSet rs) throws SQLException{
         this.id = rs.getInt("item_Id");
         this.dominantColor = rs.getString("dominant_color");
-        this.type = ItemType.valueOf(rs.getString("item_type"));
+        this.type = rs.getString("item_type");
         //System.out.println("id= "+this.id);
         this.price = rs.getDouble("item_price");
        // System.out.println("price="+this.price);
         this.updated = rs.getInt("updated");
         this.image = rs.getString("image");
         this.updated=rs.getInt("updated");
-        if(type==ItemType.CUSTOM) {
+        this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
+        if(canAddToBouquet==true) {
         	this.flowerInItem=getFlowersInItemFromDb(this.id);
         }else {
         	this.flowerInItem=null;
         }
-        this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
+        
         this.checked = new CheckBox();
+        this.flowers_number=new CheckBox();
 		if(!image.isEmpty()) {
 			this.object_image = new ImageView(image);
 			this.object_image.setFitHeight(200);
@@ -141,7 +147,7 @@ public class Item {
     	String list="";
         try (Connection db = DBConnection.getInstance().getConnection();
                 PreparedStatement preparedStatement = db.prepareStatement("insert into items (item_type,dominant_color,item_price,image,updated,canAddToBouquet,flowersInItem) values (?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, this.type.toString());
+            preparedStatement.setString(1, this.type);
         	preparedStatement.setString(2, this.dominantColor);
         	preparedStatement.setDouble(3, this.price);
         	preparedStatement.setString(4, this.image);
@@ -238,7 +244,7 @@ public class Item {
     
     private String itemsToString() {
     	String str="";
-    	if(type==ItemType.CUSTOM) {
+    	if(canAddToBouquet==true) {
     		str += "(";
 	    	for(Item item : flowerInItem) {
 	    		str+=item.getId()+",";
@@ -276,7 +282,7 @@ public class Item {
     
     public double getItemPrice() {
     	double totalPrice=0;
-    	if(Item.getType()==ItemType.CUSTOM) {
+    	if(canAddToBouquet==true) {
 	        for (Item item : flowerInItem) { 		
 	        	totalPrice+=item.getPrice();
 	        }
@@ -290,11 +296,13 @@ public class Item {
     public static List<Item> filterItems(String type ,int storeId){
     	List<Item> items=new ArrayList<Item>();
         try (Connection db = DBConnection.getInstance().getConnection();){
-        		try(ResultSet rs = db.prepareStatement("SELECT * FROM items WHERE item_type"+type).executeQuery()){
+        		try(ResultSet rs = db.prepareStatement("SELECT * FROM items WHERE canAddToBouquet ="+type).executeQuery()){
 	                while (rs.next()) {
 	                    Item item = new Item(rs);
-	                	items.add(item);    
+	                    items.add(item); 
+	                	
 	                }
+	              
 	            } catch (Exception e) {
 	            	  System.out.println(e.getMessage());
 	            	  System.out.println("fuck you not custom");
@@ -304,6 +312,7 @@ public class Item {
 	        		try(ResultSet rs = db.prepareStatement("select price from prices where item_id="+currId+" and store_id="+storeId).executeQuery()){
 	        			if(rs.next()) {
 	        				item.setPrice(rs.getDouble(1));
+	        				
 	        			}
 		            } catch (Exception e) {
 		            	  System.out.println(e.getMessage());
@@ -311,6 +320,7 @@ public class Item {
 		            	  return null;
 		            }   
 	            }
+	            db.close();
         } catch (Exception e) {
             	System.out.println(e.getMessage());
             	return null;
@@ -320,7 +330,7 @@ public class Item {
     	
     
   //  public static boolean update
-    public Item (ItemType itemType,String dominantColor, Double itemPrice, String image , Boolean canAddToBouquet) {
+    public Item (String itemType,String dominantColor, Double itemPrice, String image , Boolean canAddToBouquet) {
     	//this.id = itemId;
     	this.type = itemType;
 	    this.dominantColor = dominantColor;
@@ -366,11 +376,11 @@ public class Item {
     	this.image = image;
     }
 
-    public static ItemType getType() {
+    public  String getType() {
     	return type;
     }
 
-    public void setType(ItemType type) {
+    public void setType(String type) {
     	this.type = type;
     }
 
@@ -389,13 +399,19 @@ public class Item {
     public CheckBox getChecked(){
 		return this.checked;
 	}
-
+    public boolean is_custom() {
+    	return canAddToBouquet;
+    }
 	public void setChecked(CheckBox new_checked){
 		this.checked=new_checked;
 	}
-
+	public CheckBox getFlowers_number(){ return this.flowers_number; }
+	public void setFlowers_number(CheckBox btn){this.flowers_number=btn;}
 	public void setObject_image(String imagev){
 		this.object_image=new ImageView(imagev);
+	}
+	public List<Item> getFlowersInItem(){
+		return this.flowerInItem;
 	}
 
 	public ImageView getObject_image(){
