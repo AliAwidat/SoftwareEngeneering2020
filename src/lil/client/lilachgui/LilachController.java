@@ -159,7 +159,7 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_my_order_butt(ActionEvent event) throws IOException {
-		get_scene("myOrdersPage.fxml", "My orders history");
+		get_scene("OrderHistory.fxml", "My orders history");
 	}
 
 	@FXML
