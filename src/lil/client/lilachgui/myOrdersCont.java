@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -99,11 +100,29 @@ public class myOrdersCont extends LilachController {
 //			OrderId.setSelectionEnd(id);
 //			orderCost.setText(currOrder.OrderCost());
 
+
+	@FXML
+	public void initialize() {
+		this.check_logins();
+		Client currUser = ((Client)Instance.getCurrentUser());
+		Contactname.setText(currUser.getName());
+		ReceiverPho.setText(currUser.getName());
+		System.out.println("here1");
+		sel_item_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
+		System.out.println("here2");
+		sel_type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
+		System.out.println("here3");
+		sel_color_cul.setCellValueFactory(new PropertyValueFactory<>("dominantColor"));
+		System.out.println("here4");
+		sel_price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
+		System.out.println("here5");
+		selected.setItems(selected_items);
+		System.out.println("here6");
+
 //		catch(Exception e){
 //			System.out.println(e.getMessage());
 //		}
 
-	
 	}
 	@FXML
 	void handle_Add_greating_butt(ActionEvent event){

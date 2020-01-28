@@ -18,8 +18,12 @@ public class Item {
 	private Boolean canAddToBouquet=false;
 	private List<Item> flowerInItem;
 	private ImageView object_image;
-	public CheckBox checked;
-	
+	public CheckBox checked,flowers_number;
+
+	public Item(){
+
+	}
+
 	public Item(ResultSet rs) throws SQLException{
 		//super();
 		this.fillFieldsFromResultSet(rs);
@@ -42,6 +46,7 @@ public class Item {
         }
         this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
         this.checked = new CheckBox();
+        this.flowers_number=new CheckBox();
 		if(!image.isEmpty()) {
 			this.object_image = new ImageView(image);
 			this.object_image.setFitHeight(200);
@@ -393,9 +398,13 @@ public class Item {
 	public void setChecked(CheckBox new_checked){
 		this.checked=new_checked;
 	}
-
+	public CheckBox getFlowers_number(){ return this.flowers_number; }
+	public void setFlowers_number(CheckBox btn){this.flowers_number=btn;}
 	public void setObject_image(String imagev){
 		this.object_image=new ImageView(imagev);
+	}
+	public List<Item> getFlowersInItem(){
+		return this.flowerInItem;
 	}
 
 	public ImageView getObject_image(){
