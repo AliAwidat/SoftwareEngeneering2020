@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -55,9 +56,15 @@ public abstract class LilachController {
 
 	@FXML
 	protected Button signout_btn1;
-	
+
 	@FXML
 	protected Button block_Users;
+
+	@FXML
+	protected Label finish_order_label;
+	
+	@FXML
+	protected ImageView bg_image;
 
 	/***************************************************/
 	public void show_client_butt() {
@@ -90,6 +97,7 @@ public abstract class LilachController {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource(file_name));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
+		
 		if (Instance.getCurrentUser() != null) {
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -126,11 +134,10 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_complain_butt(ActionEvent event) throws IOException {
-		if(Instance.getCurrentUser().getClass().getName().contains("customerService")){
+		if (Instance.getCurrentUser().getClass().getName().contains("customerService")) {
 			complain_btn.setText("Complains Handle");
 			get_scene("customerServiceView.fxml", "Complains Handle!");
-		}
-		else{
+		} else {
 			complain_btn.setText("Complain");
 			get_scene("ComplainPage.fxml", "Complain!");
 		}
@@ -143,7 +150,7 @@ public abstract class LilachController {
 
 	@FXML
 	public void handle_menu_butt(ActionEvent event) throws IOException {
-		if (Instance.getCurrentUser()!=null && Instance.getCurrentUser().getClass().getName().contains("Client")) {
+		if (Instance.getCurrentUser() != null && Instance.getCurrentUser().getClass().getName().contains("Client")) {
 			Client client = (Client) Instance.getCurrentUser();
 			if (client.isBlocked()) {
 				get_scene("unblockUser.fxml", "Please pay your balance");
@@ -167,13 +174,14 @@ public abstract class LilachController {
 
 		get_scene("cartView.fxml", "Cart");
 	}
+
 	@FXML
 	void handle_block_users(ActionEvent event) throws IOException {
 		get_scene("block_users.fxml", "Block_user");
 	}
 
 	public void check_logins() {
-
+		
 		if (Instance.getCurrentUser() == null) {
 			signout_btn1.setVisible(false);
 			complain_btn.setVisible(false);
@@ -181,15 +189,21 @@ public abstract class LilachController {
 			manageusers_btn.setVisible(false);
 			cart_id.setVisible(false);
 			block_Users.setVisible(false);
+			finish_order_label.setVisible(false);
 			hide_sign_out_butt();
 		} else if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
 			show_client_butt();
 			show_sign_out_butt();
+			finish_order_label.setVisible(true);
+
 		} else if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")) {
 			block_Users.setVisible(true);
+			finish_order_label.setVisible(false);
+			complain_btn.setVisible(false);
 			show_manager_butt();
 			show_sign_out_butt();
 		} else {
+			finish_order_label.setVisible(false);
 			show_manager_butt();
 			show_sign_out_butt();
 		}
