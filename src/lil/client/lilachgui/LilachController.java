@@ -159,7 +159,10 @@ public abstract class LilachController {
 				this.check_logins();
 				get_scene("MenuPage.fxml", "Welcome to Lilach.");
 			}
-		} else {
+		} else if(Instance.getCurrentUser() != null && Instance.getCurrentUser().getClass().getName().contains("StoreManger")){
+			get_scene("ManageStoreView.fxml", "Welcome to Lilach.");
+		}
+		else {
 			this.check_logins();
 			get_scene("MenuPage.fxml", "Welcome to Lilach.");
 		}
