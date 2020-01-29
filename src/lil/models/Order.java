@@ -287,40 +287,7 @@ public class Order implements OrderServices {
      * @throws AlreadyExists
      */
 
-//
-//    public boolean insertIntoOrders() throws SQLException, NotFound, AlreadyExists {
-//        try {
-//        	Connection db = DBConnection.getInstance().getConnection();
-//             PreparedStatement preparedStatement = db.prepareStatement("insert into orders (user_id,  receiver_phone,order_Date,delivery,delivery_location,Shipping_Hour,Shipping_Date,greating,greating_text,contact_name,store_id,order_price ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",Statement.RETURN_GENERATED_KEYS); {
-//            preparedStatement.setInt(1, getuserId());
-////            preparedStatement.setInt(2, getorderId());
-////            preparedStatement.setString(2,getOrderType().toString());
-////            preparedStatement.setString(3, getItems());
-////            preparedStatement.setString(4, getDomiantColor());
-////            preparedStatement.setString(4,getColors());
-//            preparedStatement.setString(2, getReciverPhone());
-//            preparedStatement.setString(3, getOrderDate());
-////            preparedStatement.setString(7, getpriceDomain());
-//            preparedStatement.setBoolean(4, getDelivery());
-//            preparedStatement.setString(5, getDeliveryLocation());
-//            preparedStatement.setString(6,getTime());
-//            preparedStatement.setString(7, getShippingDate());
-//            preparedStatement.setBoolean(8, getGreating());
-//            preparedStatement.setString(13, getGreatingText());
-//            preparedStatement.setString(14, getContactName());
-////            preparedStatement.setString(15, getStoreId());
-////            preparedStatement.setString(16, orderCost);
-////            System.out.println(OrderCost());
-//            // run the insert command
-//            preparedStatement.executeUpdate();
-//            db.close();
-//            return true;
-//             }
-//        } catch (Exception e) {
-//        	System.out.println(e.getMessage());
-//        	return false;
-//        }
-//    }
+
 
     private String getOrderCost() {
         return orderCost;
@@ -455,29 +422,18 @@ public class Order implements OrderServices {
      * @throws NotFound
      * @throws AlreadyExists
      */
-    public  String OrderCost() throws SQLException, NotFound, AlreadyExists {
-        String sum = "";
+    public  String OrderCost(List<Item>items ) throws SQLException, NotFound, AlreadyExists {
+        double OrderPrice= 0.0;
         try {
             Connection db = DBConnection.getInstance().getConnection();
-            String in_string = "(";
-            for (Integer _integer : this.items) {
-                in_string+= _integer.toString() +",";
+            for (Item itrr : items) {
+                double price = itrr.getPrice();
+                OrderPrice+= price;
             }
-            in_string = in_string.substring(0, in_string.length()-1);
-            in_string+=")";
-
-            PreparedStatement statement =  db.prepareStatement("select sum(price) from prices where store_id = ? and item_id IN" + in_string);
-            statement.setInt(1, Integer.parseInt(this.getStoreId()));
-            ResultSet result = statement.executeQuery();
-            result.next();
-            db.close();
-            sum = result.getString(1);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("fukit");
         }
-
         try {
             Connection db = DBConnection.getInstance().getConnection();
             PreparedStatement statement =  db.prepareStatement("select client_subscriptionType from clients where client_id = " + userId);
@@ -490,13 +446,12 @@ public class Order implements OrderServices {
                 discount = 0.75;
             else if (sub == SubscriptionType.Yearly)
                 discount = 0.5;
-            Double finalSum = Double.parseDouble(sum) *discount;
+            Double finalSum = (OrderPrice) *discount;
             return finalSum.toString();
         }
 
         catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("im here");
 
         }
         return "";
