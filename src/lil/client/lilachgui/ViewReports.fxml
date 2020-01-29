@@ -106,7 +106,7 @@
         </content>
       </ScrollPane>
       <Button fx:id="compare_btn" layoutX="520.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#handle_compare_btn" prefHeight="27.0" prefWidth="77.0" text="Compare" />
-      <StackedBarChart fx:id="income_chart" layoutX="527.0" layoutY="232.0" prefHeight="249.0" prefWidth="415.0" style="-fx-background-color: #ADD8E6;" title="Compre Income" visible="false">
+      <StackedBarChart fx:id="income_chart" layoutX="527.0" layoutY="232.0" prefHeight="249.0" prefWidth="415.0" style="-fx-background-color: #ADD8E6;" title="Compre Income">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -114,7 +114,7 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </StackedBarChart>
-      <StackedBarChart fx:id="complains_chart" layoutX="527.0" layoutY="469.0" prefHeight="249.0" prefWidth="415.0" style="-fx-background-color: #ADD8E6;" title="Compre Complains" visible="false">
+      <StackedBarChart fx:id="complains_chart" layoutX="527.0" layoutY="469.0" prefHeight="249.0" prefWidth="415.0" style="-fx-background-color: #ADD8E6;" title="Compre Complains">
          <xAxis>
             <CategoryAxis side="BOTTOM" />
          </xAxis>

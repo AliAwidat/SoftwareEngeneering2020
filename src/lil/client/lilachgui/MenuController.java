@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import src.lil.Enums.ItemType;
 import src.lil.client.Instance;
 import src.lil.models.Item;
 
@@ -21,8 +20,6 @@ public class MenuController extends LilachController{
 
 	public Item boque_items;
 	ObservableList<String>combo_list=FXCollections.observableArrayList("White","Red","Blue");
-	@FXML
-	Spinner<Integer> spinner;
 	@FXML
 	private ComboBox<String> combo_box;
 	@FXML
@@ -51,7 +48,7 @@ public class MenuController extends LilachController{
 	private TableColumn<Item, Double> price_cul;
 
 	@FXML
-	private TableColumn<Item, ItemType> type_cul;
+	private TableColumn<Item, String> type_cul;
 
 	@FXML
 	private TableColumn<Item,CheckBox> checkbox_cul;
@@ -89,7 +86,7 @@ public class MenuController extends LilachController{
 	private void displayItems() {
 //		Gson gson=new Gson();
 		List<Item> items;
-		items=Item.filterItems(" <> 'CUSTOM'",1);
+		items=Item.filterItems("false",1);
 		combo_box.setValue("None");
 		combo_box.setItems(combo_list);
 		id_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
