@@ -1,10 +1,12 @@
 package src.lil.client.lilachgui;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -106,7 +108,10 @@ public class SignupController extends LilachController {
 		while (Instance.getResponse() == null) {
 			System.out.println("");
 		}
-		addresses = gson.fromJson(Instance.getResponse(), List.class);
+		Type list_type_Object = new TypeToken<List<String>>() {
+		}.getType();
+		
+		addresses = gson.fromJson(Instance.getResponse(), list_type_Object);
 		for (String string : addresses) {
 			store_add_box.getItems().add(string);
 		}
