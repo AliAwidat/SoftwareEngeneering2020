@@ -17,13 +17,14 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import src.lil.client.Instance;
 import src.lil.models.Client;
+import src.lil.models.Complain;
 import src.lil.models.Item;
 
 import java.io.IOException;
 
 public abstract class LilachController {
 
-	public static ObservableList<Item> selected_items= FXCollections.observableArrayList();
+	public static ObservableList<Item> selected_items = FXCollections.observableArrayList();
 
 	@FXML
 	protected AnchorPane main_anchor_pane;
@@ -66,7 +67,7 @@ public abstract class LilachController {
 
 	@FXML
 	protected Label finish_order_label;
-	
+
 	@FXML
 	protected ImageView bg_image;
 
@@ -80,7 +81,6 @@ public abstract class LilachController {
 
 	public void show_manager_butt() {
 		complain_btn.setVisible(true);
-		manageusers_btn.setVisible(true);
 		cart_id.setVisible(false);
 		myorders_btn.setVisible(false);
 	}
@@ -101,7 +101,7 @@ public abstract class LilachController {
 		AnchorPane pane = FXMLLoader.load(getClass().getResource(file_name));
 		Scene scene = new Scene(pane);
 		Stage stage = (Stage) main_anchor_pane.getScene().getWindow();
-		
+
 		if (Instance.getCurrentUser() != null) {
 			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -165,10 +165,10 @@ public abstract class LilachController {
 				this.check_logins();
 				get_scene("MenuPage.fxml", "Welcome to Lilach.");
 			}
-		} else if(Instance.getCurrentUser() != null && Instance.getCurrentUser().getClass().getName().contains("StoreManger")){
+		} else if (Instance.getCurrentUser() != null
+				&& Instance.getCurrentUser().getClass().getName().contains("StoreManger")) {
 			get_scene("ManageStoreView.fxml", "Welcome to Lilach.");
-		}
-		else {
+		} else {
 			this.check_logins();
 			get_scene("MenuPage.fxml", "Welcome to Lilach.");
 		}
@@ -180,7 +180,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	public void handle_cart_click(MouseEvent event) throws IOException {
+	public void handle_order_cart(MouseEvent event) throws IOException {
 
 		get_scene("myOrdersPage.fxml", "Cart");
 	}
@@ -192,8 +192,11 @@ public abstract class LilachController {
 
 	public void check_logins() {
 
+
 		view_reports_btn.setVisible(false);
+
 		if (Instance.getCurrentUser() == null) {
+
 			signout_btn1.setVisible(false);
 			complain_btn.setVisible(false);
 			myorders_btn.setVisible(false);
@@ -203,6 +206,14 @@ public abstract class LilachController {
 			finish_order_label.setVisible(false);
 			hide_sign_out_butt();
 		} else if (Instance.getCurrentUser().getClass().getName().contains("Client")) {
+			if (((Client) Instance.getCurrentUser()).isBlocked()) {
+				myorders_btn.setVisible(false);
+				show_sign_out_butt();
+				finish_order_label.setVisible(false);
+				manageusers_btn.setVisible(false);
+				cart_id.setVisible(false);
+				return;
+			}
 			show_client_butt();
 			show_sign_out_butt();
 			finish_order_label.setVisible(true);
@@ -212,9 +223,13 @@ public abstract class LilachController {
 			block_Users.setVisible(true);
 			finish_order_label.setVisible(false);
 			complain_btn.setVisible(false);
+			manageusers_btn.setVisible(true);
 			show_manager_butt();
 			show_sign_out_butt();
 		} else {
+			complain_btn.setLayoutX(273);
+			block_Users.setVisible(false);
+			manageusers_btn.setVisible(false);
 			finish_order_label.setVisible(false);
 			show_manager_butt();
 			show_sign_out_butt();

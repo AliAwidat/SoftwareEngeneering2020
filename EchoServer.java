@@ -3,7 +3,23 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
+
+import java.io.*;
+import java.lang.reflect.Type;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import src.lil.client.Instance;
+
+import javafx.util.Pair;
+
+
+import src.lil.models.*;
+
+import src.ocsf.server.*;
+
 import src.lil.Enums.LoginStatus;
 import src.lil.common.ChatIF;
 import src.lil.models.*;
@@ -283,13 +299,38 @@ public class EchoServer extends AbstractServer {
 		
 			ChainManger manager = (ChainManger) _login.get_object(Integer.parseInt(parms[1]));
 			if(parms[2].equals("true")) {
-				System.out.println(gson.fromJson(parms[3], Client.class));
 				manager.updateUser(gson.fromJson(parms[3], Client.class));
 			}else {
 				manager.updateUser(gson.fromJson(parms[3], Employee.class));
 			}
 			
 			client.sendToClient("successful.");
+			return;
+		}else if(msg.toString().startsWith("items Update all in :")) {
+			String[] client_msg = msg.toString().split(":");
+			Store curr_store = new Store();
+			curr_store.set_id(Integer.parseInt(client_msg[1]));
+			if(curr_store.change_price_all_items((int)Double.parseDouble(client_msg[2]))) {
+				client.sendToClient("successful.");
+				return;
+			}
+			client.sendToClient("ERROR!");
+			return;
+		}
+		else if(msg.toString().startsWith("item update :")){
+			String[] client_msg = msg.toString().split(":");
+			Store curr_store = new Store();
+			curr_store.set_id(Integer.parseInt(client_msg[1]));
+			Type list_type_Object = new TypeToken<List<Integer>>() {
+			}.getType();
+			List<Integer> item_ids = gson.fromJson(client_msg[2],list_type_Object);
+			if(curr_store.update_items_price(item_ids, Integer.parseInt(client_msg[3]))) {
+				client.sendToClient("successful.");
+				return;
+			}
+			client.sendToClient("ERROR!");
+			return;
+			
 		}
 
 		else if (msg.toString().startsWith("#login ")) {
