@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 import src.lil.Enums.OrderType;
 import src.lil.Enums.SubscriptionType;
 import src.lil.common.DBConnection;
+import src.lil.common.sendMail;
 import src.lil.controllers.OrderServices;
 
 import java.time.LocalDate;
@@ -265,8 +266,18 @@ public class Order implements OrderServices {
             preparedStatement.setString(10, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now()));
             try{
                 preparedStatement.executeUpdate();
+                Statement statment = db.createStatement();
+                ArrayList<String> customersEmails = new ArrayList<>();
+                ResultSet rs1 = statment.executeQuery("SELECT client_email FROM clients WHERE client_id ="+ userId);
+                rs1.next();
+                customersEmails.add(rs1.getString("client_email"));
+                String emailSubject = "Order " + orderId;
+                String emailBody =
+                        "Hello :)\n We're happy to tell you that your order have been submitted successfully   \n\n Thank you and best regards\nLilach LTD";
+                new sendMail(customersEmails,emailSubject,emailBody);
                 db.close();
                 preparedStatement.close();
+
             }catch(SQLException se) {
                 se.printStackTrace();
             }
