@@ -25,14 +25,10 @@ public class unblockUserController extends LilachController {
 
     @FXML
     public void initialize() {
-        complain_btn.setVisible(true);
-        myorders_btn.setVisible(false);
-        cart_id.setVisible(false);
-        menu_btn.setVisible(false);
-        manageusers_btn.setVisible(false);
-        block_Users.setVisible(false);
+        this.check_logins();
+        
         messageForError.setText("");
-        show_sign_out_butt();
+       
         currClient = (Client) Instance.getCurrentUser();
         message.setText("Dear " + currClient.getName() +"\n We're sorry to tell you that you have been blocked\n" +
                 "Because of your balance which is : "+ currClient.getBalance() +"\n" +

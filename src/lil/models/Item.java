@@ -19,8 +19,10 @@ public class Item {
 	private Boolean canAddToBouquet=false;
 	private List<Item> flowerInItem;
 	private ImageView object_image;
+
 	public CheckBox checked;
 	public Button flowers_number;
+
 
 	public Item(){
 
@@ -312,7 +314,7 @@ public class Item {
 	              
 	            } catch (Exception e) {
 	            	  System.out.println(e.getMessage());
-	            	  System.out.println("fuck you not custom");
+	            	 db.close();
 	            	  return null;
 	            }for(Item item:items) {
 	            	int currId=item.getId();
@@ -323,7 +325,7 @@ public class Item {
 	        			}
 		            } catch (Exception e) {
 		            	  System.out.println(e.getMessage());
-		            	  System.out.println("FUCK PRICE");
+		            	  db.close();
 		            	  return null;
 		            }   
 	            }

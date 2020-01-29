@@ -20,14 +20,20 @@ public class Client extends User {
     			",credit_num=" + this.creditCardNumber +","+ to_String(); 
     }
     @Override
-    public boolean register() throws AlreadyExists , SQLException {
+    public boolean register() throws AlreadyExists , SQLException, Exception {
         try{
             Connection connection = DBConnection.getInstance().getConnection();
             //check if exist
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *  FROM clients WHERE client_id=" + userId);
             if(rs.next()) {
-                throw new AlreadyExists();
+                throw new Exception("AlreadyExists");
+            }
+            if(String.valueOf(userId).length()<9 ){
+                throw new Exception("Illegal id, less than 9 digits");
+            }
+            if(name.isEmpty() || phone.isEmpty() || bankAccount.isEmpty() ||  email.isEmpty() ||  password.isEmpty() ||  creditCardNumber.isEmpty() ||  shippingAddress.isEmpty() ||  subscriptionType.toString().isEmpty() ||  storeId.isEmpty()){
+                throw new Exception("Illegal arguments, all data should be inserted");
             }
             String SQL_INSERT = "INSERT INTO clients (client_id, client_name, client_phone, client_bankAccount, client_email," +
                     " client_password, client_creditCard, client_shippingAddress, client_subscriptionType, client_block,store_id," +
