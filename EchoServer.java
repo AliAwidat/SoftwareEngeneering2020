@@ -233,7 +233,8 @@ public class EchoServer extends AbstractServer {
 				try {
 					Object user = _login.get_object(user_id);
 					String json = gson.toJson(user);
-					client.sendToClient("successful " + json);
+					String rule =  user.getClass().getName();
+					client.sendToClient("successful " +rule + "SPACE" +  json);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

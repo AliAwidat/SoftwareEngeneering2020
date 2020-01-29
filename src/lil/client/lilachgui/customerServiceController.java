@@ -126,7 +126,9 @@ public class customerServiceController extends LilachController{
             while (Instance.getResponse() == null) {
                 System.out.println("Waiting for respond");
             }
-            if(Instance.getResponse().equals("AllDone"))this.initialize();
+            if(Instance.getResponse().equals("AllDone")) {
+                get_scene("customerServiceView.fxml", "Complains Handle!");
+            }
             else messageToEmployee.setText("Please try to submit again");
         }
         catch (Exception e){

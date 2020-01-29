@@ -88,7 +88,7 @@ public class customerService extends Employee {
 
     public boolean replyComplain(Complain complain,String reply_text, double refund){
         try{
-            ArrayList<String> email = null;
+            ArrayList<String> email = new ArrayList<>();
             email.add(complain.getContact_email());
             Connection connection = DBConnection.getInstance().getConnection();
                 PreparedStatement updateUserQuery = connection.prepareStatement("UPDATE complains SET reply_text=?, refund=?,complain_closed=1 WHERE complain_id=?");
@@ -152,5 +152,9 @@ public class customerService extends Employee {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+    @Override
+    public String toString(){
+            return "customerService ["+to_String();
     }
 }

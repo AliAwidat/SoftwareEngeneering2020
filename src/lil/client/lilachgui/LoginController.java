@@ -64,20 +64,21 @@ public class LoginController extends LilachController {
 				login_btn.setVisible(false);
 				sigup_btn.setVisible(false);
 				signout_btn1.setVisible(true);
-				StringTokenizer roletok = new StringTokenizer(Instance.getResponse());
-				roletok.nextToken(" ");
-				String Role = roletok.nextToken();
+//				StringTokenizer roletok = new StringTokenizer(Instance.getResponse());
+//				roletok.nextToken(" ");
+				String Role = Instance.getResponse().split("successful")[1].split("SPACE")[0];
+				String user = Instance.getResponse().split("successful")[1].split("SPACE")[1];
 				Object current_user = null;
 				if (Role.contains("StoreManger")) {
-					current_user = gson.fromJson(Role, StoreManger.class);
+					current_user = gson.fromJson(user, StoreManger.class);
 				} else if (Role.contains("ChainManger")) {
-					current_user = gson.fromJson(Role, ChainManger.class);
+					current_user = gson.fromJson(user, ChainManger.class);
 				}else if (Role.contains("customerService")) {
-					current_user = gson.fromJson(Role, customerService.class);
+					current_user = gson.fromJson(user, customerService.class);
 				} else if (Role.contains("Employee")) {
-					current_user = gson.fromJson(Role, Employee.class);
+					current_user = gson.fromJson(user, Employee.class);
 				} else {
-					current_user = gson.fromJson(Role, Client.class);
+					current_user = gson.fromJson(user, Client.class);
 				}
 				Instance.setCurrentUser(current_user);
 				this.handle_menu_butt(null);
