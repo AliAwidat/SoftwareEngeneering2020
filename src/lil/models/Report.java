@@ -72,6 +72,12 @@ public class Report implements ReportInterface {
 		view_report.setStyle("-fx-background-color: #FFA500");
 	}
 
+	public CheckBox getTo_compare(){
+		return this.to_compare;
+	}
+	public void setTo_compare(CheckBox cb){
+		this.to_compare = cb;
+	}
 	public void addReport(Double monthlyIncome,int complainsCount){
 
 	}

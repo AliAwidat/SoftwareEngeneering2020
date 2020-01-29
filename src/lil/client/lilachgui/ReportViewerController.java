@@ -2,12 +2,12 @@ package src.lil.client.lilachgui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import src.lil.models.Report;
 
 import java.util.List;
@@ -15,9 +15,10 @@ import java.util.List;
 
 public class ReportViewerController extends LilachController{
 
-
 	@FXML
-	public static TableView<Report> reports_table;
+	public Button report_search_btn;
+	@FXML
+	public  TableView<Report> reports_table;
 	@FXML
 	private DatePicker date_picker;
 
@@ -108,31 +109,25 @@ public class ReportViewerController extends LilachController{
 	}
 
 	@FXML
-	void handle_compare_btn(MouseEvent event) {
+	public void handle_compare_btn(ActionEvent event) {
 		XYChart.Series<String,Double> series = new XYChart.Series<>();
-//		XYChart.Series<String,Integer> series2 = new XYChart.Series<>();
 		for(Report rep : reports_table.getItems()) {
 			System.out.println(getMonth(rep)+rep.getMonthlyIncome());
-			series.getData().add(new XYChart.Data<>(getMonth(rep),rep.getMonthlyIncome()));
+			series.getData().add(new XYChart.Data<String,Double>(getMonth(rep),rep.getMonthlyIncome()));
 		}
 		Income_chart.getData().addAll(series);
-//		for(Report rep : reports_table.getItems()) {
-//			series2.getData().add(new XYChart.Data<String,Integer>(getMonth(rep),rep.getComplains_count));
-//		}
-
-//		complains_chart.getData().addAll(series2);
 	}
 
 
 
 	@FXML
-	void handle_report_search(MouseEvent event) {
+	public void handle_report_search(ActionEvent event) {
 
 	}
 
-
-	public void handle_clear_charts(MouseEvent mouseEvent) {
+	@FXML
+	public void handle_clear_charts(ActionEvent mouseEvent) {
 		Income_chart.getData().clear();
-		complains_chart.getData().clear();
 	}
+
 }

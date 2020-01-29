@@ -45,11 +45,17 @@
       <Button fx:id="signout_btn1" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #DB7093;" text="Sign-Out" />
       <Button fx:id="sigup_btn" layoutX="423.0" layoutY="489.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #DB7093;" text="Sign-Up" />
        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
+
            <font>
                <Font size="10.0" />
            </font>
        </Button>
-      <Text fill="PALEVIOLETRED" layoutX="288.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wellcome to Lilach store." textAlignment="CENTER" wrappingWidth="394.98016357421875">
+       <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
+       <Text fill="PALEVIOLETRED" layoutX="288.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wellcome to Lilach store." textAlignment="CENTER" wrappingWidth="394.98016357421875">
          <font>
             <Font name="Bookman Old Style Bold" size="34.0" />
          </font>
