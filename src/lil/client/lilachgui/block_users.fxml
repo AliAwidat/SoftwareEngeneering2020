@@ -68,6 +68,11 @@
            </font>
        </Button>
       <Label fx:id="finish_order_label" layoutX="543.0" layoutY="30.0" text="Finish Order:" />
-   
+        <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
+            <font>
+                <Font size="10.0" />
+            </font>
+        </Button>
+
     </children>
 </AnchorPane>

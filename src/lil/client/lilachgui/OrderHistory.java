@@ -1,22 +1,26 @@
 package src.lil.client.lilachgui;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import src.lil.client.Instance;
 import src.lil.models.Client;
 import src.lil.models.Order;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderHistory extends  LilachController {
     @FXML
@@ -46,7 +50,8 @@ public class OrderHistory extends  LilachController {
     private TableView<Order> OrderTableView;
     @FXML
     private Button cancel_order;
-
+    @FXML
+    private Text msg_order_dele;
 
     private Order obj;
 
@@ -106,7 +111,13 @@ public class OrderHistory extends  LilachController {
                         System.out.println(element);
                         element = "TryToDelete " + element;
                         try {
+                            Instance.resetResponse();
                             Instance.getClientConsole().get_client().sendToServer(element);
+                            while(Instance.getResponse() == null){
+                                System.out.println("waiting...");
+                            }
+                            msg_order_dele.setText(Instance.getResponse().split("successfull")[0]);
+                            row.setVisible(false);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

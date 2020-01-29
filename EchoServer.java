@@ -3,33 +3,20 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.*;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import src.lil.client.Instance;
-
-import javafx.util.Pair;
-
-
-import src.lil.models.*;
-
-import src.ocsf.server.*;
 import src.lil.Enums.LoginStatus;
-import src.lil.common.*;
-import src.lil.exceptions.AlreadyLoggedIn;
+import src.lil.common.ChatIF;
+import src.lil.models.*;
 import src.lil.models.Order.AlreadyExists;
+import src.ocsf.server.AbstractServer;
+import src.ocsf.server.ConnectionToClient;
 
-
+import java.io.IOException;
 import java.sql.*;
-import java.util.*;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import com.google.gson.Gson;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -116,7 +103,7 @@ public class EchoServer extends AbstractServer {
 			double dele = tryDelete.orderTimeDiff();
 			if(dele > 0.0){
 				tryDelete.DeleteOrder();
-				client.sendToClient("successfull");
+				client.sendToClient("successfull" + "This order hsa been canceled " + " your refund is:" +dele);
 				return;
 			}
 			client.sendToClient("you cant cancel this order");

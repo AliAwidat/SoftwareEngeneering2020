@@ -50,6 +50,9 @@ public abstract class LilachController {
 	protected ListView<?> menu_items_list;
 
 	@FXML
+	protected Button view_reports_btn;
+
+	@FXML
 	protected ImageView logo;
 
 	@FXML
@@ -122,7 +125,10 @@ public abstract class LilachController {
 	}
 
 	/***************************************************/
-
+	@FXML
+	public void handle_reports_btn(ActionEvent actionEvent) throws IOException {
+		get_scene("ReportViewer.fxml", "Welcome to Lilach.");
+	}
 	@FXML
 	public void handle_login_butt(ActionEvent event) throws IOException {
 		get_scene("LoginPage.fxml", "Login");
@@ -185,7 +191,8 @@ public abstract class LilachController {
 	}
 
 	public void check_logins() {
-		
+
+		view_reports_btn.setVisible(false);
 		if (Instance.getCurrentUser() == null) {
 			signout_btn1.setVisible(false);
 			complain_btn.setVisible(false);
@@ -201,6 +208,7 @@ public abstract class LilachController {
 			finish_order_label.setVisible(true);
 
 		} else if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")) {
+			view_reports_btn.setVisible(true);
 			block_Users.setVisible(true);
 			finish_order_label.setVisible(false);
 			complain_btn.setVisible(false);

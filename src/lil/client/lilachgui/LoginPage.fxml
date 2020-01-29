@@ -63,5 +63,11 @@
       </Label>
       <Label layoutX="311.0" layoutY="396.0" text="User ID:" underline="true" />
       <TextField fx:id="userid_txt" layoutX="385.0" layoutY="392.0" onKeyTyped="#handle_id_input" promptText="user name" style="-fx-background-color: #ffffff;" />
-  </children>
+       <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
+
+   </children>
 </AnchorPane>

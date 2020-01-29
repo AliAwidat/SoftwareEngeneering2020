@@ -3,7 +3,6 @@ package src.lil.client.lilachgui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -71,8 +70,6 @@ public class MenuController extends LilachController{
 	@FXML
 	private TableColumn<Item, String> id_cul;
 
-	@FXML
-	private Button view_reports_btn;
 	@FXML
 	private TableColumn<Item, ImageView> pic_cul;
 
@@ -310,7 +307,6 @@ public class MenuController extends LilachController{
 
 	public void handle_delete_btn(MouseEvent mouseEvent) throws SQLException, Order.AlreadyExists {
 		Item tmp = menue_tableview.getSelectionModel().getSelectedItem();
-		System.out.println(tmp.getFlowersInItem().size());
 		menue_tableview.getItems().removeAll(tmp);
 		Item.delete(tmp.getId());
 	}
@@ -354,10 +350,7 @@ public class MenuController extends LilachController{
 		tmp.flowers_number = new Button();
 		menue_tableview.getItems().add(tmp);
 	}
-	@FXML
-	public void handle_reports_btn(ActionEvent actionEvent) throws IOException {
-		get_scene("ReportViewer.fxml", "Welcome to Lilach.");
-	}
+
 
 }
 

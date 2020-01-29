@@ -40,7 +40,7 @@
                   <ToolBar layoutY="-4.0" prefHeight="45.0" prefWidth="433.0">
                      <items>
                         <DatePicker fx:id="date_picker" />
-                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#handle_report_search" prefHeight="27.0" prefWidth="68.0" text="Search" />
+                        <Button fx:id="report_search_btn" alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#handle_report_search" prefHeight="27.0" prefWidth="68.0" text="Search" />
                      </items>
                   </ToolBar>
                </children>
@@ -58,7 +58,7 @@
                </children>
             </Pane>
             <ScrollBar layoutX="455.0" layoutY="92.0" orientation="VERTICAL" prefHeight="479.0" prefWidth="17.0" />
-            <Button fx:id="compare_btn" layoutX="477.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#handle_compare_btn" text="Compare" />
+            <Button fx:id="compare_btn" layoutX="477.0" layoutY="49.0" mnemonicParsing="false" onAction="#handle_compare_btn" text="Compare" />
             <LineChart fx:id="Income_chart" layoutX="475.0" layoutY="76.0" prefHeight="248.0" prefWidth="440.0" title="Income">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
@@ -75,7 +75,7 @@
                   <NumberAxis side="LEFT" />
                </yAxis>
             </LineChart>
-            <Button fx:id="clear_charts_btn" layoutX="566.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#handle_clear_charts" text="Clear Charts" />
+            <Button fx:id="clear_charts_btn" layoutX="566.0" layoutY="49.0" mnemonicParsing="false" onAction="#handle_clear_charts" text="Clear Charts" />
          </children></Pane>
       <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="Complain">
          <font>
@@ -97,6 +97,11 @@
       <Button fx:id="signout_btn1" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #ab2b54;" text="Sign-Out" />
       <Button fx:id="sigup_btn" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #db7092;" text="Sign-Up" />
        <Button fx:id="block_Users" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
+       <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
            <font>
                <Font size="10.0" />
            </font>
