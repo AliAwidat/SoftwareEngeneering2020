@@ -331,6 +331,20 @@ public class EchoServer extends AbstractServer {
 			client.sendToClient("ERROR!");
 			return;
 			
+		}else if(msg.toString().startsWith("get items list in:")) {
+			String[] client_msg = msg.toString().split(":");
+			
+			List<Item> items_list ;
+			items_list = Item.filterItems(" false",Integer.parseInt(client_msg[1]));
+			
+			if(items_list == null) {
+				
+				client.sendToClient("ERROR!");
+				return;
+			}else {
+			client.sendToClient("successful:" + gson.toJson(items_list));
+			return;
+			}
 		}
 
 		else if (msg.toString().startsWith("#login ")) {
