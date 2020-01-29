@@ -1,47 +1,92 @@
 package src.lil.models;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import src.lil.common.DBConnection;
+import src.lil.controllers.ReportInterface;
+import src.lil.models.Order.NotFound;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-
-
-import src.lil.common.DBConnection;
-import src.lil.controllers.ReportInterface;
-import src.lil.models.Order.NotFound;
 
 public class Report implements ReportInterface {
+	public Integer getComplains_count;
 	private File monthlyReport,quarterReport,complainsReport;
 	private Date lastUpdated = null;
+	private String report_name,type;
+	public CheckBox to_compare;
+	public Button view_report;
+	private Double monthly_income;
+	private int  complains_count;
 	public Report() {
-		
+
 	}
-	
+
+	public Report(ResultSet rs) throws SQLException{
+		//super();
+		this.fillFieldsFromResultSet(rs);
+	}
+
+	public static List<Report> getReports() {
+		//filters
+			List<Report> reports=new ArrayList<Report>();
+			try (Connection db = DBConnection.getInstance().getConnection();){
+				try(ResultSet rs = db.prepareStatement("SELECT * FROM reports").executeQuery()){
+					while (rs.next()) {
+						Report repo = new Report(rs);reports.add(repo);
+					}
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					return null;
+				}
+				db.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return null;
+			}
+			return reports;
+		}
+
+
+	public void fillFieldsFromResultSet(ResultSet rs) throws SQLException{
+		this.report_name = rs.getString("report_name");
+		this.type = rs.getString("report_type");
+		this.monthly_income= rs.getDouble("monthly_income");
+		this.to_compare = new CheckBox();
+		this.view_report=new Button("View");
+//		this.view_report.setOnAction(e -> {
+//
+//		});
+		this.complains_count=rs.getInt("complains_count");
+		view_report.setStyle("-fx-background-color: #FFA500");
+	}
+
+	public void addReport(Double monthlyIncome,int complainsCount){
+
+	}
 	public void prepareMonthlyReport() throws SQLException, NotFound, IOException{
 		
 		String sql= null;
 		String pattern = "MMddyyyyHHmmss";
-		String user_id,item,order_date,contact_phone,delivery_location,contact_name,order_price,store_id;
+		String user_id,item,order_date,contact_phone,delivery_location,contact_name,order_price,store_id = null;
 		int order_id;
 		// Create an instance of SimpleDateFormat used for formatting 
 		// the string representation of date according to the chosen pattern
 		DateFormat df = new SimpleDateFormat(pattern);
-
-		String monthly_path="C:\\Users\\ali\\git\\SoftwareEngeneering2020\\src\\lil\\models\\reports\\MonthlyReports\\MonthlyReport"+df.format(new Date())+".txt";
+		this.report_name=df.format(new Date())+".txt";
+		String monthly_path="src/lil/models/reports/MonthlyReports/MonthlyReport"+report_name+".txt";
+		this.type="Monthly";
 //		Open a text file and create an output stream to Store the income data  
 		File targetFile = new File(monthly_path);
 		targetFile.createNewFile();
@@ -53,25 +98,27 @@ public class Report implements ReportInterface {
 	    		  Statement stmt = conn.createStatement();
 	    		  sql = "SELECT * FROM orders";
 	    		  ResultSet rs = stmt.executeQuery(sql);
+
 	    		  fileWriter.write("Order date ----- " + " ----- Order id ----- ----- Item ----- ----- Total Cost ----- ----- Delivery Location\n");
 	    		  while(rs.next()) {
-	    				user_id = rs.getString("user_id");
-	    		        order_id = rs.getInt("order_Id");
-	    		        contact_phone = rs.getString("receiver_phone");
-	    		        delivery_location = rs.getString("delivery_location");
-	    		        store_id = rs.getString("store_id");
-	    		        contact_name = rs.getString("contact_name");
-	    		        order_date=rs.getString("order_Date");
-	    		        item=rs.getString("item");
-	    		        order_price=rs.getString("order_price");
-	    			  String finalOrderInfo = " | " + order_date + " | " +order_id + " | " + item + " | " + order_price + " | " + delivery_location + "\n";
-	    			  try {
-	    				  fileWriter.write(finalOrderInfo);
-	    			  } catch (IOException e) {
-						// TODO Auto-generated catch block
-	    				  fileWriter.write(e.toString());
-					}
-	    		  }
+					  if ("1".equals(rs.getString("store_id"))) {
+						  user_id = rs.getString("user_id");
+						  order_id = rs.getInt("order_Id");
+						  contact_phone = rs.getString("receiver_phone");
+						  delivery_location = rs.getString("delivery_location");
+						  store_id = rs.getString("store_id");
+						  contact_name = rs.getString("contact_name");
+						  order_date = rs.getString("order_Date");
+						  order_price = rs.getString("order_price");
+						  String finalOrderInfo = " | " + order_date + " | " + order_id + " | " + store_id + " | " + order_price + " | " + delivery_location +"\n";
+						  try {
+							  fileWriter.write(finalOrderInfo);
+						  } catch (IOException e) {
+							  // TODO Auto-generated catch block
+							  fileWriter.write(e.toString());
+						  }
+					  }
+				  }
 	    		    try {
 	    		    	fileWriter.write("\n||==================================||\n");
 	    		    	fileWriter.write("||===========Complains====Report======||\n");
@@ -117,9 +164,8 @@ public class Report implements ReportInterface {
 		DateFormat df = new SimpleDateFormat(pattern);
 		int complain_id;
 		String complain_title,complain_text,store_adress,dateAsString=null,contact_phone,contact_email;
-		String path="C:\\Users\\ali\\git\\SoftwareEngeneering2020\\src\\lil\\models\\reports\\ComplainsReports\\complainsReport"+df.format(new Date())+".txt";
-//		Open a text file and create an output stream to Store the income data  
-		System.out.println(path);
+		String path="src/lil/models/reports/ComplainsReports/complainsReport"+df.format(new Date())+".txt";
+//		Open a text file and create an output stream to Store the income data
 		File targetFile = new File(path);
 		targetFile.createNewFile();
 		FileWriter fileWriter = new FileWriter(targetFile);
@@ -184,7 +230,7 @@ public class Report implements ReportInterface {
 		dateAsString=df.format(lastUpdated);
 		
 //		Open a text file and create an output stream to store income data  
-		File targetFile = new File("C:\\Users\\ali\\git\\SoftwareEngeneering2020\\src\\lil\\models\\reports\\QuarterReports\\quarterReport-"+df.format(new Date())+".txt");
+		File targetFile = new File("src\\lil\\models\\reports\\QuarterReports\\quarterReport-"+df.format(new Date())+".txt");
 		targetFile.createNewFile();
 		FileWriter fileWriter = new FileWriter(targetFile);
 
@@ -317,11 +363,12 @@ public class Report implements ReportInterface {
 	            }
 
 	            message.setSubject("Store Monthly Report!");
-	            message.setText("You strore's monthly orders and income report, is here!\n"+ usingBufferedReader(this.monthlyReport.toString()));
+	            message.setText("You're strore's monthly orders and income report, is here!\n"+ usingBufferedReader(this.monthlyReport.toString()));
 	            Transport transport = session.getTransport("smtp");
 	            transport.connect(host, "lilach.ltd@gmail.com", "umsrnjzmyvmkttyh");
 	            transport.sendMessage(message, message.getAllRecipients());
 	            transport.close();
+
 	        } catch (MessagingException ae) {
 	            ae.printStackTrace();
 	        }
@@ -364,26 +411,14 @@ public class Report implements ReportInterface {
 	            ae.printStackTrace();
 	        }
 	   }
-	
-	
-	public static void main(String [] args) {
-		Report report= new Report();
-		try {
-			report.prepareComplainsReport();
-			report.prepareMonthlyReport();
-			report.prepareQuarterReport();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotFound e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		report.sendStoreMonthlyReport();
-		report.sendQuarterReport();
-    }
 
+
+	public Double getMonthlyIncome() {
+		return this.monthly_income;
+	}
+	public String getReport_name(){
+		return this.report_name;
+	}
+//	public Integer getComplains_count(){return this.complains_count;}
 }
+

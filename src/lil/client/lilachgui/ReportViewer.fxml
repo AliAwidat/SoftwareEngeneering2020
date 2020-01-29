@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -25,7 +33,50 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <Pane layoutX="14.0" layoutY="146.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="926.0" style="-fx-background-color: #FFFAF0;" />
+      <Pane layoutX="22.0" layoutY="142.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="583.0" prefWidth="926.0" style="-fx-background-color: #FFFAF0;">
+         <children>
+            <Pane layoutX="23.0" layoutY="92.0" prefHeight="37.0" prefWidth="433.0">
+               <children>
+                  <ToolBar layoutY="-4.0" prefHeight="45.0" prefWidth="433.0">
+                     <items>
+                        <DatePicker fx:id="date_picker" />
+                        <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onMouseClicked="#handle_report_search" prefHeight="27.0" prefWidth="68.0" text="Search" />
+                     </items>
+                  </ToolBar>
+               </children>
+            </Pane>
+            <Pane layoutX="20.0" layoutY="136.0" prefHeight="436.0" prefWidth="433.0">
+               <children>
+                  <TableView fx:id="reports_table" layoutX="1.0" layoutY="-3.0" prefHeight="436.0" prefWidth="433.0">
+                    <columns>
+                      <TableColumn fx:id="report_name_cul" prefWidth="134.0" text="Report Name/Date" />
+                      <TableColumn fx:id="report_type_cul" prefWidth="90.0" text="Report Type" />
+                        <TableColumn fx:id="view_content_cul" prefWidth="105.0" text="ViewContent" />
+                        <TableColumn fx:id="compare_check_cul" prefWidth="101.0" text="Compare" />
+                    </columns>
+                  </TableView>
+               </children>
+            </Pane>
+            <ScrollBar layoutX="455.0" layoutY="92.0" orientation="VERTICAL" prefHeight="479.0" prefWidth="17.0" />
+            <Button fx:id="compare_btn" layoutX="477.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#handle_compare_btn" text="Compare" />
+            <LineChart fx:id="Income_chart" layoutX="475.0" layoutY="76.0" prefHeight="248.0" prefWidth="440.0" title="Income">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <LineChart fx:id="complains_chart" layoutX="477.0" layoutY="330.0" prefHeight="248.0" prefWidth="440.0" title="Complains">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <Button fx:id="clear_charts_btn" layoutX="566.0" layoutY="49.0" mnemonicParsing="false" onMouseClicked="#handle_clear_charts" text="Clear Charts" />
+         </children></Pane>
       <Button fx:id="complain_btn" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_complain_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="Complain">
          <font>
             <Font size="10.0" />
