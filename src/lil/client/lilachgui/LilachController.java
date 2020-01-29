@@ -231,6 +231,8 @@ public abstract class LilachController {
 			block_Users.setVisible(false);
 			manageusers_btn.setVisible(false);
 			finish_order_label.setVisible(false);
+			complain_btn.setVisible(true);
+			complain_btn.setText("Handle complain");
 			show_manager_butt();
 			show_sign_out_butt();
 		}

@@ -140,7 +140,7 @@ public class MenuController extends LilachController{
 		boque_items=new Item();
 		menue_tableview.setItems(getItems(items));
 		original_list= menue_tableview.getItems();
-		if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")){
+		if (Instance.getCurrentUser() != null  && Instance.getCurrentUser().getClass().getName().contains("ChainManger")){
 			view_reports_btn.setVisible(true);
 			add_item_btn.setVisible(true);
 			delete_item_btn.setVisible(true);
