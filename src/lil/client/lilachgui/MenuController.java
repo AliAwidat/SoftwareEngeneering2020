@@ -3,26 +3,53 @@ package src.lil.client.lilachgui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import src.lil.Enums.ItemType;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import src.lil.client.Instance;
 import src.lil.models.Item;
+import src.lil.models.Order;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 
 public class MenuController extends LilachController{
 
 	public Item boque_items;
 	ObservableList<String>combo_list=FXCollections.observableArrayList("White","Red","Blue");
+
+	private Item tmp_item=new Item();
+
 	@FXML
-	Spinner<Integer> spinner;
+	private Label added_label;
+
+	@FXML
+	private TextField type_field;
+
+	@FXML
+	private TextField dominant_field;
+
+	@FXML
+	private TextField price_field;
+
+	@FXML
+	private TextField image_field;
+
+	@FXML
+	private CheckBox can_boquet_box;
+
+	@FXML
+	private Button add_item;
 	@FXML
 	private ComboBox<String> combo_box;
 	@FXML
@@ -33,7 +60,7 @@ public class MenuController extends LilachController{
 	private TableView<Item> menue_tableview;
 
 	@FXML
-	private TableColumn<Item, CheckBox> create_boque_cul;
+	private TableColumn<Item, Button> create_boque_cul;
 
 	@FXML
 	private Button creat_boque_btn;
@@ -45,13 +72,15 @@ public class MenuController extends LilachController{
 	private TableColumn<Item, String> id_cul;
 
 	@FXML
+	private Button view_reports_btn;
+	@FXML
 	private TableColumn<Item, ImageView> pic_cul;
 
 	@FXML
 	private TableColumn<Item, Double> price_cul;
 
 	@FXML
-	private TableColumn<Item, ItemType> type_cul;
+	private TableColumn<Item, String> type_cul;
 
 	@FXML
 	private TableColumn<Item,CheckBox> checkbox_cul;
@@ -72,6 +101,19 @@ public class MenuController extends LilachController{
 	private FilteredList<Item> filtered_list;
 
 	private ObservableList<Item>original_list;
+
+	@FXML
+	private Button add_item_btn;
+
+
+	@FXML
+	private Button delete_item_btn;
+	@FXML
+	private Pane add_popup;
+
+	@FXML
+	private Circle popup_close;
+
 	@FXML
 	void handle_order_cart(MouseEvent event) throws IOException {
 		List<Item>tmp =getCheckedItems();
@@ -89,7 +131,7 @@ public class MenuController extends LilachController{
 	private void displayItems() {
 //		Gson gson=new Gson();
 		List<Item> items;
-		items=Item.filterItems(" <> 'CUSTOM'",1);
+		items=Item.filterItems("false",1);
 		combo_box.setValue("None");
 		combo_box.setItems(combo_list);
 		id_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -101,19 +143,36 @@ public class MenuController extends LilachController{
 		boque_items=new Item();
 		menue_tableview.setItems(getItems(items));
 		original_list= menue_tableview.getItems();
+		if (Instance.getCurrentUser().getClass().getName().contains("ChainManger")){
+			view_reports_btn.setVisible(true);
+			add_item_btn.setVisible(true);
+			delete_item_btn.setVisible(true);
+		}else{
+			view_reports_btn.setVisible(false);
+			add_item_btn.setVisible(false);
+			delete_item_btn.setVisible(false);
+		}
+		add_popup.setVisible(false);
+		menue_tableview.setEffect(null);
 	}
+
 
 	public ObservableList<Item>getItems(List getFromDB){
 		ObservableList<Item> items = FXCollections.observableArrayList();
 		if (Instance.getCurrentUser() == null){
 			for(Object item : getFromDB){
 				Item toItem = (Item)item;
+				toItem.flowers_number.setOnAction(e -> {
+					tmp_item.getFlowersInItem().add(menue_tableview.getSelectionModel().getSelectedItem());
+					tmp_item.setPrice(tmp_item.getItemPrice()+toItem.getId());
+				});
 				toItem.checked.setVisible(false);
 				finish_order_label.setVisible(false);
-				if(toItem.getType().equals("FLOWER"))
+				if(toItem.getType().equals("FLOWER")) {
 					toItem.getFlowers_number().setVisible(true);
-				else
+				} else{
 					toItem.getFlowers_number().setVisible(false);
+				}
 			}
 		}
 		items.addAll(getFromDB);
@@ -229,20 +288,76 @@ public class MenuController extends LilachController{
 
 	public ObservableList<Item>getCoustomCheckedItems(){
 		ObservableList<Item> items_to_order = FXCollections.observableArrayList();
-		for(Object item : menue_tableview.getItems()){
-			Item toItem = (Item)item;
-			if(toItem.getFlowers_number().isSelected())
-				items_to_order.add(toItem);
-			toItem.setChecked(new CheckBox());
-		}
-
+//		for(Object item : menue_tableview.getItems()){
+//			Item toItem = (Item)item;
+//			if(toItem.getFlowers_number().isSelected())
+//				items_to_order.add(toItem);
+//			toItem.setChecked(new CheckBox());
+////		}
+//
 		return items_to_order;
 	}
 
 	public void handle_creat_boq(MouseEvent mouseEvent) {
-		Item tmp=new Item();
-		tmp.getFlowersInItem().addAll(getCoustomCheckedItems());
-		selected_items.add(tmp);
+		Iterator it = menue_tableview.getItems().iterator();
+		int last_id=0;
+		while (it.hasNext())
+			last_id= ((Item)it.next()).getId();
+		tmp_item.setId(last_id+1);
+		tmp_item.setPrice(100.0);
+		selected_items.add(tmp_item);
 	}
+
+	public void handle_delete_btn(MouseEvent mouseEvent) throws SQLException, Order.AlreadyExists {
+		Item tmp = menue_tableview.getSelectionModel().getSelectedItem();
+		System.out.println(tmp.getFlowersInItem().size());
+		menue_tableview.getItems().removeAll(tmp);
+		Item.delete(tmp.getId());
+	}
+
+	public void handle_add_item(MouseEvent mouseEvent) {
+		show_add_popup();
+	}
+
+	private void show_add_popup() {
+		BoxBlur blur = new BoxBlur();
+		blur.setHeight(582);
+		blur.setWidth(927);
+		add_popup.setVisible(true);
+		menue_tableview.setEffect(blur);
+	}
+
+	public void handle_popup_close(MouseEvent mouseEvent) {
+		add_popup.setVisible(false);
+		type_field.setText("");
+		dominant_field.setText("");
+		price_field.setText("");
+		image_field.setText("");
+		can_boquet_box.setSelected(false);
+		menue_tableview.setEffect(null);
+	}
+
+	public void handle_add_item_btn(MouseEvent mouseEvent) throws SQLException, Order.AlreadyExists, InterruptedException, IOException {
+		Item tmp = new Item(type_field.getText(),dominant_field.getText(),Double.parseDouble(price_field.getText()),image_field.getText(),can_boquet_box.isSelected());
+		tmp.insert();
+		added_label.setVisible(true);
+		Thread.sleep(1000);
+		add_popup.setVisible(false);
+		type_field.setText("");
+		dominant_field.setText("");
+		price_field.setText("");
+		image_field.setText("");
+		added_label.setVisible(false);
+		can_boquet_box.setSelected(false);
+		menue_tableview.setEffect(null);
+		tmp.checked=new CheckBox();
+		tmp.flowers_number = new Button();
+		menue_tableview.getItems().add(tmp);
+	}
+	@FXML
+	public void handle_reports_btn(ActionEvent actionEvent) throws IOException {
+		get_scene("ReportViewer.fxml", "Welcome to Lilach.");
+	}
+
 }
 

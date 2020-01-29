@@ -1,5 +1,6 @@
 package src.lil.models;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.image.ImageView;
 import src.lil.Enums.ItemType;
@@ -18,7 +19,10 @@ public class Item {
 	private Boolean canAddToBouquet=false;
 	private List<Item> flowerInItem;
 	private ImageView object_image;
-	public CheckBox  checked,flowers_number;
+
+	public CheckBox checked;
+	public Button flowers_number;
+
 
 	public Item(){
 
@@ -47,7 +51,12 @@ public class Item {
         }
         
         this.checked = new CheckBox();
-        this.flowers_number=new CheckBox();
+        this.flowers_number=new Button("Add to boquete");
+        flowers_number.setStyle("-fx-background-color: #FFA500");
+        if(this.type.equals(ItemType.FLOWER.toString()))
+        	this.flowers_number.setVisible(true);
+        else
+        	this.flowers_number.setVisible(false);
 		if(!image.isEmpty()) {
 			this.object_image = new ImageView(image);
 			this.object_image.setFitHeight(200);
@@ -405,8 +414,8 @@ public class Item {
 	public void setChecked(CheckBox new_checked){
 		this.checked=new_checked;
 	}
-	public CheckBox getFlowers_number(){ return this.flowers_number; }
-	public void setFlowers_number(CheckBox btn){this.flowers_number=btn;}
+	public Button getFlowers_number(){ return this.flowers_number; }
+	public void setFlowers_number(Button btn){this.flowers_number=btn;}
 	public void setObject_image(String imagev){
 		this.object_image=new ImageView(imagev);
 	}

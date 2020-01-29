@@ -1,9 +1,6 @@
 package src.lil.client.lilachgui;
 
 
-
-import java.sql.SQLException;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
@@ -12,20 +9,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-
-import javafx.stage.Stage;
+import src.lil.Enums.ItemType;
 import src.lil.Enums.SubscriptionType;
 import src.lil.client.Instance;
-
-import src.lil.models.Order;
-import src.lil.models.User;
-
-import src.lil.Enums.ItemType;
-import src.lil.client.Instance;
-import src.lil.models.Client;
-import src.lil.models.Item;
+import src.lil.common.DBConnection;
+import src.lil.models.*;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class myOrdersCont extends LilachController {
@@ -56,9 +51,6 @@ public class myOrdersCont extends LilachController {
 	private ImageView cart_id1;
 
 	@FXML
-	private TextField OrderId;
-
-	@FXML
 	private Button purchase;
 
 	@FXML
@@ -85,84 +77,79 @@ public class myOrdersCont extends LilachController {
 	private Text star1;
 
 	@FXML
-
 	private TextField orderCost;
 
-
-	public void initialize() {
-
-			this.check_logins();
-			Client currUser = ((Client) Instance.getCurrentUser());
-//			Order currOrder = ((Order) Instance.getCurrentUser());
-			Contactname.setText(currUser.getName());
-			ReceiverPho.setText(currUser.getPhone());
-//			int id= currOrder.getorderId();
-//			OrderId.setSelectionEnd(id);
-//			orderCost.setText(currOrder.OrderCost());
-
+	@FXML
+	private TableView<Item> selected;
 
 	@FXML
-	public void initialize() {
+	private TableColumn<Item, String> sel_item_cul;
+
+	@FXML
+	private TableColumn<Item, ItemType> sel_type_cul;
+
+	@FXML
+	private TableColumn<Item, String> sel_color_cul;
+
+	@FXML
+	private TableColumn<Item, Double> sel_price_cul;
+
+	@FXML
+	public void initialize () throws SQLException, Order.AlreadyExists, NotFound {
 		this.check_logins();
-		Client currUser = ((Client)Instance.getCurrentUser());
+		Client currUser = ((Client) Instance.getCurrentUser());
 		Contactname.setText(currUser.getName());
 		ReceiverPho.setText(currUser.getName());
-		System.out.println("here1");
 		sel_item_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
-		System.out.println("here2");
 		sel_type_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
-		System.out.println("here3");
 		sel_color_cul.setCellValueFactory(new PropertyValueFactory<>("dominantColor"));
-		System.out.println("here4");
 		sel_price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
-		System.out.println("here5");
 		selected.setItems(selected_items);
-		System.out.println("here6");
-
-//		catch(Exception e){
-//			System.out.println(e.getMessage());
-//		}
+		orderCost.setText(OrderCost(selected_items));
 
 	}
 	@FXML
-	void handle_Add_greating_butt(ActionEvent event){
+	void handle_Add_greating_butt (ActionEvent event){
 		if (AddGreating.isSelected()) {
 			greating.setVisible(true);
-		}
-		else {
+		} else {
 			greating.setVisible(false);
 		}
 	}
 	@FXML
-	void handle_Add_dele_butt(ActionEvent event){
+	void handle_Add_dele_butt (ActionEvent event){
 		if (WithDelivery.isSelected()) {
 			Deliverylocation.setVisible(true);
-		}
-		else {
+		} else {
 			Deliverylocation.setVisible(false);
 		}
 	}
 	@FXML
-	void handle_purchase_butt(ActionEvent event) throws IOException {
-		try{
-			if(Contactname.getText().isEmpty() || ReceiverPho.getText().isEmpty() || ShippingTime.getText().isEmpty()||ShippingDate.getText().isEmpty()){
-				if(Contactname.getText().isEmpty()){
+	void handle_purchase_butt (ActionEvent event) throws IOException {
+		try {
+			if (Contactname.getText().isEmpty() || ReceiverPho.getText().isEmpty() || ShippingTime.getText().isEmpty() || ShippingDate.getText().isEmpty()) {
+				if (Contactname.getText().isEmpty()) {
 					Contactname.setStyle("-fx-background-color: yellow;");
 					star1.setVisible(true);
 				}
-				if(ReceiverPho.getText().isEmpty()) {
+				if (ReceiverPho.getText().isEmpty()) {
 					ReceiverPho.setStyle("-fx-background-color: yellow;");
 					star2.setVisible(true);
 				}
-				if(ShippingTime.getText().isEmpty()) {
+				if (ShippingTime.getText().isEmpty()) {
 					ShippingTime.setStyle("-fx-background-color: yellow;");
 					star3.setVisible(true);
 				}
-				if(ShippingDate.getText().isEmpty()) {
+				if (ShippingDate.getText().isEmpty()) {
 					ShippingDate.setStyle("-fx-background-color: yellow;");
 					star4.setVisible(true);
 				}
 				msg_to_client.setText("Please fill in the yellow fields");
+				return;
+			}
+			if((ShippingDate.getText().matches("\\d{2}-\\d{2}-\\d{4}"))||(ShippingTime.getText().matches("\\d{2}:\\d{2}:\\d{2}"))){
+				ShippingDate.setStyle("-fx-background-color: yellow;");
+				msg_to_client.setText("Date format: dd-mm-yyyy , Hour format: HH:mm:ss.");
 				return;
 			}
 //			System.out.println(((Client) Instance.getCurrentUser()).getUserId());
@@ -172,17 +159,17 @@ public class myOrdersCont extends LilachController {
 
 			Gson gson = new Gson();
 			JsonObject myData = new JsonObject();
-			myData.addProperty("userId",String.valueOf(((Client) Instance.getCurrentUser()).getUserId()));
-			myData.addProperty("contactName",Contactname.getText());
-			myData.addProperty("receiver_phone",ReceiverPho.getText());
-			myData.addProperty("ShippingHour",ShippingTime.getText());
-			myData.addProperty("ShippingDate",ShippingDate.getText());
-			myData.addProperty("greating",AddGreating.isSelected());
-			myData.addProperty("greatingText",greating.getText());
-			myData.addProperty("Delivrey",WithDelivery.isSelected());
-			myData.addProperty("delLocation",Deliverylocation.getText());
-			myData.addProperty("orderDate","");
-			myData.addProperty("storeid",((Client)Instance.getCurrentUser()).getStoreId());
+			myData.addProperty("userId", String.valueOf(((Client) Instance.getCurrentUser()).getUserId()));
+			myData.addProperty("contactName", Contactname.getText());
+			myData.addProperty("receiver_phone", ReceiverPho.getText());
+			myData.addProperty("ShippingHour", ShippingTime.getText());
+			myData.addProperty("ShippingDate", ShippingDate.getText());
+			myData.addProperty("greating", AddGreating.isSelected());
+			myData.addProperty("greatingText", greating.getText());
+			myData.addProperty("Delivrey", WithDelivery.isSelected());
+			myData.addProperty("delLocation", Deliverylocation.getText());
+			myData.addProperty("orderDate", "");
+			myData.addProperty("storeid", "" );
 			String json = gson.toJson(myData);
 //			json = "SubmitPurchase" + json;
 //			try {
@@ -199,10 +186,43 @@ public class myOrdersCont extends LilachController {
 			Instance.getClientConsole().get_client().sendToServer(element);
 			msg_to_client.setText("purchase sent successfully :)");
 
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			msg_to_client.setText("Something went wrong ! please Try again");
 		}
+	}
+	public  String OrderCost(List<Item> items ) throws SQLException, NotFound, Order.AlreadyExists {
+		double OrderPrice = 0.0;
+		if (selected_items == null)
+			return null;
+		try {
+			Connection db = DBConnection.getInstance().getConnection();
+			for (Item itrr : items) {
+				double price = itrr.getPrice();
+				OrderPrice += price;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			Connection db = DBConnection.getInstance().getConnection();
+			String userId = "" + ((User) Instance.getCurrentUser()).getUserId();
+			PreparedStatement statement = db.prepareStatement("select client_subscriptionType from clients where client_id = " + userId);
+			ResultSet result = statement.executeQuery();
+			result.next();
+			SubscriptionType sub = SubscriptionType.valueOf(result.getString(1));
+			db.close();
+			double discount = 1;
+			if (sub == SubscriptionType.Monthly)
+				discount = 0.75;
+			else if (sub == SubscriptionType.Yearly)
+				discount = 0.5;
+			Double finalSum = (OrderPrice) * discount;
+			return finalSum.toString();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+		}
+		return "";
 	}
 //	Gson gson = new Gson();
 //		user_id_txt.setStyle("-fx-background-color: white;");
