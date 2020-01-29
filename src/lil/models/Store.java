@@ -87,7 +87,7 @@ public class Store implements StoreInterface {
 				PreparedStatement preparedStatement2 = db.prepareStatement("update prices set price = price * ?  where store_id = ?");
 				PreparedStatement pstmt = db.prepareStatement("UPDATE prices SET price = price / ? WHERE store_id = ?");) {
 			preparedStatement2.setInt(2, this.store_id);
-			preparedStatement2.setInt(1,  sale);
+			preparedStatement2.setInt(1,  100 - sale);
 			pstmt.setInt(1,100);
 			pstmt.setInt(2, this.store_id);
 			preparedStatement2.executeUpdate();
@@ -104,19 +104,24 @@ public class Store implements StoreInterface {
 	 * new prices is the old price * _sale%.
 	 */
 	public boolean update_items_price(List<Integer> items_id, Integer _sale) throws SQLException, NoItemWithId {
-		String sql_update = "Update prices SET price = ? WHERE store_id = ? AND item_id = ?";
-		Double ratio = (double) ((100 - _sale) / 100);
-		System.out.println("SIZE : " + items_id.size());
+		String sql_update = "Update prices SET price = price * ? WHERE store_id = ? AND item_id = ?";
+		String sql_update2 = "Update prices SET price = price / ? WHERE store_id = ? AND item_id = ?";
 		try (Connection db = DBConnection.getInstance().getConnection();) {
 			PreparedStatement ps = db.prepareStatement(sql_update);
+			PreparedStatement ps2 = db.prepareStatement(sql_update2);
 			for (Integer integer : items_id) {
-				System.out.println(integer);
-				ps.setDouble(1, this._items.get(integer).getPrice() * ratio);
+				
+				ps.setDouble(1,100- _sale);
 				ps.setInt(2, this.store_id);
 				ps.setInt(3, integer);
+				ps2.setDouble(1, 100);
+				ps2.setInt(2, this.store_id);
+				ps2.setInt(3, integer);
 				ps.executeUpdate();
-				db.close();
+				ps2.executeUpdate();
+				
 			}
+			db.close();
 			return true;
 		}catch(Exception e) {
 			e.printStackTrace();
