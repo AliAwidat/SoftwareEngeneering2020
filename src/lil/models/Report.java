@@ -425,6 +425,12 @@ public class Report implements ReportInterface {
 	public String getReport_name(){
 		return this.report_name;
 	}
+	public String getReport_type() {
+		return this.type;
+	}
+	public void setReport_type(String st) {
+		this.type = st;
+	}
 //	public Integer getComplains_count(){return this.complains_count;}
 }
 

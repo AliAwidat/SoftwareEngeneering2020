@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="main_anchor_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="971.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.lil.client.lilachgui.OrderHistory">
     <children>
@@ -40,14 +41,14 @@
         </Button>
         <Button fx:id="menu_btn" layoutX="146.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_menu_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text=" Menu" />
         <Button fx:id="myorders_btn" layoutX="273.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_my_order_butt" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="My Orders" />
-           <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="622.0" layoutY="20.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">-->
+                <ImageView fx:id="cart_id" fitHeight="37.0" fitWidth="41.0" layoutX="622.0" layoutY="20.0" onMouseClicked="#handle_cart_click" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@assets/image-removebg-preview.png" />
                     </image>
                 </ImageView>
         <Button fx:id="signout_btn1" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signout_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #ab2b54;" text="Sign-Out" />
         <Button fx:id="sigup_btn" layoutX="847.0" layoutY="16.0" mnemonicParsing="false" onAction="#handle_signup_butt" prefHeight="45.0" prefWidth="86.0" style="-fx-background-color: #db7092;" text="Sign-Up" />
-<!--           <Label fx:id="finish_order_label" layoutX="543.0" layoutY="30.0" text="Finish Order:" />&ndash;&gt;-->
+        <!--        <Label fx:id="finish_order_label" layoutX="543.0" layoutY="30.0" text="Finish Order:" />-->
         <Button fx:id="block_Users" layoutX="400.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_block_users" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: red;" text="Block Users" visible="false">
             <font>
                 <Font size="10.0" />
@@ -72,12 +73,12 @@
                 </AnchorPane>
             </content>
         </ScrollPane>
-        <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
-            <font>
-                <Font size="10.0" />
-            </font>
-        </Button>
-
+      <Text fx:id="msg_order_dele" fill="#e80606" layoutX="622.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="154.39996337890625" />
+<Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
+           <font>
+               <Font size="10.0" />
+           </font>
+       </Button>
 
     </children>
 </AnchorPane>

@@ -54,7 +54,7 @@ public class ManageStoreCont extends LilachController {
 	private Button update_all_btn;
 
 
-
+	
 	@FXML
 	void handle_update_all(MouseEvent event) {
 		if(check_sale_input() == false) {

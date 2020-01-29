@@ -61,8 +61,6 @@ public class OrderHistory extends  LilachController {
 
     }
 
-    private ObservableList<Order>original_list;
-
     public void initialize() throws Order.NotFound, SQLException, IOException {
 
         this.check_logins();
@@ -81,7 +79,7 @@ public class OrderHistory extends  LilachController {
         greating.setCellValueFactory(new PropertyValueFactory<>("greatingText"));
 //        price.setCellValueFactory(new PropertyValueFactory<>("orderCost"));
         OrderTableView.setItems(getOrder(orderHist));
-        original_list= OrderTableView.getItems();
+
     }
 
     public ObservableList<Order> getOrder(List getFromDB){
@@ -116,8 +114,14 @@ public class OrderHistory extends  LilachController {
                             while(Instance.getResponse() == null){
                                 System.out.println("waiting...");
                             }
+                            
+                            if(Instance.getResponse().startsWith("successfull")) {
                             msg_order_dele.setText(Instance.getResponse().split("successfull")[0]);
                             row.setVisible(false);
+                            }else {
+                               msg_order_dele.setText(Instance.getResponse().split("successfull")[0]);
+
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

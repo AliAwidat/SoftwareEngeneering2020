@@ -180,7 +180,7 @@ public abstract class LilachController {
 	}
 
 	@FXML
-	public void handle_order_cart(MouseEvent event) throws IOException {
+	public void handle_cart_click(MouseEvent event) throws IOException {
 
 		get_scene("myOrdersPage.fxml", "Cart");
 	}
