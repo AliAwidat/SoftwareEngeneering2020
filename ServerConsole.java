@@ -68,28 +68,28 @@ public class ServerConsole implements ChatIF
     }
   }
 
-  
+
+
   //Instance methods ************************************************
-  
   /**
-   * This method waits for input from the console.  Once it is 
+   * This method waits for input from the console.  Once it is
    * received, it sends it to the client's message handler.
    */
-  public void accept() 
+  public void accept()
   {
     try
     {
-      BufferedReader fromConsole = 
+      BufferedReader fromConsole =
         new BufferedReader(new InputStreamReader(System.in));
       String message;
 
-      while (true) 
+      while (true)
       {
         message = fromConsole.readLine();
         server.handleMessageFromServerUI(message);
       }
-    } 
-    catch (Exception ex) 
+    }
+    catch (Exception ex)
     {
       System.out.println
         ("Unexpected error while reading from console!");
@@ -102,29 +102,22 @@ public class ServerConsole implements ChatIF
    *
    * @param message The string to be displayed.
    */
-  public void display(String message) 
+  public void display(String message)
   {
     System.out.println("> " + message);
   }
 
-  
-  //Class methods ***************************************************
-  
   /**
    * This method is responsible for the creation of the Server UI.
    *
    * @param args The port to connect to.
    */
-  public static void main(String[] args) 
-  {
+  public static void main(String[] args) {
     int port = 0;  //The port number
 
-    try
-    {
+    try {
       port = Integer.parseInt(args[0]);
-    }
-    catch(Throwable e)
-    {
+    } catch (Throwable e) {
       port = DEFAULT_PORT;
     }
     ServerConsole server = new ServerConsole(port);
@@ -143,6 +136,35 @@ public class ServerConsole implements ChatIF
         ScheduledOps.messageAboutComplain();
       }
     }, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
+
+    // check delivery each 1 minute
+    Timer timer1 = new Timer();
+    timer1.schedule(new TimerTask() {
+      public void run() {
+        ScheduledOps.sendAboutDelivery();
+      }
+    }, 0, 60 * 1000);
+
+
+    // update balances every 1 month
+    Timer timer2 = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        ScheduledOps.updateBalanceForMonth();
+      }
+    }, today.getTime(), TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
+
+    // update balances every 1 year
+    Timer timer3 = new Timer();
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        ScheduledOps.updateBalanceForYear();
+      }
+    }, today.getTime(), TimeUnit.MILLISECONDS.convert(365, TimeUnit.DAYS));
+
   }
+  //Class methods ***************************************************
 }
 //End of ServerConsole class
