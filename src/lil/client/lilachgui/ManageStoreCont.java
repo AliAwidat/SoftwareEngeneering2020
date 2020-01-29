@@ -161,32 +161,10 @@ public class ManageStoreCont extends LilachController {
 		}
 		return items_to_update;
 	}
-	public List<Item> request_items(){
-		try {
-			Type list_type_Object = new TypeToken<List<Item>>() {
-			}.getType();
-			Instance.resetResponse();
-			Instance.getClientConsole().get_client().sendToServer("get items list in:" + ((User) Instance.getCurrentUser()).getStoreId());
-			while(Instance.getResponse()==null) {
-				//wait for the server to respond.
-				System.out.println("Fetching items...");
-			}
-			if(Instance.getResponse().equals("ERROR!")) {
-				return null;
-			}else {
-				Gson gson = new Gson();
-				String[] server_msg = Instance.getResponse().split(":");
-				List<Item> items = gson.fromJson(server_msg[1],list_type_Object);
-				return items;
- 			}
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	
 	public void display_items() {
 		List<Item> items;
-		items = request_items();
+		items = Item.filterItems("false", Integer.parseInt(((User)Instance.getCurrentUser()).getStoreId()));
 		id_cul.setCellValueFactory(new PropertyValueFactory<>("id"));
 		name_cul.setCellValueFactory(new PropertyValueFactory<>("type"));
 		price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
