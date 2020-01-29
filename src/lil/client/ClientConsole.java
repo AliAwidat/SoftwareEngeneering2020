@@ -2,12 +2,10 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 package src.lil.client;
+import java.io.*;
+import src.lil.client.*;
 import src.lil.client.lilachgui.LilachMain;
-import src.lil.common.ChatIF;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import src.lil.common.*;
 
 /**
  * This class constructs the UI for a chat client.  It implements the
@@ -106,9 +104,9 @@ public class ClientConsole implements ChatIF
   /**
    * This method is responsible for the creation of the Client UI.
    *
-   * @param args The user ID.
-   * @param args The host to connect to.
-   * @param args The port to connect to.
+   * @param args[0] The user ID.
+   * @param args[1] The host to connect to.
+   * @param args[2] The port to connect to.
    */
   public static void main(String[] args) 
   {
