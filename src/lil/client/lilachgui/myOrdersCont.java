@@ -10,11 +10,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import src.lil.Enums.ItemType;
+import src.lil.Enums.SubscriptionType;
 import src.lil.client.Instance;
-import src.lil.models.Client;
-import src.lil.models.Item;
+import src.lil.common.DBConnection;
+import src.lil.models.*;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 
 public class myOrdersCont extends LilachController {
@@ -43,9 +49,6 @@ public class myOrdersCont extends LilachController {
 
 	@FXML
 	private ImageView cart_id1;
-
-	@FXML
-	private TextField OrderId;
 
 	@FXML
 	private Button purchase;
@@ -92,7 +95,7 @@ public class myOrdersCont extends LilachController {
 	private TableColumn<Item, Double> sel_price_cul;
 
 		@FXML
-		public void initialize () {
+		public void initialize () throws SQLException, Order.AlreadyExists, NotFound {
 			this.check_logins();
 			Client currUser = ((Client) Instance.getCurrentUser());
 			Contactname.setText(currUser.getName());
@@ -102,6 +105,7 @@ public class myOrdersCont extends LilachController {
 			sel_color_cul.setCellValueFactory(new PropertyValueFactory<>("dominantColor"));
 			sel_price_cul.setCellValueFactory(new PropertyValueFactory<>("price"));
 			selected.setItems(selected_items);
+			orderCost.setText(OrderCost(selected_items));
 
 		}
 		@FXML
@@ -165,7 +169,7 @@ public class myOrdersCont extends LilachController {
 				myData.addProperty("Delivrey", WithDelivery.isSelected());
 				myData.addProperty("delLocation", Deliverylocation.getText());
 				myData.addProperty("orderDate", "");
-				myData.addProperty("storeid", ((Client) Instance.getCurrentUser()).getStoreId());
+				myData.addProperty("storeid", "" );
 				String json = gson.toJson(myData);
 //			json = "SubmitPurchase" + json;
 //			try {
@@ -186,6 +190,40 @@ public class myOrdersCont extends LilachController {
 				msg_to_client.setText("Something went wrong ! please Try again");
 			}
 		}
+	public  String OrderCost(List<Item> items ) throws SQLException, NotFound, Order.AlreadyExists {
+		double OrderPrice = 0.0;
+		if (selected_items == null)
+			return null;
+		try {
+			Connection db = DBConnection.getInstance().getConnection();
+			for (Item itrr : items) {
+				double price = itrr.getPrice();
+				OrderPrice += price;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		try {
+			Connection db = DBConnection.getInstance().getConnection();
+			String userId = "" + ((User) Instance.getCurrentUser()).getUserId();
+			PreparedStatement statement = db.prepareStatement("select client_subscriptionType from clients where client_id = " + userId);
+			ResultSet result = statement.executeQuery();
+			result.next();
+			SubscriptionType sub = SubscriptionType.valueOf(result.getString(1));
+			db.close();
+			double discount = 1;
+			if (sub == SubscriptionType.Monthly)
+				discount = 0.75;
+			else if (sub == SubscriptionType.Yearly)
+				discount = 0.5;
+			Double finalSum = (OrderPrice) * discount;
+			return finalSum.toString();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+
+		}
+		return "";
+	}
 //	Gson gson = new Gson();
 //		user_id_txt.setStyle("-fx-background-color: white;");
 //		email_txt.setStyle("-fx-background-color: white;");
