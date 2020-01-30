@@ -108,7 +108,7 @@ public class SignupController extends LilachController {
 			e.printStackTrace();
 		}
 		while (Instance.getResponse() == null) {
-			System.out.println("");
+			System.out.println("fetching stores addresses...");
 		}
 		Type list_type_Object = new TypeToken<List<String>>() {
 		}.getType();
@@ -167,19 +167,11 @@ public class SignupController extends LilachController {
 					login_btn.setVisible(false);
 					sigup_btn.setVisible(false);
 					signout_btn1.setVisible(true);
-					StringTokenizer roletok = new StringTokenizer(Instance.getResponse());
-					roletok.nextToken(" ");
-					String Role = roletok.nextToken();
+					String[] Role = Instance.getResponse().split("SPACE");
 					Object current_user = null;
-					if (Role.contains("StoreManger")) {
-						current_user = gson.fromJson(Role, StoreManger.class);
-					} else if (Role.contains("ChainManger")) {
-						current_user = gson.fromJson(Role, ChainManger.class);
-					} else if (Role.contains("Employee")) {
-						current_user = gson.fromJson(Role, Employee.class);
-					} else {
-						current_user = gson.fromJson(Role, Client.class);
-					}
+
+					current_user = gson.fromJson(Role[1], Client.class);
+
 					Instance.setCurrentUser(current_user);
 					try {
 						this.handle_menu_butt(null);

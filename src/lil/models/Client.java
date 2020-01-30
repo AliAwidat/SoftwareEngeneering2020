@@ -27,12 +27,11 @@ public class Client extends User {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT *  FROM clients WHERE client_id=" + userId);
             if(rs.next()) {
+            	connection.close();
                 throw new Exception("AlreadyExists");
             }
            
-            if(name.isEmpty() || phone.isEmpty() || bankAccount.isEmpty() ||  email.isEmpty() ||  password.isEmpty() ||  creditCardNumber.isEmpty() ||  shippingAddress.isEmpty() ||  subscriptionType.toString().isEmpty() ||  storeId.isEmpty()){
-                throw new Exception("Illegal arguments, all data should be inserted");
-            }
+            
             String SQL_INSERT = "INSERT INTO clients (client_id, client_name, client_phone, client_bankAccount, client_email," +
                     " client_password, client_creditCard, client_shippingAddress, client_subscriptionType, client_block,store_id," +
                     "client_balance)" +
@@ -55,7 +54,8 @@ public class Client extends User {
             return true;
         }
         catch (SQLException e){
-            throw e;
+         
+        	throw e;
         }
     }
 

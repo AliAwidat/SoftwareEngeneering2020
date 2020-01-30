@@ -158,6 +158,7 @@ public abstract class LilachController {
 	@FXML
 	public void handle_menu_butt(ActionEvent event) throws IOException {
 		if (Instance.getCurrentUser() != null && Instance.getCurrentUser().getClass().getName().contains("Client")) {
+		
 			Client client = (Client) Instance.getCurrentUser();
 			if (client.isBlocked()) {
 				get_scene("unblockUser.fxml", "Please pay your balance");
