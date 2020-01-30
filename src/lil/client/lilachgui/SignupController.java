@@ -84,12 +84,14 @@ public class SignupController extends LilachController {
 				|| sub_type_box.getValue() == null) {
 			error_msg.setText("Please fill all fields");
 			return false;
-		} else if (user_id_txt.getText().matches("[0-9]+") == false && user_id_txt.getText().length() <9) {
+		} else if (user_id_txt.getText().matches("[0-9]+") == false) {
 			error_msg.setText("User ID should contain numbers only and length of 9!");
 			user_id_txt.setStyle("-fx-background-color: yellow;");
+			return false;
 		} else if (!email_txt.getText().contains(".co") || !email_txt.getText().contains("@")) {
 			error_msg.setText("invalid E-Mail.");
 			email_txt.setStyle("-fx-background-color: yellow;");
+			return false;
 		}
 		return true;
 	}
@@ -110,7 +112,7 @@ public class SignupController extends LilachController {
 		}
 		Type list_type_Object = new TypeToken<List<String>>() {
 		}.getType();
-		
+
 		addresses = gson.fromJson(Instance.getResponse(), list_type_Object);
 		for (String string : addresses) {
 			store_add_box.getItems().add(string);
@@ -136,8 +138,8 @@ public class SignupController extends LilachController {
 			}
 			Client register = new Client(Integer.parseInt(user_id_txt.getText()), fullname_txt.getText(),
 
-					phone_num_txt.getText(), bank_acc_txt.getText(), address_txt.getText(), email_txt.getText(), password_txt.getText(),
-					val, credit_txt.getText(),  store_add_box.getValue().split("-")[1], 0.0);
+					phone_num_txt.getText(), bank_acc_txt.getText(), address_txt.getText(), email_txt.getText(),
+					password_txt.getText(), val, credit_txt.getText(), store_add_box.getValue().split("-")[1], 0.0);
 
 			String json = gson.toJson(register);
 			try {
@@ -146,7 +148,7 @@ public class SignupController extends LilachController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			while(Instance.getResponse()==null) {
+			while (Instance.getResponse() == null) {
 				System.out.println("Waiting...");
 			}
 			if (Instance.getResponse().equals("successfull")) {
@@ -185,9 +187,9 @@ public class SignupController extends LilachController {
 						e.printStackTrace();
 					}
 				}
-			}else if(Instance.getResponse().equals("SQL Exception!")) {
+			} else if (Instance.getResponse().equals("SQL Exception!")) {
 				error_msg.setText("Failed to connect to the DATABASE!");
-			}else {
+			} else {
 				error_msg.setText("User with same ID already exists!");
 				user_id_txt.setStyle("-fx-background-color: yellow;");
 			}

@@ -29,9 +29,7 @@ public class Client extends User {
             if(rs.next()) {
                 throw new Exception("AlreadyExists");
             }
-            if(String.valueOf(userId).length()<9 ){
-                throw new Exception("Illegal id, less than 9 digits");
-            }
+           
             if(name.isEmpty() || phone.isEmpty() || bankAccount.isEmpty() ||  email.isEmpty() ||  password.isEmpty() ||  creditCardNumber.isEmpty() ||  shippingAddress.isEmpty() ||  subscriptionType.toString().isEmpty() ||  storeId.isEmpty()){
                 throw new Exception("Illegal arguments, all data should be inserted");
             }
