@@ -50,6 +50,7 @@ public class Store implements StoreInterface {
 			pstmt.setInt(1, _id);
 			pstmt.setString(2, _address);
 			pstmt.executeUpdate();
+			db.close();
 		}
 		_items = new HashMap<Integer, Item>();
 	}
@@ -148,6 +149,7 @@ public class Store implements StoreInterface {
 				}
 				this._items.get(rs2.getInt("item_id")).setPrice(Double.valueOf(rs2.getInt("price")));
 			}
+			db.close();
 		}
 	}
 	/**
@@ -163,6 +165,7 @@ public class Store implements StoreInterface {
 			while(res.next()) {
 				addresses.put(res.getString("store_address"),res.getInt("store_id"));
 			}
+			db.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

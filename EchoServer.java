@@ -285,6 +285,9 @@ public class EchoServer extends AbstractServer {
 				client.sendToClient("User with same ID already exists!");
 			} catch (SQLException e) {
 				client.sendToClient("SQL Exception!");
+			} catch (Exception e) {
+
+				client.sendToClient(e.toString());
 			}
 		} else if (msg.toString().equals("getallclients")) {
 			List<Client> clients_list = User.get_all_clients();
