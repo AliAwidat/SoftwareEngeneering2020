@@ -40,18 +40,18 @@ public class ClientConsole implements ChatIF
   }
   //Constructors ****************************************************
 
-  /**
-   * Constructs an instance of the ClientConsole UI.
-   *
-   * @param host The host to connect to.
-   * @param port The port to connect on.
-   * @param loginID The user's ID.
-   */
-  public ClientConsole(String loginID, String host, int port) 
+//  /**
+//   * Constructs an instance of the ClientConsole UI.
+//   *
+//   * @param host The host to connect to.
+//   * @param port The port to connect on.
+//   * @param loginID The user's ID.
+//   */
+  public ClientConsole(String host, int port)
   {
     try 
     {
-      client= new ChatClient(loginID, host, port, this);
+      client= new ChatClient(host, port, this);
     } 
     catch(IOException exception) 
     {
@@ -102,42 +102,28 @@ public class ClientConsole implements ChatIF
 
   
   //Class methods ***************************************************
-  
-  /**
-   * This method is responsible for the creation of the Client UI.
-   *
-   * @param args The user ID.
-   * @param args The host to connect to.
-   * @param args The port to connect to.
-   */
+//
+//  /**
+//   * This method is responsible for the creation of the Client UI.
+//   *
+//   * @param args The user ID.
+//   * @param args The host to connect to.
+//   * @param args The port to connect to.
+//   */
   public static void main(String[] args) 
   {
     String host = "";
     int port = 0;  //The port number
-    String loginID = "";
-    try
-    {
-      loginID = args[0];
-    }
-    catch(ArrayIndexOutOfBoundsException e)
-    {
-      System.out.println("usage: java ClientConsole loginID [host [port]]");
-      System.exit(1);
-    }
-    try
-    {
-      host = args[1];
-    }
-    catch(ArrayIndexOutOfBoundsException e)
-    {
-      host = "localhost";
-    }
     try {
-      port = Integer.parseInt(args[2]);
+      host = args[0];
+    }catch(ArrayIndexOutOfBoundsException e) {
+        host = "localhost";
+    }try{
+      port = Integer.parseInt(args[1]);
     } catch (ArrayIndexOutOfBoundsException e){
       port = DEFAULT_PORT;
     }
-    ClientConsole chat= new ClientConsole(loginID, host, port);
+    ClientConsole chat= new ClientConsole(host, port);
     Instance.setClientConsole(chat); 
     LilachMain.main(args);
 

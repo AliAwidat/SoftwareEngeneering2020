@@ -44,7 +44,7 @@ public class Item {
         this.image = rs.getString("image");
         this.updated=rs.getInt("updated");
         this.canAddToBouquet=rs.getBoolean("canAddToBouquet");
-        if(canAddToBouquet==true) {
+        if(canAddToBouquet==true){
         	this.flowerInItem=getFlowersInItemFromDb(this.id);
         }else {
         	this.flowerInItem=null;
@@ -346,6 +346,12 @@ public class Item {
 	    this.price = itemPrice;
 	    this.updated = 0;
 	    this.image = image;
+		if(!image.isEmpty()) {
+			this.object_image = new ImageView(image);
+			this.object_image.setFitHeight(200);
+			this.object_image.setFitWidth(200);
+		}else
+			this.object_image=null;
 	    this.canAddToBouquet=canAddToBouquet;
 	    this.flowerInItem=new ArrayList<Item>();
     }

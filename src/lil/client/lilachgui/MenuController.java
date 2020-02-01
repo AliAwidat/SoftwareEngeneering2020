@@ -302,6 +302,7 @@ public class MenuController extends LilachController{
 			last_id= ((Item)it.next()).getId();
 		tmp_item.setId(last_id+1);
 		tmp_item.setPrice(100.0);
+		tmp_item.setType("CUSTOM");
 		selected_items.add(tmp_item);
 	}
 
@@ -337,7 +338,6 @@ public class MenuController extends LilachController{
 		Item tmp = new Item(type_field.getText(),dominant_field.getText(),Double.parseDouble(price_field.getText()),image_field.getText(),can_boquet_box.isSelected());
 		tmp.insert();
 		added_label.setVisible(true);
-		Thread.sleep(1000);
 		add_popup.setVisible(false);
 		type_field.setText("");
 		dominant_field.setText("");
@@ -347,8 +347,10 @@ public class MenuController extends LilachController{
 		can_boquet_box.setSelected(false);
 		menue_tableview.setEffect(null);
 		tmp.checked=new CheckBox();
-		tmp.flowers_number = new Button();
+		tmp.flowers_number = new Button("Add to boquete");
+		tmp.flowers_number.setStyle("-fx-background-color: #FFA500");
 		menue_tableview.getItems().add(tmp);
+		menue_tableview.refresh();
 	}
 
 
