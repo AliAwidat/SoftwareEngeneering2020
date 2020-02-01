@@ -1,7 +1,8 @@
 
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
+// license found at www.lloseng.com
+
 
 
 import java.io.*;
@@ -299,15 +300,15 @@ public class EchoServer extends AbstractServer {
 		}else if (msg.toString().startsWith("update")) {
 
 			String[] parms = msg.toString().split(" ");
-			
-		
+
+
 			ChainManger manager = (ChainManger) _login.get_object(Integer.parseInt(parms[1]));
 			if(parms[2].equals("true")) {
 				manager.updateUser(gson.fromJson(parms[3], Client.class));
 			}else {
 				manager.updateUser(gson.fromJson(parms[3], Employee.class));
 			}
-			
+
 			client.sendToClient("successful.");
 			return;
 		}else if(msg.toString().startsWith("items Update all in :")) {
@@ -334,7 +335,7 @@ public class EchoServer extends AbstractServer {
 			}
 			client.sendToClient("ERROR!");
 			return;
-			
+
 		}
 
 		else if (msg.toString().startsWith("#login ")) {
