@@ -1,12 +1,15 @@
 package src.lil.tests;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
-import src.lil.models.Report;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import org.junit.jupiter.api.Test;
+import org.testng.Assert;
+
+import src.lil.models.Report;
 
 class reportTest {
 

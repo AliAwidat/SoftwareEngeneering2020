@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import src.lil.client.Instance;
 import src.lil.models.Client;
+import src.lil.models.Complain;
 import src.lil.models.Item;
 
 import java.io.IOException;
