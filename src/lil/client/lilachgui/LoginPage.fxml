@@ -54,7 +54,6 @@
       <Label fx:id="finish_order_label" layoutX="543.0" layoutY="30.0" text="Finish Order:" />
       <PasswordField fx:id="password_txt" layoutX="385.0" layoutY="438.0" onKeyTyped="#handle_password_input" promptText="password" style="-fx-background-color: #ffffff;" />
       <Label layoutX="303.0" layoutY="442.0" text="Password:" textFill="#343131" underline="true" />
-      <Text fx:id="error_txt" fill="#fd0000" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="258.78301429748535" />
       <Button fx:id="loginbutton" layoutX="418.0" layoutY="492.0" mnemonicParsing="false" onAction="#handle_login" prefHeight="32.0" prefWidth="86.0" style="-fx-background-color: #db7092; -fx-border-color: #696969 #696969;" text="Login" />
       <Label layoutX="422.0" layoutY="270.0" prefHeight="32.0" prefWidth="79.0" text="Log-In" textAlignment="CENTER" textFill="#0b0a0a">
          <font>
@@ -68,6 +67,7 @@
                <Font size="10.0" />
            </font>
        </Button>
+      <Text fx:id="error_txt" fill="#fd0000" layoutX="343.0" layoutY="539.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="251.78301429748535" />
 
    </children>
 </AnchorPane>

@@ -48,6 +48,7 @@ public class LoginController extends LilachController {
 	void handle_login(ActionEvent event) throws IOException {
 		if (user_id.matches("[0-9]+") == false) {
 			error_txt.setText("User ID should contain numbers only!");
+			error_txt.setVisible(true);
 		} else {
 			try {
 				Instance.resetResponse();
