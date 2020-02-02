@@ -147,7 +147,7 @@ public class myOrdersCont extends LilachController {
 				msg_to_client.setText("Please fill in the yellow fields");
 				return;
 			}
-			if((ShippingDate.getText().matches("\\d{2}-\\d{2}-\\d{4}"))||(ShippingTime.getText().matches("\\d{2}:\\d{2}:\\d{2}"))){
+			if(!(ShippingDate.getText().matches("\\d{2}-\\d{2}-\\d{4}"))||!(ShippingTime.getText().matches("\\d{2}:\\d{2}:\\d{2}"))){
 				ShippingDate.setStyle("-fx-background-color: yellow;");
 				msg_to_client.setText("Date format: dd-mm-yyyy , Hour format: HH:mm:ss.");
 				return;

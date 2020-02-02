@@ -73,7 +73,7 @@
                 </AnchorPane>
             </content>
         </ScrollPane>
-      <Text fx:id="msg_order_dele" fill="#e80606" layoutX="622.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="154.39996337890625" />
+      <Text fx:id="msg_order_dele" fill="#e80606" layoutX="669.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="154.39996337890625" />
 <Button fx:id="view_reports_btn" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" onAction="#handle_reports_btn" prefHeight="46.0" prefWidth="123.0" style="-fx-background-color: #db7092;" text="View Reports">
            <font>
                <Font size="10.0" />

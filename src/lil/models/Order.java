@@ -246,9 +246,7 @@ public class Order implements OrderServices {
      */
 
     public boolean insertIntoOrders() throws Exception {
-        if(items.isEmpty()){
-            throw new Exception("cart is empty");
-        }
+       
         if(Optional.ofNullable(userId).orElse(0) == 0){
             throw new Exception("user is Undefined");
         }
